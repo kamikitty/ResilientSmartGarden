@@ -1,0 +1,24 @@
+{
+  "name": "smartrootsapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "jade": "^1.11.0",
+    "kerberos": "0.0.23",
+    "leveldown": "^1.6.0",
+    "levelup": "^1.3.5",
+    "mongodb": "^2.2.26",
+    "mongoose": "^4.9.8",
+    "scrypt-for-humans": "^2.0.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">SmartRoots</string>
+
+    <!-- ****************** -->
+    <!-- * WELCOME SCREEN * -->
+    <!-- ****************** -->
+
+    <string name="activity_label_welcome">Welcome</string>
+    <string name="button_login">LOGIN</string>
+    <string name="button_register">REGISTER</string>
+
+    <!-- Hints for Login and Register Dialog -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="confirm_password">Confirm Password</string>
+
+    <!-- Errors for Login and Register Dialog -->
+    <string name="username_empty">Please enter a username.</string>
+    <string name="email_empty">Please enter an email.</string>
+    <string name="password_empty">Please enter a password.</string>
+    <string name="confirm_password_empty">Please re-enter password.</string>
+
+    <string name="password_mismatch">Passwords do not match.</string>
+
+    <!-- Toast notification for Login status -->
+    <string name="login_success">Login Success!</string>
+    <string name="login_failed">Login Failed.</string>
+
+    <!-- Buttons for Login and Register Dialog -->
+    <string name="login">Login</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- *************** -->
+    <!-- * GARDEN CARD * -->
+    <!-- *************** -->
+
+    <!-- Labels for Garden Card -->
+    <string name="label_garden_name">Placeholder</string>
+    <string name="label_water">Automatic Watering</string>
+    <string name="label_temperature">Temperature: %.2f degrees</string>
+    <string name="label_moisture">Moisture: %.2f%%</string>
+    <string name="label_humidity">Humidity: %.2f%%</string>
+    <string name="label_updated">Last updated %d hours ago</string>
+
+    <!-- Buttons for Garden Card -->
+    <string name="button_update">UPDATE</string>
+    <string name="button_history">VIEW HISTORY</string>
+    <string name="button_water">WATER NOW</string>
+    <string name="button_water_setup">SETUP</string>
+
+    <!-- Labels for Overflow Menu -->
+    <string name="menu_push">Push Notification</string>
+    <string name="menu_shutdown">Shut Down</string>
+
+    <!-- *************** -->
+    <!-- * GARDEN VIEW * -->
+    <!-- *************** -->
+
+    <string name="activity_label_gardenview">Username</string>
+    <string name="logout">Goodbye, %s!</string>
+
+    <!-- Title for action bar menu -->
+    <string name="menu_logout">Logout</string>
+
+    <!-- ***************** -->
+    <!-- * SETUP DIALOGS * -->
+    <!-- ***************** -->
+
+    <!-- Common button labels for setup dialogs -->
+    <string name="button_done">DONE</string>
+
+
+    <!-- Labels for Automatic Watering Setup -->
+    <string name="label_moisture_limit">Moisture Limit</string>
+
+    <!-- Labels for Push Notification -->
+    <string name="label_push_notification">Push Notification</string>
+    <string name="label_temperature_warning">Temperature Warning</string>
+    <string name="label_moisture_warning">Moisture Warning</string>
+    <string name="label_humidity_warning">Humidity Warning</string>
+    <string name="label_minimum">Minimum</string>
+    <string name="label_maximum">Maximum</string>
+
+</resources>

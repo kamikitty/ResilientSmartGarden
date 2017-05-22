@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/dialog_content_padding"
+    android:paddingBottom="@dimen/dialog_content_padding"
+    android:theme="@style/DialogSettingsTheme">
+
+    <!-- Push Notification Switch Settings -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Label for Push Notification -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_height"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/label_push_notification" />
+
+        <!-- Switch toggle for Push Notification -->
+        <Switch
+            android:id="@+id/switch_push_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_height"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <!-- *********************** -->
+    <!-- * TEMPERATURE WARNING * -->
+    <!-- *********************** -->
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Label for Temperature Warning -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_height"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/label_temperature_warning" />
+
+        <!-- Switch toggle for Temperature Warning -->
+        <Switch
+            android:id="@+id/switch_temperature_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_height"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"/>
+    </RelativeLayout>
+
+    <!-- Minimum Temperature Warning -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Label for minimum -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/label_minimum"
+            android:textSize="@dimen/fontsize_settings_sub"/>
+
+        <!-- EditText for minimum temperature input -->
+        <EditText
+            android:id="@+id/temperature_min"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_marginEnd="@dimen/dialog_content_padding"
+            android:layout_alignParentEnd="true"
+            android:maxLength="3"
+            android:ems="3" />
+    </RelativeLayout>
+
+    <!-- Maximum Temperature Warning -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Label for maximum -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/label_maximum"
+            android:textSize="@dimen/fontsize_settings_sub"/>
+
+        <!-- EditText for maximum temperature input -->
+        <EditText
+            android:id="@+id/temperature_max"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_marginEnd="@dimen/dialog_content_padding"
+            android:layout_alignParentEnd="true"
+            android:maxLength="3"
+            android:ems="3" />
+    </RelativeLayout>
+
+    <!-- ******************** -->
+    <!-- * MOISTURE WARNING * -->
+    <!-- ******************** -->
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Label for Moisture Warning -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_height"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/label_moisture_warning" />
+
+        <!-- Switch toggle for Moisture Warning -->
+        <Switch
+            android:id="@+id/switch_moisture_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_height"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"/>
+
+    </RelativeLayout>
+
+    <!-- Minimum Moisture Warning -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Label for minimum -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/label_minimum"
+            android:textSize="@dimen/fontsize_settings_sub"/>
+
+        <!-- EditText for minimum moisture input -->
+        <EditText
+            android:id="@+id/moisture_min"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_marginEnd="@dimen/dialog_content_padding"
+            android:layout_alignParentEnd="true"
+            android:maxLength="3"
+            android:ems="3" />
+    </RelativeLayout>
+
+    <!-- Maximum Moisture Warning -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Label for Moisture Warning -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/label_maximum"
+            android:textSize="@dimen/fontsize_settings_sub"/>
+
+        <!-- EditText for maximum moisture input -->
+        <EditText
+            android:id="@+id/moisture_max"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_marginEnd="@dimen/dialog_content_padding"
+            android:layout_alignParentEnd="true"
+            android:maxLength="3"
+            android:ems="3" />
+    </RelativeLayout>
+
+    <!-- ******************** -->
+    <!-- * HUMIDITY WARNING * -->
+    <!-- ******************** -->
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Label for Moisture Warning -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_height"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/label_humidity_warning" />
+
+        <!-- Switch toggle for Moisture Warning -->
+        <Switch
+            android:id="@+id/switch_humidity_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_height"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"/>
+
+    </RelativeLayout>
+
+    <!-- Minimum Temperature Warning -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Label for Temperature Warning -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/label_minimum"
+            android:textSize="@dimen/fontsize_settings_sub"/>
+
+        <!-- EditText for minimum temperature input -->
+        <EditText
+            android:id="@+id/humidity_min"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_marginEnd="@dimen/dialog_content_padding"
+            android:layout_alignParentEnd="true"
+            android:maxLength="3"
+            android:ems="3" />
+    </RelativeLayout>
+
+    <!-- Maximum Humidity Warning -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Label for -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:text="@string/label_maximum"
+            android:textSize="@dimen/fontsize_settings_sub"/>
+
+        <!-- EditText for maximum humidity input -->
+        <EditText
+            android:id="@+id/humidity_max"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialog_settings_sub_height"
+            android:layout_marginEnd="@dimen/dialog_content_padding"
+            android:layout_alignParentEnd="true"
+            android:maxLength="3"
+            android:ems="3" />
+    </RelativeLayout>
+
+</LinearLayout>

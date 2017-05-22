@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dialog_content_padding">
+
+    <!-- Text box to enter user name -->
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/username"/>
+
+    <!-- Text box to enter email -->
+    <EditText
+        android:id="@+id/email"
+        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/email"/>
+
+    <!-- Text box to enter password -->
+    <EditText
+        android:id="@+id/password"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/password"/>
+
+    <!-- Text box to enter password -->
+    <EditText
+        android:id="@+id/confirm_password"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/confirm_password"/>
+
+</LinearLayout>

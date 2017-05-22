@@ -1,0 +1,20 @@
+<resources>
+    
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="DialogSettingsTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:textSize">@dimen/fontsize_settings</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingLeft">@dimen/dialog_content_padding</item>
+        <item name="android:paddingRight">@dimen/dialog_content_padding</item>
+    </style>
+
+</resources>
