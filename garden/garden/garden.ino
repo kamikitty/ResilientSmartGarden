@@ -29,6 +29,8 @@ double temperature = 0.0;
 double humidity = 0.0;
 double moisture = 0.0;
 
+boolean isOn = false;
+
 /**
  * \brief Initializes sensors, water flow relay, and i2c communication
  */
@@ -67,13 +69,22 @@ void loop() {
   // Update sensors
   TempHumid.read11(TEMP_HUMID_PIN);
   Moisture.read(MOISTURE_PIN);
-  
+
   readSensors(temperature, humidity, moisture);
 
+  while (Serial.available()){
+    char input = Serial.read();
+
+    if (input == 'w'){
+      waterFlowTest();
+    }
+  }
+  /*
   if (moisture <= 40)
     waterFlow(true);
   else
     waterFlow(false);
+    */
 }
 
 /**
@@ -84,6 +95,15 @@ void waterFlow(boolean flow) {
     digitalWrite(WATER_FLOW_PIN, HIGH);
   else
     digitalWrite(WATER_FLOW_PIN, LOW);
+}
+
+void waterFlowTest(){
+  if (isOn)
+    digitalWrite(WATER_FLOW_PIN, HIGH);
+  else
+    digitalWrite(WATER_FLOW_PIN, LOW);
+
+  isOn = !isOn;
 }
 
 /**
@@ -108,7 +128,7 @@ void sendReadings(){
 
 /**
  * \brief A helper function that sends sensor readings to the WiFi Module through i2c
- * 
+ *
  * i2c sends data a byte at a time and the data type cannot be double or float,
  * so bit and decimal manipulation is needed. The sensor readings are multipled by 100
  * and is sent as an int with a length of 2 bytes. The first write is the high byte
@@ -127,7 +147,7 @@ void i2cSend(double reading){
 
 /**
  * \brief A helper function that converts celsius to fahrenheit
- * 
+ *
  * @return A the fahrenheit conversion of the temperature
  */
 double celsiusToFahrenheit(double celsius){
@@ -145,4 +165,3 @@ void printSensors(double &_temperature, double &_humidity, double &_moisture){
   Serial.print(" | Moisture: ");
   Serial.println(_moisture);
 }
-
