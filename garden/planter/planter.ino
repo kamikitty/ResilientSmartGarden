@@ -8,7 +8,7 @@
 #include "moisture.h"
 #include "dht.h"
 
-#define DEBUG 1
+#define DEBUG 0
 #define I2C_CHANNEL 1
 
 //////////////////
@@ -16,6 +16,7 @@
 //////////////////
 #define TEMP_HUMID_UNIT1_PIN 2
 #define TEMP_HUMID_UNIT2_PIN 4
+#define MOISTURE_POWER_PIN 13
 #define WATER_FLOW_PIN 7
 
 /////////////////
@@ -23,11 +24,18 @@
 /////////////////
 #define MOISTURE_PIN 0
 
+//////////////////
+// DELAY TIMERS //
+//////////////////
+#define UPDATE_RATE 1 // in minutes
+
 // Define sensors
 dht TempHumidSensor1;
 dht TempHumidSensor2;
 
 moisture Moisture;
+
+const unsigned long updateTime = long(UPDATE_RATE) * 60 * 1000;
 
 // Initialize sensor readings
 double tempAvg = 0.0;
@@ -49,7 +57,7 @@ void setup() {
   int chk = TempHumidSensor1.read11(TEMP_HUMID_UNIT1_PIN);
   if (chk == DHTLIB_OK)
     Serial.println("Unit 1 OK!");
-  else
+  else    
     Serial.println("Unit 1 ERROR!");
 
   chk = TempHumidSensor2.read11(TEMP_HUMID_UNIT2_PIN);
@@ -76,10 +84,16 @@ void setup() {
 void loop() {
   readSensors(tempAvg, humidAvg, moisture);
   
-  if (moisture <= 40)
+  if (moisture <= 60.0)
     waterFlow(true);
   else
     waterFlow(false);
+
+  Serial.print("Delaying ");
+  Serial.print(updateTime);
+  Serial.print("...");
+  delay(updateTime);
+  Serial.println("done!");
 }
 
 /**
@@ -124,7 +138,7 @@ void readSensors(double &_temperature, double &_humidity, double &_moisture){
   humidUnit2 = TempHumidSensor2.humidity;
 
   // Get moisture readings
-  Moisture.read(MOISTURE_PIN);
+  Moisture.read(MOISTURE_PIN, MOISTURE_POWER_PIN);
 
   _temperature = (tempUnit1 + tempUnit2) / 2.0;
   _humidity = (humidUnit1 + humidUnit2) / 2.0;
@@ -174,19 +188,7 @@ double celsiusToFahrenheit(double celsius){
   return celsius * 9 / 5 + 32;
 }
 
-#ifndef DEBUG
-  /**
-   * \brief Prints the temperature, humidity, and moisture sensor readings for debugging purposes
-   */
-  void printSensors(double &_temperature, double &_humidity, double &_moisture){
-    Serial.print("Temperature: ");
-    Serial.print(_temperature);
-    Serial.print(" | Humidity: ");
-    Serial.print(_humidity);
-    Serial.print(" | Moisture: ");
-    Serial.println(_moisture);
-  }
-#else
+#if DEBUG
   /**
    * \brief Prints the temperature, humidity, and moisture sensor readings for debugging purposes
    */
@@ -206,5 +208,17 @@ double celsiusToFahrenheit(double celsius){
     Serial.print(" | Humid Unit 2: ");
     Serial.println(_humidUnit2);
     Serial.println();
+  }
+#else
+  /**
+   * \brief Prints the temperature, humidity, and moisture sensor readings for debugging purposes
+   */
+  void printSensors(double &_temperature, double &_humidity, double &_moisture){
+    Serial.print("Temperature: ");
+    Serial.print(_temperature);
+    Serial.print(" | Humidity: ");
+    Serial.print(_humidity);
+    Serial.print(" | Moisture: ");
+    Serial.println(_moisture);
   }
 #endif

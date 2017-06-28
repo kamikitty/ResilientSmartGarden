@@ -12,16 +12,11 @@
 
 #define WIFI_DELAY 500 // time to retry connection in ms
 #define UPDATE_RATE 1000 // frequency of sending POST request in ms
-#define PLANTER1_CHANNEL 1 // i2c channel for planter 1
-#define PLANTER2_CHANNEL 2 // i2c channel for planter 2
+#define PLANTER1_CHANNEL 0 // i2c channel for planter 1
+#define PLANTER2_CHANNEL 1 // i2c channel for planter 2
 
 // Clients
 WiFiClient client;
-
-// Variables for sensor readings
-float temperature;
-float humidity;
-float moisture;
 
 /**
  * \brief Initializes i2c communication with the garden and WiFi connection to the server
@@ -68,7 +63,7 @@ void loop() {
   // TODO: Check to see if WiFi is still connected. If not, retry to connect
 
   digitalWrite(D4, LOW);
-  postReadings(PLANTER1_CHANNEL, String(SERVER_URI_PLANTER1));
+  //postReadings(PLANTER1_CHANNEL, String(SERVER_URI_PLANTER1));
   postReadings(PLANTER2_CHANNEL, String(SERVER_URI_PLANTER2));
   digitalWrite(D4, HIGH);
   delay(UPDATE_RATE);
