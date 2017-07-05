@@ -1,148 +1,154 @@
 /**
  * \file garden.ino
- * \brief This is the garden. It handles reading sensors and opening the water value when needed
+ * \brief This is the ESP8266 WiFi module for the garden. It handles communication with the server and managing the planters
  */
+
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <ArduinoJson.h>
 
 #include <Wire.h>
+#include "credentials.h"
 
-#include "moisture.h"
-#include "dht.h"
+#define WIFI_DELAY 500 // time to retry connection in ms
+#define UPDATE_RATE 1000 // frequency of sending POST request in ms
+#define PLANTER1_CHANNEL 0 // i2c channel for planter 1
+#define PLANTER2_CHANNEL 1 // i2c channel for planter 2
 
-//////////////////
-// DIGITAL PINS //
-//////////////////
-#define TEMP_HUMID_PIN 2
-#define WATER_FLOW_PIN 4
-#define WATER_FLOW_POWER 7
-
-/////////////////
-// ANALOG PINS //
-/////////////////
-#define MOISTURE_PIN 0
-
-// Define sensors
-dht TempHumid;
-moisture Moisture;
-
-// Initialize sensor readings
-double temperature = 0.0;
-double humidity = 0.0;
-double moisture = 0.0;
+// Clients
+WiFiClient client;
 
 /**
- * \brief Initializes sensors, water flow relay, and i2c communication
+ * \brief Initializes i2c communication with the garden and WiFi connection to the server
  */
 void setup() {
-  Serial.begin(9600);
+  // Start i2c communication as master
+  Wire.begin();
 
-  // Initialize the Temperature and Humidity sensors
-  Serial.println("Initializing...");
-  Serial.print("Temperature and Humidity...");
-  int chk = TempHumid.read11(TEMP_HUMID_PIN);
-  if (chk == DHTLIB_OK)
-    Serial.println("OK!");
-  else
-    Serial.println("ERROR!");
+  // Initialize LED indicators, the logic is inverted on the ESP8266.
+  // HIGH is off, LOW is on.
+  pinMode(D0, OUTPUT); // This is the built-in red LED
+  digitalWrite(D0, HIGH);
 
-  // Initialize water flow signal and relay
-  Serial.print("Water Flow Signal...");
-  pinMode(WATER_FLOW_PIN, OUTPUT);
+  pinMode(D4, OUTPUT); // This is the built-in blue LED
+  digitalWrite(D4, HIGH);
+
+  // Start serial communication for debug messages
+  Serial.begin(115200); 
+  Serial.println();
+
+  Serial.print("Initializing WiFi connection");
+
+  // Initialize WiFi settings
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+
+  while (WiFi.status() != WL_CONNECTED){
+    delay(500);
+    Serial.print(".");
+  }
+
   Serial.println("OK!");
 
-  Serial.print("Water Flow Relay...");
-  pinMode(WATER_FLOW_POWER, OUTPUT);
-  Serial.println("OK!");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
 
-  // Initialize i2c communication with WiFi Module
-  Serial.print("WiFi Module...");
-  Wire.begin(17);
-  Wire.onRequest(sendReadings);
-  Serial.println("OK!");
+  digitalWrite(D0, LOW);
 }
 
 /**
- * \brief Gets sensor readings and turn on water flow based on predefined threshold
+ * \brief Handles the POST request
  */
 void loop() {
-  // Update sensors
-  TempHumid.read11(TEMP_HUMID_PIN);
-  Moisture.read(MOISTURE_PIN);
+  // TODO: Check to see if WiFi is still connected. If not, retry to connect
+
+  digitalWrite(D4, LOW);
+  //postReadings(PLANTER1_CHANNEL, String(SERVER_URI_PLANTER1));
+  postReadings(PLANTER2_CHANNEL, String(SERVER_URI_PLANTER2));
+  digitalWrite(D4, HIGH);
+  delay(UPDATE_RATE);
   
-  readSensors(temperature, humidity, moisture);
-
-  if (moisture <= 40)
-    waterFlow(true);
-  else
-    waterFlow(false);
 }
 
 /**
- * \brief A toggle for the water flow. It is either on or off.
+ * \brief Gets the readings from the garden, prepares POST request, and sends POST request
  */
-void waterFlow(boolean flow) {
-  if (flow == true)
-    digitalWrite(WATER_FLOW_PIN, HIGH);
-  else
-    digitalWrite(WATER_FLOW_PIN, LOW);
+void postReadings(int channel, String serverURI) {
+  // Get the readings from the garden
+  String readings = getReadings(channel);
+  HTTPClient http;
+
+  // Attempt to connect to the server. If the connection is unsuccessful, return and try again
+  if (!client.connect(SERVER, PORT)){
+    Serial.println("Connection failed!");
+    return;
+  }
+  
+  Serial.println("Connection success!");
+  Serial.print("Sending Planter ");
+  Serial.print(channel);
+  Serial.print(" POST request...");
+
+  // Build POST request and send
+  http.begin(SERVER, PORT, serverURI);
+  http.addHeader("Content-Type", "application/json");
+  http.POST(readings);
+  http.end();
+
+  Serial.println("OK!");
 }
 
 /**
- * \brief Reads the current sensor readings and prints out the result
+ * \brief A helper function that gets the sensor readings and places the data in JSON format
+ * 
+ * @return A string of the JSON Object
  */
-void readSensors(double &_temperature, double &_humidity, double &_moisture) {
-  _temperature = celsiusToFahrenheit(TempHumid.temperature);
-  _humidity = TempHumid.humidity;
-  _moisture = Moisture.moisture;
+String getReadings(int &channel) {
+  // Request sensor readings from Aruduino UNO
+  Wire.flush();
+  Wire.requestFrom(channel, 6);
 
-  printSensors(_temperature, _humidity, _moisture);
+  // Get sensor readings from Arduino UNO. The sensor readings are sent in this order:
+  // temperature, humidity, and moisture.
+  float temperature = i2cRead();
+  float humidity = i2cRead();
+  float moisture = i2cRead();
+
+  // Build JSON Object
+  StaticJsonBuffer<200> jsonBuffer;
+  JsonObject& sensorReadings = jsonBuffer.createObject();
+
+  // Insert sensor readings to JSON object
+  sensorReadings["temperature"] = temperature;
+  sensorReadings["humidity"] = humidity;
+  sensorReadings["moisture"] = moisture;
+
+  // Prepare JSON Object for POST
+  String jsonSensor;
+  sensorReadings.printTo(jsonSensor);
+  Serial.println(jsonSensor);
+
+  // Return JSON output
+  return jsonSensor;
 }
 
 /**
- * \brief A function that is called when bytes are requested from the WiFi module through i2c
- */
-void sendReadings(){
-  i2cSend(temperature);
-  i2cSend(humidity);
-  i2cSend(moisture);
-}
-
-/**
- * \brief A helper function that sends sensor readings to the WiFi Module through i2c
+ * \brief A helper function that gets the sensor readings from the garden via i2c
  * 
  * i2c sends data a byte at a time and the data type cannot be double or float,
- * so bit and decimal manipulation is needed. The sensor readings are multipled by 100
- * and is sent as an int with a length of 2 bytes. The first write is the high byte
- * of the readings. The second write is the low byte of the readings. The sensor readings
- * are divided by 100.0 by the WiFi Module to get the original result.
- */
-void i2cSend(double reading){
-  int toSend = reading * 100;
-
-  byte toSendHigh = highByte(toSend);
-  byte toSendLow = lowByte(toSend);
-
-  Wire.write(toSendHigh);
-  Wire.write(toSendLow);
-}
-
-/**
- * \brief A helper function that converts celsius to fahrenheit
+ * so bit and decimal manipulation is needed. It is sent as an int with a length
+ * of 2 bytes. The first read is the high byte of the sensor readings. It is
+ * shifted 8 bits to the left, and ORed with the next reading. The reading is
+ * then reconstructed by dividing 100.0.  The sensor readings are multiplied by
+ * 100 from the garden side.
  * 
- * @return A the fahrenheit conversion of the temperature
+ * @return The float of the sensor reading.
  */
-double celsiusToFahrenheit(double celsius){
-  return celsius * 9 / 5 + 32;
-}
+float i2cRead(){
+  int toRead = Wire.read();
+  toRead = toRead << 8;
+  toRead = toRead | Wire.read();
 
-/**
- * \brief Prints the temperature, humidity, and moisture sensor readings for debugging purposes
- */
-void printSensors(double &_temperature, double &_humidity, double &_moisture){
-  Serial.print("Temperature: ");
-  Serial.print(_temperature);
-  Serial.print(" | Humidity: ");
-  Serial.print(_humidity);
-  Serial.print(" | Moisture: ");
-  Serial.println(_moisture);
+  return toRead / 100.0;
 }
 
