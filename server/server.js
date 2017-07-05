@@ -13,27 +13,28 @@ database is complete
 
 const express = require('express');
 const bodyparser = require('body-parser');
-const mongoose = require('mongoose');
-const scrypt = require('scrypt-for-humans');
+//const mongoose = require('mongoose');
+//const scrypt = require('scrypt-for-humans');
+//const levelup = require('levelup');
 const levelup = require('levelup');
-
 const app = express();
 
 let port = process.env.PORT || 3001
 
-mongoose.connect('mongodb://localhost/mongo');
+//mongoose.connect('mongodb://localhost/mongo');
 
-var db = levelup(path.join(__dirname, '.db'), {valueEncoding: 'json'});
+//var db = levelup(path.join(__dirname, '.db'), {valueEncoding: 'json'});
+var db = levelup('./mydb')
+
 
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
 
-mongoose.model('users',{name:String});
+//mongoose.model('users',{name:String});
 
 app.get('/', (req,res)=> {
 	res.send('Smart Roots  ¯\\_(ツ)_/¯');
 });
-
 
 app.post('/register', function(req,res) {
 	var uname = req.body.username;
@@ -65,6 +66,35 @@ app.post('/login', function(req,res) {
 
 //For the future
 
+
+//For collection of data over summer
+
+app.post('/sendData', function(req,res) {
+	//JSON DATA COLLECTION
+	var jsonData = req.body.data;
+	
+	if(!jsonData) {
+		res.json({success: false});
+	} else {
+		console.log("in here I go to die")
+		db.put('data',jsonData, function(err) {
+			if (err) return console.log('Ooops!',err)
+
+		db.get('data',function(err,value){
+			if(err)return console.log('Ooops!',err)
+
+			console.log('data=' + value)
+		})
+	})
+		res.json({success: true});
+		//Insert MongoDB 
+	}
+})
+
+
+
+
+
 //Need to add logic for adding new board/garden
 //dont worry about this for now
 app.post('/addGarden', function(req,res) {
@@ -76,6 +106,18 @@ app.post('/addGarden', function(req,res) {
 		res.json({success: true})
 	}
 });
+
+app.post('/test', function(req,res) {
+	
+	
+	const data = req.body.board;
+	if(!board) {
+		res.json({success: false, msg: "Invalid input"});
+	} else {
+		res.json({success: true})
+	}
+});
+
 
 app.post('/addData', function(req,res) {
 		
