@@ -33,7 +33,7 @@
 dht TempHumidSensor1;
 dht TempHumidSensor2;
 
-moisture Moisture;
+moisture Moisture(MOISTURE_PIN, MOISTURE_POWER_PIN, 600);
 
 const unsigned long updateTime = long(UPDATE_RATE) * 60 * 1000;
 
@@ -138,14 +138,14 @@ void readSensors(double &_temperature, double &_humidity, double &_moisture){
   humidUnit2 = TempHumidSensor2.humidity;
 
   // Get moisture readings
-  Moisture.read(MOISTURE_PIN, MOISTURE_POWER_PIN);
+  Moisture.read();
 
   _temperature = (tempUnit1 + tempUnit2) / 2.0;
   _humidity = (humidUnit1 + humidUnit2) / 2.0;
-  _moisture = Moisture.moisture;
+  _moisture = Moisture.getReadings();
 
   #if DEBUG
-    printSensors(_temperature, _humidity, _moisture, tempUnit1, tempUnit2, humidUnit1, humidUnit2);
+    printSensors(_temperature, _humidity, _moisture, Moisture.getRawReadings(), tempUnit1, tempUnit2, humidUnit1, humidUnit2);
   #else
     printSensors(_temperature, _humidity, _moisture);
   #endif
@@ -192,14 +192,16 @@ double celsiusToFahrenheit(double celsius){
   /**
    * \brief Prints the temperature, humidity, and moisture sensor readings for debugging purposes
    */
-  void printSensors(double &_temperature, double &_humidity, double &_moisture, double &_tempUnit1, double &_tempUnit2, double &_humidUnit1, double &_humidUnit2){
+  void printSensors(double &_temperature, double &_humidity, double &_moisture, double &_moistureValue, double &_tempUnit1, double &_tempUnit2, double &_humidUnit1, double &_humidUnit2){
     Serial.print("Temperature: ");
     Serial.print(_temperature);
     Serial.print(" | Humidity: ");
     Serial.print(_humidity);
     Serial.print(" | Moisture: ");
-    Serial.println(_moisture);
-    Serial.print("Temp Unit 1: ");
+    Serial.print(_moisture);
+    Serial.print(" | Moisture Value: ");
+    Serial.print(_moistureValue);
+    Serial.print(" | Temp Unit 1: ");
     Serial.print(_tempUnit1);
     Serial.print(" | Humid Unit 1: ");
     Serial.print(_humidUnit1);
