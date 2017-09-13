@@ -23,6 +23,11 @@
 
     <string name="password_mismatch">Passwords do not match.</string>
 
+    <string name="server_403">Server is temporarily unavailable.</string>
+    <string name="server_404">Server is currently offline.</string>
+    <string name="server_unknown">An unknown error has occurred. Please try again.</string>
+    <string name="server_invalid_data">Cannot get retrieve account information. Please try again.</string>
+
     <!-- Toast notification for Login status -->
     <string name="login_success">Login Success!</string>
     <string name="login_failed">Login Failed.</string>
