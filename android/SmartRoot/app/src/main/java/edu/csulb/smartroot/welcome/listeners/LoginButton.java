@@ -73,7 +73,7 @@ public class LoginButton implements Button.OnClickListener {
         // TODO: Implement SmartRoots API GET request to validate credentials
         view.setEnabled(false);
 
-        // Create new intent to start GardenView activity upon validation.
+        // Create task to connect to server
         ValidateCredentials validateCredentials = new ValidateCredentials(userName, password, view);
         validateCredentials.execute(context.getString(R.string.login_api));
     }
@@ -93,6 +93,7 @@ public class LoginButton implements Button.OnClickListener {
          *
          * @param userName The username.
          * @param password The password of the user
+         * @param view References the login button
          */
         public ValidateCredentials(String userName, String password, View view) {
             this.userName = userName;
@@ -105,21 +106,22 @@ public class LoginButton implements Button.OnClickListener {
          * An implementation of AsyncTask. This will get the user's credentials from the server in a
          * separate thread.
          *
-         * @param args The address to the API to send a GET request.
+         * @param args The API address to send a GET request.
          * @return A JSONObject containing username and password.
          */
         @Override
-        protected JSONObject doInBackground(String... args) {
+        protected JSONObject doInBackground(String...args) {
             StringBuilder result = new StringBuilder();
             HttpURLConnection http = null;
 
             try {
                 URL url = new URL(args[0]);
-                // Open a connect to send a GET request to the server
+                // Open a connection to send a GET request to the server
                 http = (HttpURLConnection) url.openConnection();
                 http.setDoInput(true);
                 http.setConnectTimeout(R.integer.connection_timeout);
                 http.setReadTimeout(R.integer.connection_timeout);
+                http.setRequestMethod("GET");
 
                 // Attempt connection and get server response code
                 responseCode = http.getResponseCode();
@@ -164,71 +166,70 @@ public class LoginButton implements Button.OnClickListener {
          */
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
-        // TODO: Get data from JSON object to validate user credentials
+            // Process response code and execute appropriate action
+            switch (responseCode) {
+                case HttpURLConnection.HTTP_OK:
+                    // If the server response is valid...
+                    if (jsonObject != null) {
+                        try {
+                            // TODO: Adjust to server specifications when it comes online
+                            // Get credentials from JSONObject
+                            String vUserName = jsonObject.getString("username");
+                            String vPassword = jsonObject.getString("password");
 
-        // Process response code and execute appropriate action
-        switch (responseCode) {
-            case HttpURLConnection.HTTP_OK:
-                // If the server response is valid...
-                if (jsonObject != null) {
-                    try {
-                        // Get credentials from JSONObject
-                        String vUserName = jsonObject.getString("username");
-                        String vPassword = jsonObject.getString("password");
+                            // If the user credentials are validated...
+                            if (userName.equals(vUserName) && password.equals(vPassword)) {
+                                //... create an intent to go to the GardenView
+                                dialog.dismiss();
+                                Toast.makeText(
+                                        context, context.getString(R.string.login_success), Toast.LENGTH_SHORT).show();
 
-                        // If the user credentials are validated...
-                        if (userName.equals(vUserName) && password.equals(vPassword)) {
-                            //... create an intent to go to the GardenView
-                            dialog.dismiss();
+                                // Create new intent and store username to display in GardenView
+                                Intent intent = new Intent(context, GardenView.class);
+                                intent.putExtra("username", userName);
+
+                                context.startActivity(intent);
+                            } else {
+                                //... otherwise notify the user the credentials are incorrect
+                                Toast.makeText(
+                                        context, R.string.login_failed, Toast.LENGTH_SHORT).show();
+                                view.setEnabled(true);
+                            }
+                        } catch (JSONException e) {
+                            // The JSON format is incorrect. Notify user an error has occurred.
+                            e.printStackTrace();
                             Toast.makeText(
-                                    context, context.getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-
-                            // Create new intent and store username to display in GardenView
-                            Intent intent = new Intent(context, GardenView.class);
-                            intent.putExtra("username", userName);
-
-                            context.startActivity(intent);
-                        } else {
-                            //... otherwise notify the user the credentials are incorrect
-                            Toast.makeText(
-                                    context, R.string.login_failed, Toast.LENGTH_SHORT).show();
+                                    context, R.string.login_invalid_data, Toast.LENGTH_SHORT).show();
                             view.setEnabled(true);
                         }
-                    } catch (JSONException e) {
-                        // The JSON format is incorrect. Notify user an error has occurred.
-                        e.printStackTrace();
+                    } else {
+                        // The server did not respond with a JSON format. Notify user an error has occurred.
                         Toast.makeText(
-                                context, R.string.server_invalid_data, Toast.LENGTH_SHORT).show();
+                                context, R.string.login_invalid_data, Toast.LENGTH_SHORT).show();
                         view.setEnabled(true);
                     }
-                } else {
-                    // The server did not respond with a JSON format. Notify user an error has occured.
+                    break;
+
+                case HttpURLConnection.HTTP_NOT_FOUND:
+                    // Notify user the server cannot be found
                     Toast.makeText(
-                            context, R.string.server_invalid_data, Toast.LENGTH_SHORT).show();
+                            context, R.string.login_404, Toast.LENGTH_SHORT).show();
                     view.setEnabled(true);
-                }
-                break;
+                    break;
 
-            case HttpURLConnection.HTTP_NOT_FOUND:
-                // Notify user the server cannot be found
-                Toast.makeText(
-                        context, R.string.server_404, Toast.LENGTH_SHORT).show();
-                view.setEnabled(true);
-                break;
+                case HttpURLConnection.HTTP_FORBIDDEN:
+                    // Notify user the server is forbidden
+                    Toast.makeText(
+                            context, R.string.login_403, Toast.LENGTH_SHORT).show();
+                    view.setEnabled(true);
+                    break;
 
-            case HttpURLConnection.HTTP_FORBIDDEN:
-                // Notify user the server is forbidden
-                Toast.makeText(
-                        context, R.string.server_403, Toast.LENGTH_SHORT).show();
-                view.setEnabled(true);
-                break;
-
-            default:
-                // Notify user an unexpected server response was received
-                Toast.makeText(
-                        context, R.string.server_unknown, Toast.LENGTH_SHORT).show();
-                view.setEnabled(true);
-                break;
+                default:
+                    // Notify user an unexpected server response was received
+                    Toast.makeText(
+                            context, R.string.login_unknown, Toast.LENGTH_SHORT).show();
+                    view.setEnabled(true);
+                    break;
             }
         }
     }

@@ -23,10 +23,18 @@
 
     <string name="password_mismatch">Passwords do not match.</string>
 
-    <string name="server_403">Server is temporarily unavailable.</string>
-    <string name="server_404">Server is currently offline.</string>
-    <string name="server_unknown">An unknown error has occurred. Please try again.</string>
-    <string name="server_invalid_data">Cannot get retrieve account information. Please try again.</string>
+    <!-- Notifications for Login server response -->
+    <string name="login_403">Cannot login. Server is temporarily unavailable.</string>
+    <string name="login_404">Cannot login. Server is currently offline.</string>
+    <string name="login_unknown">Cannot login. An unknown error has occurred.</string>
+    <string name="login_invalid_data">Cannot get retrieve account information.</string>
+
+    <!-- Notifications for Register server response -->
+    <string name="register_403">Cannot create account. Server is temporarily unavailable.</string>
+    <string name="register_404">Cannot create account. Server is currently offline.</string>
+    <string name="register_unknown">Cannot create account. Unknown error has occurred.</string>
+    <string name="register_invalid_data">Cannot create account. Internal error.</string>
+    <string name="register_success">Account successfully created!</string>
 
     <!-- Toast notification for Login status -->
     <string name="login_success">Login Success!</string>
