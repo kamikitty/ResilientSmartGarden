@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -140,6 +141,9 @@ public class LoginButton implements Button.OnClickListener {
             } catch (MalformedURLException e) {
                 System.out.println("URL is not in the correct format");
                 return null;
+            } catch (ConnectException e) {
+                responseCode = HttpURLConnection.HTTP_NOT_FOUND;
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {

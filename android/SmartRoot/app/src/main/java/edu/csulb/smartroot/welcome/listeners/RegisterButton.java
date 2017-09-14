@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -178,11 +179,14 @@ public class RegisterButton implements Button.OnClickListener{
             } catch (MalformedURLException e) {
                 Log.d("REGISTER", "URL is not in the correct format");
                 return null;
+            } catch (ConnectException e) {
+                responseCode = HttpURLConnection.HTTP_NOT_FOUND;
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 Log.d("REGISTER", "JSON format is incorrect");
-            } finally {
+            }  finally {
                 if (http != null) {
                     http.disconnect();
                 }
