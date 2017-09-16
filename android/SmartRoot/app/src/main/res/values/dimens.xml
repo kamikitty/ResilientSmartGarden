@@ -11,6 +11,9 @@
     <dimen name="logo_height">300dp</dimen>
     <dimen name="logo_width">300dp</dimen>
 
+    <dimen name="fontsize_welcome">17sp</dimen>
+    <dimen name="padding_welcome">15dp</dimen>
+
     <!-- ************* -->
     <!-- * CARD VIEW * -->
     <!-- ************* -->
