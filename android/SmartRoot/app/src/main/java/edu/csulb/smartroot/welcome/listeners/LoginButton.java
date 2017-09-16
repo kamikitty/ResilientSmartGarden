@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -51,56 +53,74 @@ public class LoginButton implements Button.OnClickListener {
      */
     @Override
     public void onClick(View view) {
+        Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+
+        TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
+        textView.setGravity(Gravity.CENTER);
+
         // Get the references to EditText from dialog_login.xml layout.
         EditText eUserName = (EditText) dialog.findViewById(R.id.username);
         EditText ePassword = (EditText) dialog.findViewById(R.id.password);
 
-        // Get the credentials from the EditText
-        String userName = eUserName.getText().toString();
-        String password = ePassword.getText().toString();
-
         // Validate user input for username and password
-        if (userName.equals("")) {
-            Toast.makeText(context, R.string.username_empty, Toast.LENGTH_SHORT).show();
+        if (eUserName.length() <= 0) {
+            toast.setText(R.string.username_empty);
+            toast.show();
             eUserName.requestFocus();
             return;
         }
-        if (password.equals("")) {
-            Toast.makeText(context, R.string.password_empty, Toast.LENGTH_SHORT).show();
+        if (ePassword.length() <= 0) {
+            toast.setText(R.string.password_empty);
+            toast.show();
             ePassword.requestFocus();
             return;
         }
 
         // TODO: Implement SmartRoots API GET request to validate credentials
-        view.setEnabled(false);
+        // Disable TextView and Button to prevent further user input
+        inputOff(eUserName, ePassword, view);
 
         // Create task to connect to server
-        ValidateCredentials validateCredentials = new ValidateCredentials(userName, password, view);
+        ValidateCredentials validateCredentials = new ValidateCredentials(eUserName, ePassword, view);
         validateCredentials.execute(context.getString(R.string.login_api));
     }
+
+    ///////////////////
+    // INNER CLASSES //
+    ///////////////////
 
     /**
      * An inner class that will handle validating the user's credentials, in a separate
      * thread.
      */
     private class ValidateCredentials extends AsyncTask<String, Void, JSONObject> {
+        EditText eUserName;
+        EditText ePassword;
+
         String userName;
         String password;
+
         View view;
         int responseCode;
 
         /**
          * Constructor that references the username and password
          *
-         * @param userName The username.
-         * @param password The password of the user
+         * @param eUserName The EditText of username.
+         * @param ePassword The EditText of password.
          * @param view References the login button
          */
-        public ValidateCredentials(String userName, String password, View view) {
-            this.userName = userName;
-            this.password = password;
+        public ValidateCredentials(EditText eUserName, EditText ePassword, View view) {
+            this.eUserName = eUserName;
+            this.ePassword = ePassword;
+
             this.view = view;
             this.responseCode = 0;
+
+            // Extract the text from EditText. This needs to be done before AsyncTasks since
+            // getting any text from a UI element cannot be done in a thread
+            userName = eUserName.getText().toString();
+            password = ePassword.getText().toString();
         }
 
         /**
@@ -170,6 +190,11 @@ public class LoginButton implements Button.OnClickListener {
          */
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
+            Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+
+            TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
+            textView.setGravity(Gravity.CENTER);
+
             // Process response code and execute appropriate action
             switch (responseCode) {
                 case HttpURLConnection.HTTP_OK:
@@ -185,8 +210,10 @@ public class LoginButton implements Button.OnClickListener {
                             if (userName.equals(vUserName) && password.equals(vPassword)) {
                                 //... create an intent to go to the GardenView
                                 dialog.dismiss();
-                                Toast.makeText(
-                                        context, context.getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+
+                                // Create toast to notify user of successful login
+                                toast.setText(R.string.login_success);
+                                toast.show();
 
                                 // Create new intent and store username to display in GardenView
                                 Intent intent = new Intent(context, GardenView.class);
@@ -195,46 +222,80 @@ public class LoginButton implements Button.OnClickListener {
                                 context.startActivity(intent);
                             } else {
                                 //... otherwise notify the user the credentials are incorrect
-                                Toast.makeText(
-                                        context, R.string.login_failed, Toast.LENGTH_SHORT).show();
-                                view.setEnabled(true);
+                                toast.setText(R.string.login_failed);
+                                toast.show();
+
+                                inputOn(eUserName, ePassword, view);
                             }
                         } catch (JSONException e) {
                             // The JSON format is incorrect. Notify user an error has occurred.
+                            toast.setText(R.string.login_invalid_data);
+                            toast.show();
+
+                            inputOn(eUserName, ePassword, view);
                             e.printStackTrace();
-                            Toast.makeText(
-                                    context, R.string.login_invalid_data, Toast.LENGTH_SHORT).show();
-                            view.setEnabled(true);
                         }
                     } else {
                         // The server did not respond with a JSON format. Notify user an error has occurred.
-                        Toast.makeText(
-                                context, R.string.login_invalid_data, Toast.LENGTH_SHORT).show();
-                        view.setEnabled(true);
+                        toast.setText(R.string.login_invalid_data);
+                        toast.show();
+
+                        inputOn(eUserName, ePassword, view);
                     }
                     break;
 
                 case HttpURLConnection.HTTP_NOT_FOUND:
                     // Notify user the server cannot be found
-                    Toast.makeText(
-                            context, R.string.login_404, Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
+                    toast.setText(R.string.login_404);
+                    toast.show();
+
+                    inputOn(eUserName, ePassword, view);
                     break;
 
                 case HttpURLConnection.HTTP_FORBIDDEN:
                     // Notify user the server is forbidden
-                    Toast.makeText(
-                            context, R.string.login_403, Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
+                    toast.setText(R.string.login_403);
+                    toast.show();
+
+                    inputOn(eUserName, ePassword, view);
                     break;
 
                 default:
                     // Notify user an unexpected server response was received
-                    Toast.makeText(
-                            context, R.string.login_unknown, Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
+                    toast.setText(R.string.login_unknown);
+                    toast.show();
+
+                    inputOn(eUserName, ePassword, view);
                     break;
             }
         }
+    }
+
+    ////////////////////
+    // HELPER METHODS //
+    ////////////////////
+
+    /**
+     * A helper method that will prevent further user input by disabling UI elements
+     * @param eUserName The EditText of the username.
+     * @param ePassword The EditText of the password.
+     * @param view The reference to the login button.
+     */
+    private void inputOff(EditText eUserName, EditText ePassword, View view) {
+        eUserName.setEnabled(false);
+        ePassword.setEnabled(false);
+        view.setEnabled(false);
+    }
+
+    /**
+     * A helper method that will accept user input by enabling UI elements
+     * @param eUserName The EditText of the username.
+     * @param ePassword The EditText of the password.
+     * @param view The reference to the login button.
+     */
+    private void inputOn(EditText eUserName, EditText ePassword, View view) {
+        eUserName.setEnabled(true);
+        ePassword.setEnabled(true);
+        view.setEnabled(true);
     }
 }

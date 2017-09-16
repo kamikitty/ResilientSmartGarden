@@ -143,6 +143,7 @@ public class RegisterButton implements Button.OnClickListener{
             this.eEmail = eEmail;
             this.ePassword = ePassword;
             this.eConfirm = eConfirm;
+
             this.view = view;
             responseCode = 0;
 
@@ -311,7 +312,7 @@ public class RegisterButton implements Button.OnClickListener{
      * @param eEmail The EditText of the email.
      * @param ePassword The EditText of the password.
      * @param eConfirm The EditText of the password confirmation.
-     * @param view The references to the register button.
+     * @param view The reference to the register button.
      */
     private void inputOff(EditText eUserName, EditText eEmail, EditText ePassword, EditText eConfirm, View view) {
         eUserName.setEnabled(false);
@@ -327,7 +328,7 @@ public class RegisterButton implements Button.OnClickListener{
      * @param eEmail The EditText of the email.
      * @param ePassword The EditText of the password.
      * @param eConfirm The EditText of the password confirmation.
-     * @param view The references to the register button.
+     * @param view The reference to the register button.
      */
     private void inputOn(EditText eUserName, EditText eEmail, EditText ePassword, EditText eConfirm, View view) {
         eUserName.setEnabled(true);
