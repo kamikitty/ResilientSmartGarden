@@ -21,6 +21,7 @@
     <string name="password_empty">Please enter a password.</string>
     <string name="confirm_password_empty">Please re-enter password.</string>
 
+    <string name="email_invalid">Email is not valid.</string>
     <string name="password_mismatch">Passwords do not match.</string>
 
     <!-- Notifications for Login server response -->
