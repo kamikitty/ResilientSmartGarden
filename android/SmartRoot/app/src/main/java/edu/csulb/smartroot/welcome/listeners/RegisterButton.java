@@ -224,6 +224,8 @@ public class RegisterButton implements Button.OnClickListener{
                 }
             }
 
+            Log.d("REGISTER", "Results: " + result);
+
             // Convert the response from the server into a JSON Object
             JSONObject jsonObject = null;
             try {
@@ -256,13 +258,18 @@ public class RegisterButton implements Button.OnClickListener{
                         try {
                             // TODO: Adjust to server specifications when it comes online
                             // Get server response from JSONObject
-                            String response = jsonObject.getString("data");
+                            boolean response = jsonObject.getBoolean("success");
 
-                            Log.d("REGISTER" , response);
+                            Log.d("REGISTER" , "Response: " + response);
 
                             // Handle server response and display message to user
-                            toast.setText(R.string.register_success);
-                            toast.show();
+                            if (response) {
+                                toast.setText(R.string.register_success);
+                                toast.show();
+                            } else {
+                                toast.setText(R.string.register_failed);
+                                toast.show();
+                            }
                         } catch (JSONException e) {
                             // The JSON format is incorrect. Notify user an error has occurred.
                             toast.setText(R.string.register_invalid_data);
@@ -271,7 +278,7 @@ public class RegisterButton implements Button.OnClickListener{
                             e.printStackTrace();
                         }
                     }
-                    view.setEnabled(true);
+                    inputOn(eUserName, eEmail, ePassword, eConfirm, view);
                     break;
 
                 case HttpURLConnection.HTTP_NOT_FOUND:

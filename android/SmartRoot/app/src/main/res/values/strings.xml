@@ -36,6 +36,7 @@
     <string name="register_unknown">Cannot create account. Unknown error has occurred.</string>
     <string name="register_invalid_data">Cannot create account. Internal error.</string>
     <string name="register_success">Account successfully created!</string>
+    <string name="register_failed">Account not created.</string>
 
     <!-- Toast notification for Login status -->
     <string name="login_success">Login Success!</string>

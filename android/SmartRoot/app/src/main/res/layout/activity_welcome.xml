@@ -23,29 +23,29 @@
         android:gravity="center_horizontal"
         android:paddingTop="@dimen/padding_welcome">
 
-    <!-- Login button -->
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_login"
-        android:textColor="@color/color_text_button"
-        android:textSize="@dimen/fontsize_welcome"
-        android:minWidth="@dimen/flat_button_min_width"
-        android:height="@dimen/flat_button_height"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:onClick="login"/>
+        <!-- Login button -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_login"
+            android:textColor="@color/color_text_button"
+            android:textSize="@dimen/fontsize_welcome"
+            android:minWidth="@dimen/flat_button_min_width"
+            android:height="@dimen/flat_button_height"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:onClick="login"/>
 
-    <!-- Register button -->
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_register"
-        android:textColor="@color/color_text_button"
-        android:textSize="@dimen/fontsize_welcome"
-        android:minWidth="@dimen/flat_button_min_width"
-        android:height="@dimen/flat_button_height"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:onClick="register"/>
+        <!-- Register button -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_register"
+            android:textColor="@color/color_text_button"
+            android:textSize="@dimen/fontsize_welcome"
+            android:minWidth="@dimen/flat_button_min_width"
+            android:height="@dimen/flat_button_height"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:onClick="register"/>
     </LinearLayout>
 
 </LinearLayout>
