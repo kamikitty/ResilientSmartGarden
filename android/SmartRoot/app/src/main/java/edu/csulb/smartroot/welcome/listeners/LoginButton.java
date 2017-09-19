@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -137,12 +139,31 @@ public class LoginButton implements Button.OnClickListener {
 
             try {
                 URL url = new URL(args[0]);
+
+                // Create JSON object to send to server
+                JSONObject data = new JSONObject();
+
+                data.put("username", userName);
+                data.put("password", password);
+
                 // Open a connection to send a GET request to the server
                 http = (HttpURLConnection) url.openConnection();
                 http.setDoInput(true);
                 http.setConnectTimeout(R.integer.connection_timeout);
                 http.setReadTimeout(R.integer.connection_timeout);
-                http.setRequestMethod("GET");
+                http.setRequestProperty("Content-Type", "application/json");
+                http.setRequestMethod("POST");
+
+                // Insert data for POST request
+                StringBuilder sb = new StringBuilder();
+
+                sb.append(data.toString());
+
+                Log.d("LOGIN", "Data: " + data.toString());
+
+                OutputStreamWriter out = new OutputStreamWriter(http.getOutputStream());
+                out.write(sb.toString());
+                out.flush();
 
                 // Attempt connection and get server response code
                 responseCode = http.getResponseCode();
@@ -166,11 +187,15 @@ public class LoginButton implements Button.OnClickListener {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
+            } catch (JSONException e) {
+            Log.d("REGISTER", "JSON format is incorrect");
+            }  finally {
                 // Disconnect from the server
                 if (http != null)
                     http.disconnect();
             }
+
+            Log.d("REGISTER", "Results: " + result);
 
             // Convert the response from the server into a JSONObject
             JSONObject jsonObject = null;
@@ -203,11 +228,10 @@ public class LoginButton implements Button.OnClickListener {
                         try {
                             // TODO: Adjust to server specifications when it comes online
                             // Get credentials from JSONObject
-                            String vUserName = jsonObject.getString("username");
-                            String vPassword = jsonObject.getString("password");
+                            boolean response = jsonObject.getBoolean("success");
 
                             // If the user credentials are validated...
-                            if (userName.equals(vUserName) && password.equals(vPassword)) {
+                            if (response) {
                                 //... create an intent to go to the GardenView
                                 dialog.dismiss();
 
