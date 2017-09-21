@@ -83,6 +83,7 @@ public class LoginButton implements Button.OnClickListener {
         inputOff(eUserName, ePassword, view);
 
         // Create task to connect to server
+
         ValidateCredentials validateCredentials = new ValidateCredentials(eUserName, ePassword, view);
         validateCredentials.execute(context.getString(R.string.login_api));
     }
