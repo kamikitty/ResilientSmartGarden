@@ -1,11 +1,13 @@
 package edu.csulb.smartroot.welcome.listeners;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -78,12 +80,10 @@ public class LoginButton implements Button.OnClickListener {
             return;
         }
 
-        // TODO: Implement SmartRoots API GET request to validate credentials
         // Disable TextView and Button to prevent further user input
-        inputOff(eUserName, ePassword, view);
+        dialog.hide();
 
         // Create task to connect to server
-
         ValidateCredentials validateCredentials = new ValidateCredentials(eUserName, ePassword, view);
         validateCredentials.execute(context.getString(R.string.login_api));
     }
@@ -97,12 +97,11 @@ public class LoginButton implements Button.OnClickListener {
      * thread.
      */
     private class ValidateCredentials extends AsyncTask<String, Void, JSONObject> {
-        EditText eUserName;
-        EditText ePassword;
 
         String userName;
         String password;
 
+        Dialog dialogProgress;
         View view;
         int responseCode;
 
@@ -114,22 +113,38 @@ public class LoginButton implements Button.OnClickListener {
          * @param view References the login button
          */
         public ValidateCredentials(EditText eUserName, EditText ePassword, View view) {
-            this.eUserName = eUserName;
-            this.ePassword = ePassword;
+            this.userName = eUserName.getText().toString();
+            this.password = ePassword.getText().toString();
 
             this.view = view;
             this.responseCode = 0;
 
-            // Extract the text from EditText. This needs to be done before AsyncTasks since
-            // getting any text from a UI element cannot be done in a thread
-            userName = eUserName.getText().toString();
-            password = ePassword.getText().toString();
+            // Create dialog for server connection
+            dialogProgress = new Dialog(context);
+
+            // Apply the layout
+            View viewDialog = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null);
+            dialogProgress.setContentView(viewDialog);
+
+            // Make it so the dialog cannot be dismissed on click
+            dialogProgress.setCancelable(false);
+            dialogProgress.setCanceledOnTouchOutside(false);
+
+        }
+
+        /**
+         * An implementation of AsyncTask. This will display the dialog progress on the UI thread,
+         * which is separate from the doInBackground thread.
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialogProgress.show();
         }
 
         /**
          * An implementation of AsyncTask. This will get the user's credentials from the server in a
          * separate thread.
-         *
          * @param args The API address to send a GET request.
          * @return A JSONObject containing username and password.
          */
@@ -216,6 +231,8 @@ public class LoginButton implements Button.OnClickListener {
          */
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
+            dialogProgress.dismiss();
+
             Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
 
             TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
@@ -227,18 +244,19 @@ public class LoginButton implements Button.OnClickListener {
                     // If the server response is valid...
                     if (jsonObject != null) {
                         try {
-                            // TODO: Adjust to server specifications when it comes online
                             // Get credentials from JSONObject
                             boolean response = jsonObject.getBoolean("success");
 
                             // If the user credentials are validated...
                             if (response) {
                                 //... create an intent to go to the GardenView
-                                dialog.dismiss();
 
                                 // Create toast to notify user of successful login
                                 toast.setText(R.string.login_success);
                                 toast.show();
+
+                                // Dismiss the dialog
+                                dialog.dismiss();
 
                                 // Create new intent and store username to display in GardenView
                                 Intent intent = new Intent(context, GardenView.class);
@@ -250,14 +268,16 @@ public class LoginButton implements Button.OnClickListener {
                                 toast.setText(R.string.login_failed);
                                 toast.show();
 
-                                inputOn(eUserName, ePassword, view);
+                                // Show dialog again
+                                dialog.show();
                             }
                         } catch (JSONException e) {
                             // The JSON format is incorrect. Notify user an error has occurred.
                             toast.setText(R.string.login_invalid_data);
                             toast.show();
 
-                            inputOn(eUserName, ePassword, view);
+                            // Show dialog again
+                            dialog.show();
                             e.printStackTrace();
                         }
                     } else {
@@ -265,7 +285,8 @@ public class LoginButton implements Button.OnClickListener {
                         toast.setText(R.string.login_invalid_data);
                         toast.show();
 
-                        inputOn(eUserName, ePassword, view);
+                        // Show dialog again
+                        dialog.show();
                     }
                     break;
 
@@ -274,7 +295,8 @@ public class LoginButton implements Button.OnClickListener {
                     toast.setText(R.string.login_404);
                     toast.show();
 
-                    inputOn(eUserName, ePassword, view);
+                    // Show dialog again
+                    dialog.show();
                     break;
 
                 case HttpURLConnection.HTTP_FORBIDDEN:
@@ -282,7 +304,8 @@ public class LoginButton implements Button.OnClickListener {
                     toast.setText(R.string.login_403);
                     toast.show();
 
-                    inputOn(eUserName, ePassword, view);
+                    // Show dialog again
+                    dialog.show();
                     break;
 
                 default:
@@ -290,37 +313,10 @@ public class LoginButton implements Button.OnClickListener {
                     toast.setText(R.string.login_unknown);
                     toast.show();
 
-                    inputOn(eUserName, ePassword, view);
+                    // Show dialog again
+                    dialog.show();
                     break;
             }
         }
-    }
-
-    ////////////////////
-    // HELPER METHODS //
-    ////////////////////
-
-    /**
-     * A helper method that will prevent further user input by disabling UI elements
-     * @param eUserName The EditText of the username.
-     * @param ePassword The EditText of the password.
-     * @param view The reference to the login button.
-     */
-    private void inputOff(EditText eUserName, EditText ePassword, View view) {
-        eUserName.setEnabled(false);
-        ePassword.setEnabled(false);
-        view.setEnabled(false);
-    }
-
-    /**
-     * A helper method that will accept user input by enabling UI elements
-     * @param eUserName The EditText of the username.
-     * @param ePassword The EditText of the password.
-     * @param view The reference to the login button.
-     */
-    private void inputOn(EditText eUserName, EditText ePassword, View view) {
-        eUserName.setEnabled(true);
-        ePassword.setEnabled(true);
-        view.setEnabled(true);
     }
 }

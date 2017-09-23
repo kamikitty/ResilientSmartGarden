@@ -57,4 +57,9 @@
     <dimen name="fontsize_settings">18sp</dimen>
     <dimen name="fontsize_settings_sub">12sp</dimen>
 
+    <!-- ******************* -->
+    <!-- * PROGRESS DIALOG * -->
+    <!-- ******************* -->
+    <dimen name="dialog_progress_padding">15dp</dimen>
+
 </resources>

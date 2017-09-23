@@ -15,6 +15,9 @@
     <string name="email">Email</string>
     <string name="confirm_password">Confirm Password</string>
 
+    <!-- Message for Progress Dialog -->
+    <string name="progress_connecting">Connecting</string>
+
     <!-- Errors for Login and Register Dialog -->
     <string name="username_empty">Please enter a username.</string>
     <string name="email_empty">Please enter an email.</string>

@@ -1,11 +1,13 @@
 package edu.csulb.smartroot.welcome.listeners;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,7 +37,6 @@ public class RegisterButton implements Button.OnClickListener{
 
     private AlertDialog dialog;
     private Context context;
-
     /**
      * Constructor that will get a reference to the AlertDialog to build the login dialog.
      * @param dialog The reference to AlertDialog.
@@ -101,12 +102,11 @@ public class RegisterButton implements Button.OnClickListener{
             return;
         }
 
-        // TODO: Implement registering new user to database.
-        // Disable TextView and Button to prevent further user input
-        inputOff(eUserName, eEmail, ePassword, eConfirm, view);
+        // Hide dialog to prevent further user input
+        dialog.hide();
 
         // Create task to connect to server
-        CreateCredentials createCredentials = new CreateCredentials(eUserName, eEmail, ePassword, eConfirm, view);
+        CreateCredentials createCredentials = new CreateCredentials(eUserName, eEmail, ePassword, view);
         createCredentials.execute(context.getString(R.string.register_api));
     }
 
@@ -119,15 +119,12 @@ public class RegisterButton implements Button.OnClickListener{
      * separate thread.
      */
     private class CreateCredentials extends AsyncTask<String, Void, JSONObject> {
-        EditText eUserName;
-        EditText eEmail;
-        EditText ePassword;
-        EditText eConfirm;
 
         String userName;
         String eMail;
         String password;
 
+        Dialog dialogProgress;
         View view;
         int responseCode;
 
@@ -138,20 +135,34 @@ public class RegisterButton implements Button.OnClickListener{
          * @param ePassword The EditText of password.
          * @param view References the register button.
          */
-        public CreateCredentials(EditText eUserName, EditText eEmail, EditText ePassword, EditText eConfirm, View view) {
-            this.eUserName = eUserName;
-            this.eEmail = eEmail;
-            this.ePassword = ePassword;
-            this.eConfirm = eConfirm;
+        public CreateCredentials(EditText eUserName, EditText eEmail, EditText ePassword, View view) {
+            this.userName = eUserName.getText().toString();
+            this.eMail = eEmail.getText().toString();
+            this.password = ePassword.getText().toString();
 
             this.view = view;
             responseCode = 0;
 
-            // Extract the text from EditText. This needs to be done before AsyncTasks since
-            // getting any text from a UI element cannot be done in a thread
-            userName = eUserName.getText().toString();
-            eMail = eEmail.getText().toString();
-            password = ePassword.getText().toString();
+            // Create dialog for server connection
+            dialogProgress = new Dialog(context);
+
+            // Apply the layout
+            View viewDialog = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null);
+            dialogProgress.setContentView(viewDialog);
+
+            // Make it so the dialog cannot be dismissed on click
+            dialogProgress.setCancelable(false);
+            dialogProgress.setCanceledOnTouchOutside(false);
+        }
+
+        /**
+         * An implementation of AsyncTask. This will display the dialog progress on the UI thread,
+         * which is separate from the doInBackground thread.
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialogProgress.show();
         }
 
         /**
@@ -207,6 +218,8 @@ public class RegisterButton implements Button.OnClickListener{
                     while ((buffer = reader.readLine()) != null) {
                         result.append(buffer);
                     }
+
+                    in.close();
                 }
             } catch (MalformedURLException e) {
                 Log.d("REGISTER", "URL is not in the correct format");
@@ -244,6 +257,8 @@ public class RegisterButton implements Button.OnClickListener{
          */
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
+            dialogProgress.dismiss();
+
             Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
 
             TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
@@ -256,7 +271,6 @@ public class RegisterButton implements Button.OnClickListener{
                     // If the server response is valid...
                     if (jsonObject != null) {
                         try {
-                            // TODO: Adjust to server specifications when it comes online
                             // Get server response from JSONObject
                             boolean response = jsonObject.getBoolean("success");
 
@@ -266,19 +280,30 @@ public class RegisterButton implements Button.OnClickListener{
                             if (response) {
                                 toast.setText(R.string.register_success);
                                 toast.show();
+
+                                // Discard the dialog
+                                dialog.dismiss();
                             } else {
                                 toast.setText(R.string.register_failed);
                                 toast.show();
+
+                                // Show dialog again
+                                dialog.show();
                             }
                         } catch (JSONException e) {
                             // The JSON format is incorrect. Notify user an error has occurred.
                             toast.setText(R.string.register_invalid_data);
                             toast.show();
 
+                            // Show dialog again
+                            dialog.show();
+
                             e.printStackTrace();
                         }
                     }
-                    inputOn(eUserName, eEmail, ePassword, eConfirm, view);
+
+                    // Display dialog to user
+                    dialog.show();
                     break;
 
                 case HttpURLConnection.HTTP_NOT_FOUND:
@@ -286,8 +311,8 @@ public class RegisterButton implements Button.OnClickListener{
                     toast.setText(R.string.register_404);
                     toast.show();
 
-                    // Re-enable UI elements
-                    inputOn(eUserName, eEmail, ePassword, eConfirm, view);
+                    // Show dialog again
+                    dialog.show();
                     break;
 
                 case HttpURLConnection.HTTP_FORBIDDEN:
@@ -295,7 +320,8 @@ public class RegisterButton implements Button.OnClickListener{
                     toast.setText(R.string.register_403);
                     toast.show();
 
-                    inputOn(eUserName, eEmail, ePassword, eConfirm, view);
+                    // Show dialog again
+                    dialog.show();
                     break;
 
                 default:
@@ -303,45 +329,10 @@ public class RegisterButton implements Button.OnClickListener{
                     toast.setText(R.string.register_unknown);
                     toast.show();
 
-                    inputOn(eUserName, eEmail, ePassword, eConfirm, view);
+                    // Show dialog again
+                    dialog.show();
                     break;
             }
         }
-    }
-
-    ////////////////////
-    // HELPER METHODS //
-    ////////////////////
-
-    /**
-     * A helper method that will prevent further user input by disabling UI elements.
-     * @param eUserName The EditText of the username.
-     * @param eEmail The EditText of the email.
-     * @param ePassword The EditText of the password.
-     * @param eConfirm The EditText of the password confirmation.
-     * @param view The reference to the register button.
-     */
-    private void inputOff(EditText eUserName, EditText eEmail, EditText ePassword, EditText eConfirm, View view) {
-        eUserName.setEnabled(false);
-        eEmail.setEnabled(false);
-        ePassword.setEnabled(false);
-        eConfirm.setEnabled(false);
-        view.setEnabled(false);
-    }
-
-    /**
-     * A helper method that will accept user input by enabling UI elements.
-     * @param eUserName The EditText of the username.
-     * @param eEmail The EditText of the email.
-     * @param ePassword The EditText of the password.
-     * @param eConfirm The EditText of the password confirmation.
-     * @param view The reference to the register button.
-     */
-    private void inputOn(EditText eUserName, EditText eEmail, EditText ePassword, EditText eConfirm, View view) {
-        eUserName.setEnabled(true);
-        eEmail.setEnabled(true);
-        ePassword.setEnabled(true);
-        eConfirm.setEnabled(true);
-        view.setEnabled(true);
     }
 }
