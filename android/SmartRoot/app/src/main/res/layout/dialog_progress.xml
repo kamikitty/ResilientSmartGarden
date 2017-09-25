@@ -16,6 +16,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dialog_progress_padding"
+        android:paddingTop="@dimen/dialog_content_padding"
         android:text="@string/progress_connecting"/>
 </LinearLayout>

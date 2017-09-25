@@ -1,10 +1,8 @@
 package edu.csulb.smartroot.welcome.listeners;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,17 +34,15 @@ import edu.csulb.smartroot.gardenview.GardenView;
  */
 public class LoginButton implements Button.OnClickListener {
 
-    private AlertDialog dialog;
-    private Context context;
+    private Dialog dialog;
 
     /**
      * Constructor that will pass the reference to the Login Dialog.
      *
      * @param dialog References the Login Dialog.
      */
-    public LoginButton(AlertDialog dialog, Context context) {
+    public LoginButton(Dialog dialog) {
         this.dialog = dialog;
-        this.context = context;
     }
 
     /**
@@ -57,7 +53,7 @@ public class LoginButton implements Button.OnClickListener {
      */
     @Override
     public void onClick(View view) {
-        Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(view.getContext(), "", Toast.LENGTH_SHORT);
 
         TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
         textView.setGravity(Gravity.CENTER);
@@ -85,7 +81,7 @@ public class LoginButton implements Button.OnClickListener {
 
         // Create task to connect to server
         ValidateCredentials validateCredentials = new ValidateCredentials(eUserName, ePassword, view);
-        validateCredentials.execute(context.getString(R.string.login_api));
+        validateCredentials.execute(view.getContext().getString(R.string.login_api));
     }
 
     ///////////////////
@@ -120,16 +116,15 @@ public class LoginButton implements Button.OnClickListener {
             this.responseCode = 0;
 
             // Create dialog for server connection
-            dialogProgress = new Dialog(context);
+            dialogProgress = new Dialog(view.getContext());
 
             // Apply the layout
-            View viewDialog = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null);
+            View viewDialog = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_progress, null);
             dialogProgress.setContentView(viewDialog);
 
             // Make it so the dialog cannot be dismissed on click
             dialogProgress.setCancelable(false);
             dialogProgress.setCanceledOnTouchOutside(false);
-
         }
 
         /**
@@ -233,7 +228,7 @@ public class LoginButton implements Button.OnClickListener {
         protected void onPostExecute(JSONObject jsonObject) {
             dialogProgress.dismiss();
 
-            Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(view.getContext(), "", Toast.LENGTH_SHORT);
 
             TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
             textView.setGravity(Gravity.CENTER);
@@ -259,10 +254,10 @@ public class LoginButton implements Button.OnClickListener {
                                 dialog.dismiss();
 
                                 // Create new intent and store username to display in GardenView
-                                Intent intent = new Intent(context, GardenView.class);
+                                Intent intent = new Intent(view.getContext(), GardenView.class);
                                 intent.putExtra("username", userName);
 
-                                context.startActivity(intent);
+                                view.getContext().startActivity(intent);
                             } else {
                                 //... otherwise notify the user the credentials are incorrect
                                 toast.setText(R.string.login_failed);

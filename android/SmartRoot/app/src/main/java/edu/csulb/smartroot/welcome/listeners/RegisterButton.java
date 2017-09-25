@@ -1,9 +1,7 @@
 package edu.csulb.smartroot.welcome.listeners;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
@@ -33,17 +31,16 @@ import edu.csulb.smartroot.R;
 /**
  * A button listener for Register. This will attempt to register a new user on the database.
  */
-public class RegisterButton implements Button.OnClickListener{
+public class RegisterButton implements Button.OnClickListener {
 
-    private AlertDialog dialog;
-    private Context context;
+    private Dialog dialog;
+
     /**
-     * Constructor that will get a reference to the AlertDialog to build the login dialog.
-     * @param dialog The reference to AlertDialog.
+     * Constructor that will get a reference to the Dialog to build the login dialog.
+     * @param dialog The reference to Dialog.
      */
-    public RegisterButton(AlertDialog dialog, Context context){
+    public RegisterButton(Dialog dialog){
         this.dialog = dialog;
-        this.context = context;
     }
 
     /**
@@ -53,7 +50,7 @@ public class RegisterButton implements Button.OnClickListener{
      */
     @Override
     public void onClick(View view){
-        Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(view.getContext(), "", Toast.LENGTH_SHORT);
 
         TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
         textView.setGravity(Gravity.CENTER);
@@ -107,7 +104,7 @@ public class RegisterButton implements Button.OnClickListener{
 
         // Create task to connect to server
         CreateCredentials createCredentials = new CreateCredentials(eUserName, eEmail, ePassword, view);
-        createCredentials.execute(context.getString(R.string.register_api));
+        createCredentials.execute(view.getContext().getString(R.string.register_api));
     }
 
     ///////////////////
@@ -144,10 +141,10 @@ public class RegisterButton implements Button.OnClickListener{
             responseCode = 0;
 
             // Create dialog for server connection
-            dialogProgress = new Dialog(context);
+            dialogProgress = new Dialog(view.getContext());
 
             // Apply the layout
-            View viewDialog = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null);
+            View viewDialog = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_progress, null);
             dialogProgress.setContentView(viewDialog);
 
             // Make it so the dialog cannot be dismissed on click
@@ -259,7 +256,7 @@ public class RegisterButton implements Button.OnClickListener{
         protected void onPostExecute(JSONObject jsonObject) {
             dialogProgress.dismiss();
 
-            Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(view.getContext(), "", Toast.LENGTH_SHORT);
 
             TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
             textView.setGravity(Gravity.CENTER);

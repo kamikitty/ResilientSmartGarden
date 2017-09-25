@@ -1,7 +1,6 @@
 package edu.csulb.smartroot.welcome;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import android.app.Dialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -65,7 +64,7 @@ public class Welcome extends AppCompatActivity {
             // Create a new timer that will set the button pressed flag back to false when
             // the time has elapsed
             new Timer().schedule(
-                    new backPressTimer(),
+                    new BackPressTimer(),
                     getResources().getInteger(R.integer.back_button_timeout));
         }
     }
@@ -79,22 +78,23 @@ public class Welcome extends AppCompatActivity {
      * @param view The button that this method is assigned to in dialog_login.xml layout.
      */
     public void login(View view){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Create dialog
+        Dialog dialog = new Dialog(this);
         View dialogView = inflater.inflate(R.layout.dialog_login, null);
 
-        // Set the characteristics of the dialog
-        builder.setView(dialogView);
-        builder.setPositiveButton(R.string.login, null);
-        builder.setNegativeButton(R.string.cancel, null);
+        // Set layout
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(false);
 
-        // Create and show the dialog
-        AlertDialog dialog = builder.create();
+        // Setup button listener for cancel and login
+        Button button = (Button) dialogView.findViewById(R.id.button_login_cancel);
+        button.setOnClickListener(new CancelButton(dialog));
+
+        button = (Button) dialogView.findViewById(R.id.button_login);
+        button.setOnClickListener(new LoginButton(dialog));
+
+        // Display the dialog
         dialog.show();
-
-        // Override login button listeners on dialog. This is so the dialog will remain
-        // open when credentials are not valid.
-        Button button = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        button.setOnClickListener(new LoginButton(dialog, this));
     }
 
     /**
@@ -102,22 +102,51 @@ public class Welcome extends AppCompatActivity {
      * @param view The button that this method is assigned to in dialog_register.xml layout.
      */
     public void register(View view){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Create dialog
+        Dialog dialog = new Dialog(this);
         View dialogView = inflater.inflate(R.layout.dialog_register, null);
 
-        // Set the characteristics of the dialog
-        builder.setView(dialogView);
-        builder.setPositiveButton(R.string.create, null);
-        builder.setNegativeButton(R.string.cancel, null);
+        // Set layout
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(false);
 
-        // Create and show the dialog
-        AlertDialog dialog = builder.create();
+        // Setup button listeners for cancel and login
+        Button button = (Button) dialogView.findViewById(R.id.button_register_cancel);
+        button.setOnClickListener(new CancelButton(dialog));
+
+        button = (Button) dialogView.findViewById(R.id.button_register);
+        button.setOnClickListener(new RegisterButton(dialog));
+
+        // Display the dialog
         dialog.show();
+    }
 
-        // Override register button listeners on dialog. This is so the dialog will remain
-        // open when credentials are not valid.
-        Button button = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        button.setOnClickListener(new RegisterButton(dialog, this));
+    ///////////////
+    // LISTENERS //
+    ///////////////
+
+    /**
+     * A button listener for cancel button. This will dismiss the dialog.
+     */
+    private class CancelButton implements Button.OnClickListener {
+        Dialog dialog;
+
+        /**
+         * A constructor that gets a reference to the dialog.
+         * @param dialog The referenced dialog.
+         */
+        public CancelButton(Dialog dialog) {
+            this.dialog = dialog;
+        }
+
+        /**
+         * An implementation of Button.OnClickListener. This will dismiss the dialog.
+         * @param view References the cancel button.
+         */
+        @Override
+        public void onClick(View view) {
+            dialog.dismiss();
+        }
     }
 
     ///////////////////
@@ -127,7 +156,7 @@ public class Welcome extends AppCompatActivity {
     /**
      * A TimerTask that will set the back button flag to false
      */
-    private class backPressTimer extends TimerTask {
+    private class BackPressTimer extends TimerTask {
         public void run() {
             isBackPressed = false;
         }

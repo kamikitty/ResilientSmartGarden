@@ -19,7 +19,6 @@
     <!-- ************* -->
 
     <!-- CardView specifications -->
-    <dimen name="dialog_content_padding">14dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="card_margin_horizontal">16dp</dimen>
     <dimen name="card_margin_vertical">8dp</dimen>
@@ -60,6 +59,11 @@
     <!-- ******************* -->
     <!-- * PROGRESS DIALOG * -->
     <!-- ******************* -->
-    <dimen name="dialog_progress_padding">15dp</dimen>
+
+    <!-- Common dialog sizes -->
+    <dimen name="dialog_width">350dp</dimen>
+    <dimen name="dialog_content_padding">24dp</dimen>
+    <dimen name="dialog_button_padding">8dp</dimen>
+    <dimen name="dialog_button_width">64dp</dimen>
 
 </resources>
