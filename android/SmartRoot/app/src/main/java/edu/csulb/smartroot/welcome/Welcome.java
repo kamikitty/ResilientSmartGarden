@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +39,19 @@ public class Welcome extends AppCompatActivity {
         // Get reference to inflater to use in button listeners
         inflater = getLayoutInflater();
         isBackPressed = false;
+
+        // Setup welcome_logo animation
+        View view = findViewById(R.id.logo);
+        Animation logoAnimation = AnimationUtils.loadAnimation(this, R.anim.welcome_logo);
+
+        // Set animation listener to animate login and register button after logo is done
+        logoAnimation.setAnimationListener(new ButtonAnimation(
+                findViewById(R.id.welcome_login_button),
+                findViewById(R.id.welcome_register_button)));
+
+
+        // Start the animation
+        view.startAnimation(logoAnimation);
     }
 
     /**
@@ -147,6 +162,59 @@ public class Welcome extends AppCompatActivity {
         public void onClick(View view) {
             dialog.dismiss();
         }
+    }
+
+    /**
+     * An animation listener for the welcome logo. This will start the welcome button animation
+     * once the welcome logo is done animating.
+     */
+    private class ButtonAnimation implements Animation.AnimationListener {
+        View login;
+        View register;
+
+        /**
+         * A constructor that references the login and register button
+         * @param login References the login button
+         * @param register References the register button
+         */
+        public ButtonAnimation (View login, View register) {
+            this.login = login;
+            this.register = register;
+        }
+
+        /**
+         * An implementation of Animation.AnimationListener. This will begin the login and register
+         * button animations once the welcome animation is done.
+         * @param animation References the animation used for the welcome lgo
+         */
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.welcome_button);
+
+            // Make the login and register button visible
+            login.setVisibility(View.VISIBLE);
+            register.setVisibility(View.VISIBLE);
+
+            // Start the login and register button animation
+            login.startAnimation(anim);
+            register.startAnimation(anim);
+        }
+
+        /**
+         * An implementation of Animation.AnimationListener. This will not be implemented for
+         * this project.
+         * @param animation
+         */
+        @Override
+        public void onAnimationRepeat(Animation animation) {}
+
+        /**
+         * An implementation of Animation.AnimationListener. This will not be implemented for
+         * this project.
+         * @param animation
+         */
+        @Override
+        public void onAnimationStart(Animation animation) {}
     }
 
     ///////////////////
