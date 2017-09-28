@@ -15,13 +15,31 @@
     <string name="email">Email</string>
     <string name="confirm_password">Confirm Password</string>
 
+    <!-- Message for Progress Dialog -->
+    <string name="progress_connecting">Connecting</string>
+
     <!-- Errors for Login and Register Dialog -->
     <string name="username_empty">Please enter a username.</string>
     <string name="email_empty">Please enter an email.</string>
     <string name="password_empty">Please enter a password.</string>
     <string name="confirm_password_empty">Please re-enter password.</string>
 
+    <string name="email_invalid">Email is not valid.</string>
     <string name="password_mismatch">Passwords do not match.</string>
+
+    <!-- Notifications for Login server response -->
+    <string name="login_403">Cannot login. Server is temporarily unavailable.</string>
+    <string name="login_404">Cannot login. Server is currently offline.</string>
+    <string name="login_unknown">Cannot login. An unknown error has occurred.</string>
+    <string name="login_invalid_data">Cannot get retrieve account information.</string>
+
+    <!-- Notifications for Register server response -->
+    <string name="register_403">Cannot create account. Server is temporarily unavailable.</string>
+    <string name="register_404">Cannot create account. Server is currently offline.</string>
+    <string name="register_unknown">Cannot create account. Unknown error has occurred.</string>
+    <string name="register_invalid_data">Cannot create account. Internal error.</string>
+    <string name="register_success">Account successfully created!</string>
+    <string name="register_failed">Account not created.</string>
 
     <!-- Toast notification for Login status -->
     <string name="login_success">Login Success!</string>
@@ -31,6 +49,9 @@
     <string name="login">Login</string>
     <string name="create">Create</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Back Button notification -->
+    <string name="button_back_again">Press back button again to exit.</string>
 
     <!-- *************** -->
     <!-- * GARDEN CARD * -->

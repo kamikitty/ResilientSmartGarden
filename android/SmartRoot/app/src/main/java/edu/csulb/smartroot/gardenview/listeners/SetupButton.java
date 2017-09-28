@@ -1,7 +1,6 @@
 package edu.csulb.smartroot.gardenview.listeners;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,37 +13,72 @@ import edu.csulb.smartroot.R;
  */
 public class SetupButton implements Button.OnClickListener {
 
-    AlertDialog dialog;
-
     /**
      * An implementation of Button.OnClickListener. This will display the automatic watering
      * settings in a dialog.
      * @param view References the Setup button.
      */
     @Override
-    public void onClick(View view){
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+    public void onClick(View view) {
 
-        LayoutInflater inflater = LayoutInflater.from(view.getRootView().getContext());
-        View dialogView = inflater.inflate(R.layout.dialog_setup_water, null);
+        // Create dialog
+        Dialog dialog = new Dialog(view.getContext());
+        View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_setup_water, null);
 
-        builder.setView(dialogView);
-        builder.setPositiveButton(R.string.button_done, null);
+        // Set layout
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(false);
 
-        dialog = builder.create();
+        // Setup button listeners for cancel and done
+        Button button = (Button) dialogView.findViewById(R.id.button_water_cancel);
+        button.setOnClickListener(new CancelButton(dialog));
+
+        button = (Button) dialogView.findViewById(R.id.button_done);
+        button.setOnClickListener(new DoneButton(dialog));
+
+        // display the dialog
         dialog.show();
+    }
 
-        Button button = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        button.setOnClickListener(new DoneButton());
+    /**
+     * A button listener for Cancel. This will dismiss the dialog.
+     */
+    private class CancelButton implements Button.OnClickListener {
+        Dialog dialog;
 
-        // TODO: Implement dialog with automatic watering settings.
-        System.out.println("Setup button pressed.");
+        /**
+         * A constructor that references the Automatic Watering Setup dialog.
+         * @param dialog
+         */
+        public CancelButton(Dialog dialog) {
+            this.dialog = dialog;
+        }
+
+        /**
+         * An implementation of Button.OnClickListener. This will dismiss the Automatic Watering
+         * Setup dialog.
+         * @param view References the Cancel button.
+         */
+        @Override
+        public void onClick(View view) {
+            dialog.dismiss();
+        }
     }
 
     /**
      * A button listener for Done. This will get the values from the user.
      */
     private class DoneButton implements Button.OnClickListener {
+        Dialog dialog;
+
+        /**
+         * A constructor that references the Automatic Watering Setup dialog.
+         * @param dialog References the Automatic Watering Setup dialog.
+         */
+        public DoneButton(Dialog dialog) {
+            this.dialog = dialog;
+        }
+
         /**
          * An implementation of Button.OnClickListener. This will get the moisture limit the user
          * entered in the Automatic Watering Setup dialog and dismiss the dialog.

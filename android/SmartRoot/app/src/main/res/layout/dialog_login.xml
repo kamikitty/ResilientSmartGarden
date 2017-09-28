@@ -1,25 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/dialog_content_padding">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="@dimen/dialog_width">
 
-    <!-- Text box to enter user name -->
-    <EditText
-        android:id="@+id/username"
+    <!-- Layout for EditText -->
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:hint="@string/username"/>
+        android:padding="@dimen/dialog_content_padding">
 
-    <!-- Text box to enter password -->
-    <EditText
-        android:id="@+id/password"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
+        <!-- Text box to enter user name -->
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:hint="@string/username"/>
+
+        <!-- Text box to enter password -->
+        <EditText
+            android:id="@+id/password"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:hint="@string/password"/>
+    </LinearLayout>
+
+    <!-- Layout for buttons -->
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:hint="@string/password"/>
+        android:orientation="horizontal"
+        android:layout_gravity="end"
+        android:padding="@dimen/dialog_button_padding">
+
+        <!-- Button for Cancel -->
+        <Button
+            android:id="@+id/button_login_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textColor="@color/color_text_button"
+            android:minHeight="@dimen/flat_button_height"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        <!-- Button for Login -->
+        <Button
+            android:id="@+id/button_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_login"
+            android:textColor="@color/color_text_button"
+            android:minHeight="@dimen/flat_button_height"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+    </LinearLayout>
 
 </LinearLayout>

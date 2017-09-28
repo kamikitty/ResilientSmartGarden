@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dialog_content_padding"
-    android:paddingBottom="@dimen/dialog_content_padding"
-    android:theme="@style/DialogSettingsTheme">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="@dimen/dialog_width">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dialog_content_padding"
+        android:theme="@style/DialogSettingsTheme">
 
     <!-- Label for Moisture Limit -->
     <TextView
@@ -25,5 +30,33 @@
         android:maxLength="3"
         android:ems="3"
         android:gravity="end"/>
+    </RelativeLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:padding="@dimen/dialog_button_padding">
+
+        <Button
+            android:id="@+id/button_water_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textColor="@color/color_text_button"
+            android:minHeight="@dimen/flat_button_height"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        <Button
+            android:id="@+id/button_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_done"
+            android:textColor="@color/color_text_button"
+            android:minHeight="@dimen/flat_button_height"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+    </LinearLayout>
+
+</LinearLayout>

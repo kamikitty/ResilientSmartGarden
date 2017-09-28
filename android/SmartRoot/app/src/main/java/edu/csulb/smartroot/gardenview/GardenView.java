@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,10 +64,22 @@ public class GardenView extends AppCompatActivity {
      * @param menuItem References the Logout button the action bar.
      */
     public void logout(MenuItem menuItem) {
-        Toast.makeText(
-                this, getString(R.string.logout, userName), Toast.LENGTH_SHORT).show();
+        Toast toast = Toast.makeText(this, getString(R.string.logout, userName), Toast.LENGTH_SHORT);
+
+        TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
+        textView.setGravity(Gravity.CENTER);
+
+        toast.show();
 
         Intent intent = new Intent(this, Welcome.class);
         startActivity(intent);
+    }
+
+    /**
+     * Reimplement the back button method. This will disable the back button, preventing the user
+     * from going back to the Welcome activity.
+     */
+    @Override
+    public void onBackPressed() {
     }
 }

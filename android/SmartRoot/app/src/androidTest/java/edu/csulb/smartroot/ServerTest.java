@@ -58,7 +58,7 @@ public class ServerTest {
      * Conducts a GET request instrumented test.
      * @throws Exception
      */
-    @Test
+    //@Test
     public void serverGETTest() throws Exception {
         ServerGETConnect serverGETConnect = new ServerGETConnect();
 
@@ -76,6 +76,15 @@ public class ServerTest {
      * An inner class that will send a POST request.
      */
     private class ServerPOSTConnect extends AsyncTask<String, Void, JSONObject> {
+
+        boolean isConnected;
+
+        /**
+         * A constructor that initializes the connection flag.
+         */
+        public ServerPOSTConnect(){
+            isConnected = false;
+        }
 
         /**
          * An implementation of AsyncTask. This will send a POST request to the server and
@@ -112,8 +121,12 @@ public class ServerTest {
 
                 Log.d("TESTING - POST", "Connecting...");
 
+                int responseCode = http.getResponseCode();
+
+                // Process HTTP response code
+
                 // If the connection to the server is a success...
-                if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
                     //... begin to read the server response
                     InputStream in = new BufferedInputStream(http.getInputStream());
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -122,6 +135,14 @@ public class ServerTest {
                     while ((buffer = reader.readLine()) != null) {
                         result.append(buffer);
                     }
+
+                    isConnected = true;
+                } else if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
+                    Log.d("TESTING - POST", "Access is forbidden");
+                } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                    Log.d("TESTING - POST", "Server not found");
+                } else {
+                    Log.d("TESTING - POST", "Unknown error: " + responseCode);
                 }
             } catch (MalformedURLException e) {
                 Log.d("TESTING - POST", "URL is not in the correct format");
@@ -150,6 +171,7 @@ public class ServerTest {
          */
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
+            assertTrue("Unable to connect to server" , isConnected);
             Log.d("TESTING - POST", "Printing JSON Object...");
             Log.d("TESTING - POST", jsonObject.toString());
             try {
@@ -160,7 +182,19 @@ public class ServerTest {
         }
     }
 
+    /**
+     * An inner class that will send a GET request.
+     */
     private class ServerGETConnect extends AsyncTask<String, Void, JSONObject>{
+
+        boolean isConnected;
+
+        /**
+         * A constructor that initializes the connection flag.
+         */
+        public ServerGETConnect(){
+            isConnected = false;
+        }
 
         /**
          * An implementation of AsyncTask. This will send a GET request to the server and get
@@ -186,8 +220,12 @@ public class ServerTest {
 
                 Log.d("TESTING - GET", "Connecting...");
 
+                int responseCode = http.getResponseCode();
+
+                // Process HTTP response code
+
                 // If the connection to the server is a success...
-                if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
                     //... begin to read the server response
                     InputStream in = new BufferedInputStream(http.getInputStream());
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -196,6 +234,14 @@ public class ServerTest {
                     while ((buffer = reader.readLine()) != null) {
                         result.append(buffer);
                     }
+
+                    isConnected = true;
+                } else if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
+                    Log.d("TESTING - GET", "Access is forbidden");
+                } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                    Log.d("TESTING - GET", "Server not found");
+                } else {
+                    Log.d("TESTING - GET", "Unknown error: " + responseCode);
                 }
             } catch (MalformedURLException e) {
                 Log.d("TESTING - GET", "URL is not in the correct format");
@@ -225,6 +271,7 @@ public class ServerTest {
          */
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
+            assertTrue("Unable to connect to server", isConnected);
             if (jsonObject != null) {
                 Log.d("TESTING - GET", "Printing JSON Object...");
                 Log.d("TESTING - GET", jsonObject.toString());

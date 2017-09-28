@@ -1,9 +1,8 @@
 package edu.csulb.smartroot.gardenview;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
@@ -31,7 +30,6 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
 
     private ArrayList<Garden> gardens;
     private ViewGroup viewGroup;
-    private AlertDialog dialog;
     private Context context;
 
     /**
@@ -43,7 +41,6 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
 
         this.gardens = gardens;
         this.viewGroup = null;
-        this.dialog = null;
 
         // TODO: Get gardens from database to populate list
         // Adding gardens for testing purposes
@@ -109,6 +106,15 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
      * the push notification settings according to the user's preference.
      */
     private class DoneButton implements Button.OnClickListener {
+        Dialog dialog;
+
+        /**
+         * A constructor that references Push Notification Settings dialog.
+         * @param dialog References the Push Notification Setting dialog.
+         */
+        public DoneButton (Dialog dialog) {
+            this.dialog = dialog;
+        }
 
         /**
          * An implementation of Button.OnClickListener. This will get the push notification settings
@@ -123,10 +129,46 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
     }
 
     /**
+     * A button listener for Cancel in the Push Notification Settings dialog.This will dismiss the
+     * push notification dialog.
+     */
+    private class CancelButton implements Button.OnClickListener {
+        Dialog dialog;
+
+        /**
+         * A constructor that references Push Notification Settings dialog.
+         * @param dialog References the Push Notification Settings dialog.
+         */
+        public CancelButton (Dialog dialog) {
+            this.dialog = dialog;
+        }
+
+        /**
+         * An implementation of Button.OnClickListener. This will dismiss the push notification
+         * dialog.
+         * @param view References the Cancel button in Push Notification Settings Dialog.
+         */
+        @Override
+        public void onClick(View view) {
+            dialog.dismiss();
+        }
+    }
+
+    /**
      * A switch listener for Push Notification in the Push Notification Settings dialog. This will
      * enabled and disable the Push Notification Settings.
      */
     private class PushSwitch implements CompoundButton.OnCheckedChangeListener {
+        private View dialogView;
+
+        /**
+         * A constructor that references the Dialog View of Push Notification.
+         * @param dialogView References Push Notification dialog.
+         */
+        public PushSwitch(View dialogView) {
+            this.dialogView = dialogView;
+        }
+
         /**
          * An implementation of CompoundButton.OnCheckedChangeListener. This will update the state
          * of all the Push Notification Settings.
@@ -140,41 +182,41 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
             if (!isChecked) {
                 // Set the state for temperature warning
                 setState(false,
-                        (Switch) dialog.findViewById(R.id.switch_temperature_warning),
-                        (EditText) dialog.findViewById(R.id.temperature_min),
-                        (EditText) dialog.findViewById(R.id.temperature_max));
+                        (Switch) dialogView.findViewById(R.id.switch_temperature_warning),
+                        (EditText) dialogView.findViewById(R.id.temperature_min),
+                        (EditText) dialogView.findViewById(R.id.temperature_max));
 
                 // Set the state for moisture warning
                 setState(
                         false,
-                        (Switch) dialog.findViewById(R.id.switch_moisture_warning),
-                        (EditText) dialog.findViewById(R.id.moisture_min),
-                        (EditText) dialog.findViewById(R.id.moisture_max));
+                        (Switch) dialogView.findViewById(R.id.switch_moisture_warning),
+                        (EditText) dialogView.findViewById(R.id.moisture_min),
+                        (EditText) dialogView.findViewById(R.id.moisture_max));
 
                 // Set the state for humidity
                 setState(false,
-                        (Switch) dialog.findViewById(R.id.switch_humidity_warning),
-                        (EditText) dialog.findViewById(R.id.humidity_min),
-                        (EditText) dialog.findViewById(R.id.humidity_max));
+                        (Switch) dialogView.findViewById(R.id.switch_humidity_warning),
+                        (EditText) dialogView.findViewById(R.id.humidity_min),
+                        (EditText) dialogView.findViewById(R.id.humidity_max));
             } else {
                 // Set the state for temperature warning
                 setState(true,
-                        (Switch) dialog.findViewById(R.id.switch_temperature_warning),
-                        (EditText) dialog.findViewById(R.id.temperature_min),
-                        (EditText) dialog.findViewById(R.id.temperature_max));
+                        (Switch) dialogView.findViewById(R.id.switch_temperature_warning),
+                        (EditText) dialogView.findViewById(R.id.temperature_min),
+                        (EditText) dialogView.findViewById(R.id.temperature_max));
 
                 // Set the state for moisture warning
                 setState(
                         true,
-                        (Switch) dialog.findViewById(R.id.switch_moisture_warning),
-                        (EditText) dialog.findViewById(R.id.moisture_min),
-                        (EditText) dialog.findViewById(R.id.moisture_max));
+                        (Switch) dialogView.findViewById(R.id.switch_moisture_warning),
+                        (EditText) dialogView.findViewById(R.id.moisture_min),
+                        (EditText) dialogView.findViewById(R.id.moisture_max));
 
                 // Set the state for humidity
                 setState(true,
-                        (Switch) dialog.findViewById(R.id.switch_humidity_warning),
-                        (EditText) dialog.findViewById(R.id.humidity_min),
-                        (EditText) dialog.findViewById(R.id.humidity_max));
+                        (Switch) dialogView.findViewById(R.id.switch_humidity_warning),
+                        (EditText) dialogView.findViewById(R.id.humidity_min),
+                        (EditText) dialogView.findViewById(R.id.humidity_max));
             }
         }
 
@@ -214,11 +256,6 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
         public TextView humidity;
         public TextView lastUpdated;
 
-        private Button update;
-        private Button history;
-        private Button water;
-        private Button setup;
-
         /**
          * Constructor that will initialize the garden card. It will set up all of the TextView,
          * Buttons, and Overflow Menu.
@@ -240,17 +277,17 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
             lastUpdated = (TextView) v.findViewById(R.id.updated);
 
             // Initialize buttons
-            update = (Button) v.findViewById(R.id.button_update);
-            update.setOnClickListener(new UpdateButton(this, gardens, context));
+            Button button = (Button) v.findViewById(R.id.button_update);
+            button.setOnClickListener(new UpdateButton(this, gardens, context));
 
-            history = (Button) v.findViewById(R.id.button_history);
-            history.setOnClickListener(new HistoryButton());
+            button = (Button) v.findViewById(R.id.button_history);
+            button.setOnClickListener(new HistoryButton());
 
-            water = (Button) v.findViewById(R.id.button_water);
-            water.setOnClickListener(new WaterButton());
+            button = (Button) v.findViewById(R.id.button_water);
+            button.setOnClickListener(new WaterButton());
 
-            setup = (Button) v.findViewById(R.id.button_setup);
-            setup.setOnClickListener(new SetupButton());
+            button = (Button) v.findViewById(R.id.button_setup);
+            button.setOnClickListener(new SetupButton());
         }
 
         /**
@@ -263,24 +300,27 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
         public boolean onMenuItemClick(MenuItem menuItem) {
 
             if (menuItem.getItemId() == R.id.menu_push) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(viewGroup.getContext());
+                // Create dialog
+                Dialog dialog = new Dialog(context);
+                View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_push_notification, null);
 
-                final View dialogView = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.dialog_push_notification, viewGroup, false);
+                // Set layout
+                dialog.setContentView(dialogView);
+                dialog.setCanceledOnTouchOutside(false);
 
-                builder.setView(dialogView);
-                builder.setPositiveButton(R.string.button_done, null);
+                // Setup button listeners for cancel and done
+                Button button = (Button) dialogView.findViewById(R.id.button_push_cancel);
+                button.setOnClickListener(new CancelButton(dialog));
 
-                dialog = builder.create();
-                dialog.show();
+                button = (Button) dialogView.findViewById(R.id.button_done);
+                button.setOnClickListener(new DoneButton(dialog));
 
+                // Setup switch listener for push notification settings
                 Switch pushNotification = (Switch) dialogView.findViewById(R.id.switch_push_notification);
-                pushNotification.setOnCheckedChangeListener(new PushSwitch());
+                pushNotification.setOnCheckedChangeListener(new PushSwitch(dialogView));
 
-                Button button = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                button.setOnClickListener(new DoneButton());
-
-                System.out.println("Push Notification");
+                // Display dialog
+                dialog.show();
             }
             if(menuItem.getItemId() == R.id.menu_shutdown) {
                 // TODO: Implement sending shut down message garden.

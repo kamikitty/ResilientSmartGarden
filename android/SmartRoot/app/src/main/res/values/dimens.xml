@@ -11,12 +11,14 @@
     <dimen name="logo_height">300dp</dimen>
     <dimen name="logo_width">300dp</dimen>
 
+    <dimen name="fontsize_welcome">17sp</dimen>
+    <dimen name="padding_welcome">15dp</dimen>
+
     <!-- ************* -->
     <!-- * CARD VIEW * -->
     <!-- ************* -->
 
     <!-- CardView specifications -->
-    <dimen name="dialog_content_padding">14dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="card_margin_horizontal">16dp</dimen>
     <dimen name="card_margin_vertical">8dp</dimen>
@@ -53,5 +55,15 @@
     <!-- Font sizes -->
     <dimen name="fontsize_settings">18sp</dimen>
     <dimen name="fontsize_settings_sub">12sp</dimen>
+
+    <!-- ******************* -->
+    <!-- * PROGRESS DIALOG * -->
+    <!-- ******************* -->
+
+    <!-- Common dialog sizes -->
+    <dimen name="dialog_width">350dp</dimen>
+    <dimen name="dialog_content_padding">24dp</dimen>
+    <dimen name="dialog_button_padding">8dp</dimen>
+    <dimen name="dialog_button_width">64dp</dimen>
 
 </resources>

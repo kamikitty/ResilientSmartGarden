@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="together"
+    android:interpolator="@anim/interpolator_logo"
+    android:duration="@android:integer/config_longAnimTime">
+
+    <!-- Scales the welcome_logo from small to big -->
+    <scale
+        android:fromXScale="0.0"
+        android:fromYScale="0.0"
+        android:toXScale="1.0"
+        android:toYScale="1.0"
+        android:pivotX="50%"
+        android:pivotY="50%" />
+
+    <!-- Goes from invisible to visible -->
+    <alpha
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0" />
+</set>
