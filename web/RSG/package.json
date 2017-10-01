@@ -1,0 +1,21 @@
+{
+  "name": "rsg",
+  "version": "1.0.0",
+  "description": "Resilient Smart Garden web app. Will allow users to care for their plants and keep track of their plants conditions. A companion plant feature will also be provided to help a user select the best plants that will grow well together in their garden.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marinela Sanchez (Snart Roots)",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "cors": "^2.8.4",
+    "express": "^4.15.4",
+    "mongoose": "^4.11.11",
+    "nodemon": "^1.12.1",
+    "style-loader": "^0.18.2",
+    "typescript": "^2.5.2"
+  }
+ 
+}
