@@ -182,6 +182,10 @@ public class ServerTest {
         }
     }
 
+    ///////////////////
+    // INNER CLASSES //
+    ///////////////////
+
     /**
      * An inner class that will send a GET request.
      */
