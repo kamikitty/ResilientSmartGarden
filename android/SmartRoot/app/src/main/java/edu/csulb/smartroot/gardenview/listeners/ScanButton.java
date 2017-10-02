@@ -314,53 +314,53 @@ public class ScanButton implements Button.OnClickListener {
                 addDialog.show();
             }
         }
+    }
+
+    /**
+     * A on item click listener for add garden. This will send the garden's MAC address to
+     * the server.
+     */
+    private class GardenSelect implements AdapterView.OnItemClickListener {
+        Dialog dialog;
 
         /**
-         * A on item click listener for add garden. This will send the garden's MAC address to
-         * the server.
+         * A constructor that references the Add Dialog.
+         * @param dialog
          */
-        private class GardenSelect implements AdapterView.OnItemClickListener {
-            Dialog dialog;
-
-            /**
-             * A constructor that references the Add Dialog.
-             * @param dialog
-             */
-            public GardenSelect(Dialog dialog) {
-                this.dialog = dialog;
-            }
-
-            /**
-             * An implementation of OnItemClickListener. This will send a POST request to the server
-             * to add the garden to the user's account.
-             * @param parentAdapter The adapter of the list.
-             * @param view The view of the item clicked.
-             * @param position The position of the item clicked.
-             * @param id The ID of the item clicked.
-             */
-            @Override
-            public void onItemClick(AdapterView<?> parentAdapter, View view, int position, long id) {
-                TextView textView = (TextView) view;
-
-                Log.d("GARDEN SELECT", textView.getText() + " selected.");
-
-                dialog.dismiss();
-
-                // TODO: Send POST request to add garden
-            }
+        public GardenSelect(Dialog dialog) {
+            this.dialog = dialog;
         }
 
         /**
-         * A helper method that adds a garden's MAC address into a map.
-         * @param key The key of the garden.
-         * @param value The MAC address of teh garden.
-         * @return
+         * An implementation of OnItemClickListener. This will send a POST request to the server
+         * to add the garden to the user's account.
+         * @param parentAdapter The adapter of the list.
+         * @param view The view of the item clicked.
+         * @param position The position of the item clicked.
+         * @param id The ID of the item clicked.
          */
-        private HashMap<String, String> createGarden(String key, String value) {
-            HashMap<String, String> garden = new HashMap<String, String>();
-            garden.put(key, value);
+        @Override
+        public void onItemClick(AdapterView<?> parentAdapter, View view, int position, long id) {
+            TextView textView = (TextView) view;
 
-            return garden;
+            Log.d("GARDEN SELECT", textView.getText() + " selected.");
+
+            dialog.dismiss();
+
+            // TODO: Send POST request to add garden
         }
+    }
+
+    /**
+     * A helper method that adds a garden's MAC address into a map.
+     * @param key The key of the garden.
+     * @param value The MAC address of teh garden.
+     * @return
+     */
+    private HashMap<String, String> createGarden(String key, String value) {
+        HashMap<String, String> garden = new HashMap<String, String>();
+        garden.put(key, value);
+
+        return garden;
     }
 }
