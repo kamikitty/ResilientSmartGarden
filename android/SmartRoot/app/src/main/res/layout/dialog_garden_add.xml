@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="@dimen/dialog_width">
+
+    <!-- Dialog Title -->
+    <android.support.v7.widget.DialogTitle
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dialog_content_padding"
+        android:paddingTop="@dimen/dialog_content_padding"
+        android:paddingEnd="@dimen/dialog_title_padding"
+        android:text="@string/add_notice_title"
+        android:textSize="@dimen/dialog_content_font_size"
+        android:textColor="@android:color/black"/>
+
+    <!-- List for gardens that have been scanned -->
+    <ListView
+        android:id="@+id/list_garden_add"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/dialog_content_padding"
+        android:paddingBottom="@dimen/dialog_button_padding"
+        android:paddingEnd="@dimen/dialog_content_padding"/>
+
+</LinearLayout>

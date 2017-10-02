@@ -85,13 +85,26 @@
     <!-- Title for action bar menu -->
     <string name="menu_logout">Logout</string>
 
+    <!-- Buttons for dialogs -->
+    <string name="button_scan">Scan</string>
+
+    <!-- Messages for Add Garden -->
+    <string name="scan_notice_title">Search for garden?</string>
+    <string name="scan_notice_content">SmartRoots will scan the WiFi network for Resilient Smart Gardens.</string>
+    <string name="add_notice_title">Add garden</string>
+
+    <!-- Toast notifications for Add Garden -->
+    <string name="scan_wifi_disabled">Please turn on WiFi.</string>
+    <string name="scan_wifi_disconnected">Please connect to a WiFi network.</string>
+    <string name="scan_no_garden">No Resilient Smart Gardens found.</string>
+    <string name="progress_scanning">Scanning</string>
+
     <!-- ***************** -->
     <!-- * SETUP DIALOGS * -->
     <!-- ***************** -->
 
     <!-- Common button labels for setup dialogs -->
     <string name="button_done">DONE</string>
-
 
     <!-- Labels for Automatic Watering Setup -->
     <string name="label_moisture_limit">Moisture Limit</string>

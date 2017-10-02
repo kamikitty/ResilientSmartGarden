@@ -44,6 +44,11 @@
     <dimen name="flat_button_dense_min_width">60dp</dimen>
     <dimen name="flat_button_dense_height">18dp</dimen>
 
+    <!-- *********************** -->
+    <!-- * FLOAT ACTION BUTTON * -->
+    <!-- *********************** -->
+    <dimen name="fab_margin">16dp</dimen>
+
     <!-- **************** -->
     <!-- * SETUP DIALOG * -->
     <!-- **************** -->
@@ -65,5 +70,7 @@
     <dimen name="dialog_content_padding">24dp</dimen>
     <dimen name="dialog_button_padding">8dp</dimen>
     <dimen name="dialog_button_width">64dp</dimen>
+    <dimen name="dialog_content_font_size">20sp</dimen>
+    <dimen name="dialog_title_padding">20dp</dimen>
 
 </resources>

@@ -43,6 +43,8 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
         this.viewGroup = null;
 
         // TODO: Get gardens from database to populate list
+        // Send a POST request to get the gardens
+
         // Adding gardens for testing purposes
         for (int i = 0; i < 10; i ++){
             gardens.add(new Garden(i + 1));

@@ -1,5 +1,6 @@
 package edu.csulb.smartroot.gardenview;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,12 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import edu.csulb.smartroot.R;
+import edu.csulb.smartroot.gardenview.listeners.ScanButton;
 import edu.csulb.smartroot.welcome.Welcome;
 
 /**
@@ -58,6 +62,10 @@ public class GardenView extends AppCompatActivity {
         return true;
     }
 
+    /////////////////////
+    // ONCLICK METHODS //
+    /////////////////////
+
     /**
      * A button listener that is referenced in menu_actionbar.xml. This will attempt to logout the
      * user.
@@ -73,6 +81,60 @@ public class GardenView extends AppCompatActivity {
 
         Intent intent = new Intent(this, Welcome.class);
         startActivity(intent);
+    }
+
+    /**
+     * A floating action button that is referenced in activity_gardenview.xml. This will
+     * first scan the WiFi network for a garden, then display the gardens in a list for the user
+     * to decide which to add.
+     * @param view References the floating action button.
+     */
+    public void addGarden(View view) {
+        // Create dialog
+        Dialog dialog = new Dialog(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_garden_scan, null);
+
+        // Set layout
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(false);
+
+        // Setup button listener for cancel and scan
+        Button button = (Button) dialogView.findViewById(R.id.button_scan_cancel);
+        button.setOnClickListener(new CancelButton(dialog));
+
+        button = (Button) dialogView.findViewById(R.id.button_scan);
+        button.setOnClickListener(new ScanButton(dialog));
+
+        // Display the dialog
+        dialog.show();
+    }
+
+    ///////////////
+    // LISTENERS //
+    ///////////////
+
+    /**
+     * A button listener for cancel button. This will dismiss the dialog.
+     */
+    private class CancelButton implements Button.OnClickListener {
+        Dialog dialog;
+
+        /**
+         * A constructor that gets a reference to the dialog.
+         * @param dialog The referenced dialog.
+         */
+        public CancelButton(Dialog dialog) {
+            this.dialog = dialog;
+        }
+
+        /**
+         * An implementation of button.OnClickListener. This will dismiss the dialog.
+         * @param view References the cancel button.
+         */
+        @Override
+        public void onClick(View view) {
+            dialog.dismiss();
+        }
     }
 
     /**
