@@ -1,0 +1,542 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		42F8966B1F718BED00228ED1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F8966A1F718BED00228ED1 /* AppDelegate.swift */; };
+		42F8966D1F718BED00228ED1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F8966C1F718BED00228ED1 /* ViewController.swift */; };
+		42F896701F718BED00228ED1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42F8966E1F718BED00228ED1 /* Main.storyboard */; };
+		42F896721F718BED00228ED1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42F896711F718BED00228ED1 /* Assets.xcassets */; };
+		42F896751F718BED00228ED1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42F896731F718BED00228ED1 /* LaunchScreen.storyboard */; };
+		42F896801F718BED00228ED1 /* ResilientSmartGardenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F8967F1F718BED00228ED1 /* ResilientSmartGardenTests.swift */; };
+		42F8968B1F718BED00228ED1 /* ResilientSmartGardenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F8968A1F718BED00228ED1 /* ResilientSmartGardenUITests.swift */; };
+		42F896991F71944C00228ED1 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F896981F71944C00228ED1 /* SignInViewController.swift */; };
+		42F8969B1F7196E000228ED1 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F8969A1F7196E000228ED1 /* RegisterViewController.swift */; };
+		42F8969D1F71990100228ED1 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F8969C1F71990100228ED1 /* HomePageViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		42F8967C1F718BED00228ED1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42F8965F1F718BED00228ED1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42F896661F718BED00228ED1;
+			remoteInfo = ResilientSmartGarden;
+		};
+		42F896871F718BED00228ED1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42F8965F1F718BED00228ED1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42F896661F718BED00228ED1;
+			remoteInfo = ResilientSmartGarden;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		42F896671F718BED00228ED1 /* ResilientSmartGarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResilientSmartGarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		42F8966A1F718BED00228ED1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		42F8966C1F718BED00228ED1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		42F8966F1F718BED00228ED1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		42F896711F718BED00228ED1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		42F896741F718BED00228ED1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		42F896761F718BED00228ED1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42F8967B1F718BED00228ED1 /* ResilientSmartGardenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResilientSmartGardenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42F8967F1F718BED00228ED1 /* ResilientSmartGardenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResilientSmartGardenTests.swift; sourceTree = "<group>"; };
+		42F896811F718BED00228ED1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42F896861F718BED00228ED1 /* ResilientSmartGardenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResilientSmartGardenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42F8968A1F718BED00228ED1 /* ResilientSmartGardenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResilientSmartGardenUITests.swift; sourceTree = "<group>"; };
+		42F8968C1F718BED00228ED1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42F896981F71944C00228ED1 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		42F8969A1F7196E000228ED1 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		42F8969C1F71990100228ED1 /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		42F896641F718BED00228ED1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42F896781F718BED00228ED1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42F896831F718BED00228ED1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		42F8965E1F718BED00228ED1 = {
+			isa = PBXGroup;
+			children = (
+				42F896691F718BED00228ED1 /* ResilientSmartGarden */,
+				42F8967E1F718BED00228ED1 /* ResilientSmartGardenTests */,
+				42F896891F718BED00228ED1 /* ResilientSmartGardenUITests */,
+				42F896681F718BED00228ED1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		42F896681F718BED00228ED1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				42F896671F718BED00228ED1 /* ResilientSmartGarden.app */,
+				42F8967B1F718BED00228ED1 /* ResilientSmartGardenTests.xctest */,
+				42F896861F718BED00228ED1 /* ResilientSmartGardenUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		42F896691F718BED00228ED1 /* ResilientSmartGarden */ = {
+			isa = PBXGroup;
+			children = (
+				42F8966A1F718BED00228ED1 /* AppDelegate.swift */,
+				42F8966C1F718BED00228ED1 /* ViewController.swift */,
+				42F8966E1F718BED00228ED1 /* Main.storyboard */,
+				42F8969A1F7196E000228ED1 /* RegisterViewController.swift */,
+				42F8969C1F71990100228ED1 /* HomePageViewController.swift */,
+				42F896711F718BED00228ED1 /* Assets.xcassets */,
+				42F896731F718BED00228ED1 /* LaunchScreen.storyboard */,
+				42F896761F718BED00228ED1 /* Info.plist */,
+				42F896981F71944C00228ED1 /* SignInViewController.swift */,
+			);
+			path = ResilientSmartGarden;
+			sourceTree = "<group>";
+		};
+		42F8967E1F718BED00228ED1 /* ResilientSmartGardenTests */ = {
+			isa = PBXGroup;
+			children = (
+				42F8967F1F718BED00228ED1 /* ResilientSmartGardenTests.swift */,
+				42F896811F718BED00228ED1 /* Info.plist */,
+			);
+			path = ResilientSmartGardenTests;
+			sourceTree = "<group>";
+		};
+		42F896891F718BED00228ED1 /* ResilientSmartGardenUITests */ = {
+			isa = PBXGroup;
+			children = (
+				42F8968A1F718BED00228ED1 /* ResilientSmartGardenUITests.swift */,
+				42F8968C1F718BED00228ED1 /* Info.plist */,
+			);
+			path = ResilientSmartGardenUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		42F896661F718BED00228ED1 /* ResilientSmartGarden */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42F8968F1F718BED00228ED1 /* Build configuration list for PBXNativeTarget "ResilientSmartGarden" */;
+			buildPhases = (
+				42F896631F718BED00228ED1 /* Sources */,
+				42F896641F718BED00228ED1 /* Frameworks */,
+				42F896651F718BED00228ED1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ResilientSmartGarden;
+			productName = ResilientSmartGarden;
+			productReference = 42F896671F718BED00228ED1 /* ResilientSmartGarden.app */;
+			productType = "com.apple.product-type.application";
+		};
+		42F8967A1F718BED00228ED1 /* ResilientSmartGardenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42F896921F718BED00228ED1 /* Build configuration list for PBXNativeTarget "ResilientSmartGardenTests" */;
+			buildPhases = (
+				42F896771F718BED00228ED1 /* Sources */,
+				42F896781F718BED00228ED1 /* Frameworks */,
+				42F896791F718BED00228ED1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42F8967D1F718BED00228ED1 /* PBXTargetDependency */,
+			);
+			name = ResilientSmartGardenTests;
+			productName = ResilientSmartGardenTests;
+			productReference = 42F8967B1F718BED00228ED1 /* ResilientSmartGardenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		42F896851F718BED00228ED1 /* ResilientSmartGardenUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42F896951F718BED00228ED1 /* Build configuration list for PBXNativeTarget "ResilientSmartGardenUITests" */;
+			buildPhases = (
+				42F896821F718BED00228ED1 /* Sources */,
+				42F896831F718BED00228ED1 /* Frameworks */,
+				42F896841F718BED00228ED1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42F896881F718BED00228ED1 /* PBXTargetDependency */,
+			);
+			name = ResilientSmartGardenUITests;
+			productName = ResilientSmartGardenUITests;
+			productReference = 42F896861F718BED00228ED1 /* ResilientSmartGardenUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		42F8965F1F718BED00228ED1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Ruben Marin";
+				TargetAttributes = {
+					42F896661F718BED00228ED1 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
+					42F8967A1F718BED00228ED1 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 42F896661F718BED00228ED1;
+					};
+					42F896851F718BED00228ED1 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 42F896661F718BED00228ED1;
+					};
+				};
+			};
+			buildConfigurationList = 42F896621F718BED00228ED1 /* Build configuration list for PBXProject "ResilientSmartGarden" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 42F8965E1F718BED00228ED1;
+			productRefGroup = 42F896681F718BED00228ED1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42F896661F718BED00228ED1 /* ResilientSmartGarden */,
+				42F8967A1F718BED00228ED1 /* ResilientSmartGardenTests */,
+				42F896851F718BED00228ED1 /* ResilientSmartGardenUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		42F896651F718BED00228ED1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42F896751F718BED00228ED1 /* LaunchScreen.storyboard in Resources */,
+				42F896721F718BED00228ED1 /* Assets.xcassets in Resources */,
+				42F896701F718BED00228ED1 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42F896791F718BED00228ED1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42F896841F718BED00228ED1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		42F896631F718BED00228ED1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42F8966D1F718BED00228ED1 /* ViewController.swift in Sources */,
+				42F8966B1F718BED00228ED1 /* AppDelegate.swift in Sources */,
+				42F896991F71944C00228ED1 /* SignInViewController.swift in Sources */,
+				42F8969D1F71990100228ED1 /* HomePageViewController.swift in Sources */,
+				42F8969B1F7196E000228ED1 /* RegisterViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42F896771F718BED00228ED1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42F896801F718BED00228ED1 /* ResilientSmartGardenTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42F896821F718BED00228ED1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42F8968B1F718BED00228ED1 /* ResilientSmartGardenUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		42F8967D1F718BED00228ED1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42F896661F718BED00228ED1 /* ResilientSmartGarden */;
+			targetProxy = 42F8967C1F718BED00228ED1 /* PBXContainerItemProxy */;
+		};
+		42F896881F718BED00228ED1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42F896661F718BED00228ED1 /* ResilientSmartGarden */;
+			targetProxy = 42F896871F718BED00228ED1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		42F8966E1F718BED00228ED1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42F8966F1F718BED00228ED1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		42F896731F718BED00228ED1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42F896741F718BED00228ED1 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		42F8968D1F718BED00228ED1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		42F8968E1F718BED00228ED1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		42F896901F718BED00228ED1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = ResilientSmartGarden/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SmartRoots.ResilientSmartGarden;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		42F896911F718BED00228ED1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = ResilientSmartGarden/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SmartRoots.ResilientSmartGarden;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		42F896931F718BED00228ED1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = ResilientSmartGardenTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SmartRoots.ResilientSmartGardenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ResilientSmartGarden.app/ResilientSmartGarden";
+			};
+			name = Debug;
+		};
+		42F896941F718BED00228ED1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = ResilientSmartGardenTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SmartRoots.ResilientSmartGardenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ResilientSmartGarden.app/ResilientSmartGarden";
+			};
+			name = Release;
+		};
+		42F896961F718BED00228ED1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = ResilientSmartGardenUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SmartRoots.ResilientSmartGardenUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = ResilientSmartGarden;
+			};
+			name = Debug;
+		};
+		42F896971F718BED00228ED1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = ResilientSmartGardenUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SmartRoots.ResilientSmartGardenUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = ResilientSmartGarden;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		42F896621F718BED00228ED1 /* Build configuration list for PBXProject "ResilientSmartGarden" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42F8968D1F718BED00228ED1 /* Debug */,
+				42F8968E1F718BED00228ED1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42F8968F1F718BED00228ED1 /* Build configuration list for PBXNativeTarget "ResilientSmartGarden" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42F896901F718BED00228ED1 /* Debug */,
+				42F896911F718BED00228ED1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		42F896921F718BED00228ED1 /* Build configuration list for PBXNativeTarget "ResilientSmartGardenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42F896931F718BED00228ED1 /* Debug */,
+				42F896941F718BED00228ED1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		42F896951F718BED00228ED1 /* Build configuration list for PBXNativeTarget "ResilientSmartGardenUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42F896961F718BED00228ED1 /* Debug */,
+				42F896971F718BED00228ED1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 42F8965F1F718BED00228ED1 /* Project object */;
+}
