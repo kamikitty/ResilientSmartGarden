@@ -18,6 +18,8 @@ exports.findUserGardens = findUserGardens;
 exports.findLatestGardenReading = findLatestGardenReading;
 exports.findGardenReadings = findGardenReadings;
 
+exports.validateUser = validateUser;
+
 ////////////////////////
 // DATABASE FUNCTIONS //
 ////////////////////////

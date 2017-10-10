@@ -15,6 +15,10 @@ database.addSensorReadings("MAC", 23, 45, 67, function(success, message){
   console.log("Message: " + message);
 });
 
+database.validateUser("User", "Password", function(success) {
+  console.log("Success: " + success);
+})
+
 database.findUsers(function(docs) {
   for (i = 0; i < docs.length; i++) {
     console.log(docs[i].username);
