@@ -52,7 +52,6 @@ public class UpdateButton implements Button.OnClickListener {
      */
     @Override
     public void onClick(View view){
-        // TODO: Implement SmartRoots API GET request when server is completed
 
         GetSensorReadings getSensorReadings = new  GetSensorReadings(view);
         getSensorReadings.execute(context.getString(R.string.sensor_api));

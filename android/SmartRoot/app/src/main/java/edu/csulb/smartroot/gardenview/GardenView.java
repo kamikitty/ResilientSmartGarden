@@ -47,7 +47,7 @@ public class GardenView extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Create adapter and set it to recycler view
-        adapter = new GardenHolder(new ArrayList<Garden>());
+        adapter = new GardenHolder(userName, this);
         recyclerView.setAdapter(adapter);
     }
 

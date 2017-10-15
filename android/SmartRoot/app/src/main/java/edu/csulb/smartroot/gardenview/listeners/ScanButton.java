@@ -123,6 +123,7 @@ public class ScanButton implements Button.OnClickListener {
 
             // Apply the layout
             View viewDialog = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_progress, null);
+
             TextView textView = (TextView) viewDialog.findViewById(R.id.progress_message);
             textView.setText(R.string.progress_scanning);
 
@@ -209,8 +210,8 @@ public class ScanButton implements Button.OnClickListener {
                     // Open a connection to send a POST request to the server
                     http = (HttpURLConnection) url.openConnection();
                     http.setDoInput(true);
-                    http.setConnectTimeout(R.integer.connection_timeout);
-                    http.setReadTimeout(R.integer.connection_timeout);
+                    http.setConnectTimeout(resources.getInteger(R.integer.connection_timeout));
+                    http.setReadTimeout(resources.getInteger(R.integer.connection_timeout));
                     http.setRequestProperty("Content-Type", "application/json");
                     http.setRequestMethod("POST");
 
@@ -354,8 +355,8 @@ public class ScanButton implements Button.OnClickListener {
     /**
      * A helper method that adds a garden's MAC address into a map.
      * @param key The key of the garden.
-     * @param value The MAC address of teh garden.
-     * @return
+     * @param value The MAC address of the garden.
+     * @return The garden.
      */
     private HashMap<String, String> createGarden(String key, String value) {
         HashMap<String, String> garden = new HashMap<String, String>();

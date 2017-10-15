@@ -88,6 +88,9 @@
     <!-- Buttons for dialogs -->
     <string name="button_scan">Scan</string>
 
+    <!-- Toast notifications for retrieving garden -->
+    <string name="progress_garden">Retrieving gardens</string>
+
     <!-- Messages for Add Garden -->
     <string name="scan_notice_title">Search for garden?</string>
     <string name="scan_notice_content">SmartRoots will scan the WiFi network for Resilient Smart Gardens.</string>
@@ -98,6 +101,12 @@
     <string name="scan_wifi_disconnected">Please connect to a WiFi network.</string>
     <string name="scan_no_garden">No Resilient Smart Gardens found.</string>
     <string name="progress_scanning">Scanning</string>
+
+    <!-- Notifications for Garden server response -->
+    <string name="garden_403">Cannot retrieve gardens. Server is temporarily offline.</string>
+    <string name="garden_404">Cannot retrieve gardens. Server is currently offline.</string>
+    <string name="garden_unknown">Cannot retrieve gardens. Unknown error.</string>
+    <string name="garden_invalid_data">Cannot retrieve gardens. Server error.</string>
 
     <!-- ***************** -->
     <!-- * SETUP DIALOGS * -->

@@ -1,6 +1,7 @@
 package edu.csulb.smartroot.welcome.listeners;
 
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Patterns;
@@ -123,6 +124,7 @@ public class RegisterButton implements Button.OnClickListener {
 
         Dialog dialogProgress;
         View view;
+        Resources resources;
         int responseCode;
 
         /**
@@ -138,6 +140,7 @@ public class RegisterButton implements Button.OnClickListener {
             this.password = ePassword.getText().toString();
 
             this.view = view;
+            this.resources = view.getContext().getResources();
             responseCode = 0;
 
             // Create dialog for server connection
@@ -186,8 +189,8 @@ public class RegisterButton implements Button.OnClickListener {
                 // Open a connection to send a POST request to the server
                 http = (HttpURLConnection) url.openConnection();
                 http.setDoInput(true);
-                http.setConnectTimeout(R.integer.connection_timeout);
-                http.setReadTimeout(R.integer.connection_timeout);
+                http.setConnectTimeout(resources.getInteger(R.integer.connection_timeout));
+                http.setReadTimeout(resources.getInteger(R.integer.connection_timeout));
                 http.setRequestProperty("Content-Type", "application/json");
                 http.setRequestMethod("POST");
 

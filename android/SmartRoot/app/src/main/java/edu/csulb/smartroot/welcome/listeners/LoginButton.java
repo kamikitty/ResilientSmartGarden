@@ -2,6 +2,7 @@ package edu.csulb.smartroot.welcome.listeners;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
@@ -99,6 +100,7 @@ public class LoginButton implements Button.OnClickListener {
 
         Dialog dialogProgress;
         View view;
+        Resources resources;
         int responseCode;
 
         /**
@@ -113,6 +115,7 @@ public class LoginButton implements Button.OnClickListener {
             this.password = ePassword.getText().toString();
 
             this.view = view;
+            this.resources = view.getContext().getResources();
             this.responseCode = 0;
 
             // Create dialog for server connection
@@ -140,7 +143,7 @@ public class LoginButton implements Button.OnClickListener {
         /**
          * An implementation of AsyncTask. This will get the user's credentials from the server in a
          * separate thread.
-         * @param args The API address to send a GET request.
+         * @param args The API address to send a POST request.
          * @return A JSONObject containing username and password.
          */
         @Override
@@ -157,11 +160,11 @@ public class LoginButton implements Button.OnClickListener {
                 data.put("username", userName);
                 data.put("password", password);
 
-                // Open a connection to send a GET request to the server
+                // Open a connection to send a POST request to the server
                 http = (HttpURLConnection) url.openConnection();
                 http.setDoInput(true);
-                http.setConnectTimeout(R.integer.connection_timeout);
-                http.setReadTimeout(R.integer.connection_timeout);
+                http.setConnectTimeout(resources.getInteger(R.integer.connection_timeout));
+                http.setReadTimeout(resources.getInteger(R.integer.connection_timeout));
                 http.setRequestProperty("Content-Type", "application/json");
                 http.setRequestMethod("POST");
 
@@ -191,7 +194,7 @@ public class LoginButton implements Button.OnClickListener {
                     }
                 }
             } catch (MalformedURLException e) {
-                System.out.println("URL is not in the correct format");
+                Log.d("LOGIN", "URL is not in the correct format");
                 return null;
             } catch (ConnectException e) {
                 responseCode = HttpURLConnection.HTTP_NOT_FOUND;
@@ -199,7 +202,7 @@ public class LoginButton implements Button.OnClickListener {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
-            Log.d("REGISTER", "JSON format is incorrect");
+            Log.d("LOGIN", "JSON format is incorrect");
             }  finally {
                 // Disconnect from the server
                 if (http != null)

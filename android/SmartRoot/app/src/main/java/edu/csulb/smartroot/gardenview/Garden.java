@@ -5,6 +5,8 @@ package edu.csulb.smartroot.gardenview;
  */
 public class Garden {
     private String gardenName;
+    private String MacAddress;
+
     private double temperature;
     private double moisture;
     private double humidity;
@@ -15,12 +17,30 @@ public class Garden {
      * @param pos The position of the garden in the RecyclerView. For testing purposes and will
      *            be changed in the future.
      */
-    public Garden(int pos){
-        gardenName = "Garden " + pos;
-        temperature = 0;
-        moisture = 0;
-        humidity = 0;
-        lastUpdated = 0;
+    public Garden(int pos) {
+        this.gardenName = "Garden " + pos;
+        this.MacAddress = "";
+        this.temperature = 0;
+        this.moisture = 0;
+        this.humidity = 0;
+        this.lastUpdated = 0;
+    }
+
+    /**
+     * Constructor that receives the garden name and MAC address. Initializes the sensor readings
+     * to default values.
+     * @param gardenName The name of the garden.
+     * @param MacAddress The MAC address of the garden.
+     */
+    public Garden(String gardenName, String MacAddress) {
+        this.gardenName = gardenName;
+        this.MacAddress = MacAddress;
+
+        this.temperature = 0;
+        this.temperature = 0;
+        this.moisture = 0;
+        this.humidity = 0;
+        this.lastUpdated = 0;
     }
 
     /**
