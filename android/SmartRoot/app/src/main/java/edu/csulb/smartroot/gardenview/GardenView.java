@@ -26,6 +26,7 @@ import edu.csulb.smartroot.welcome.Welcome;
 public class GardenView extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+    private GardenHolder holder;
 
     private String userName;
 
@@ -47,7 +48,8 @@ public class GardenView extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Create adapter and set it to recycler view
-        adapter = new GardenHolder(userName, this);
+        holder = new GardenHolder(userName, this);
+        adapter = holder;
         recyclerView.setAdapter(adapter);
     }
 
@@ -103,7 +105,7 @@ public class GardenView extends AppCompatActivity {
         button.setOnClickListener(new CancelButton(dialog));
 
         button = (Button) dialogView.findViewById(R.id.button_scan);
-        button.setOnClickListener(new ScanButton(dialog, userName));
+        button.setOnClickListener(new ScanButton(dialog, holder, userName, this));
 
         // Display the dialog
         dialog.show();

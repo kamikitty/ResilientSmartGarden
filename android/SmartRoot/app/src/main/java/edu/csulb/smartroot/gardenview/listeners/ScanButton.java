@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -39,12 +38,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.csulb.smartroot.R;
+import edu.csulb.smartroot.gardenview.Garden;
+import edu.csulb.smartroot.gardenview.GardenHolder;
+import edu.csulb.smartroot.gardenview.httprequests.GetGardens;
 
 /**
  * A button listener for Scan. This will scan the WiFi network for gardens and send the MAC address
  * of the garden to the user's account if they want to add it.
  */
 public class ScanButton implements Button.OnClickListener {
+    private GardenHolder holder;
+    private ArrayList<Garden> gardens;
+    private Context context;
     private String userName;
 
     private Dialog dialog;
@@ -54,9 +59,12 @@ public class ScanButton implements Button.OnClickListener {
      * Constructor that will pass the reference to the Scan dialog and WiFi manager.
      * @param dialog References the Scan dialog.
      */
-    public ScanButton (Dialog dialog, String userName) {
+    public ScanButton (Dialog dialog, GardenHolder holder, String userName, Context context) {
         this.dialog = dialog;
+        this.holder = holder;
         this.userName = userName;
+        this.context = context;
+        this.gardens = holder.getGardens();
 
         wifiManager = (WifiManager) dialog.getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
     }
@@ -485,7 +493,7 @@ public class ScanButton implements Button.OnClickListener {
 
                 data.put("username", userName);
                 data.put("mac", macAddress);
-                data.put("garden", gardenName);
+                data.put("gardenname", gardenName);
 
                 // Open a connection to send a POST request to the server
                 http = (HttpURLConnection) url.openConnection();
@@ -617,6 +625,10 @@ public class ScanButton implements Button.OnClickListener {
             }
 
             dialog.dismiss();
+
+            // Refresh user garden
+            GetGardens getGardens = new GetGardens(holder, userName, context);
+            getGardens.execute(resources.getString(R.string.garden_retrieve_api));
         }
     }
 
