@@ -5,19 +5,19 @@ database.addUser("User", "Password", function(success, message) {
   console.log("Message: " + message);
 });
 
-database.addGarden("User", "MAC", function(success, message) {
+database.addGarden("User", "MAC13", "Garden", function(success, message) {
   console.log("Success: " + success);
   console.log("Message: " + message);
 });
 
-database.addSensorReadings("MAC", 23, 45, 67, function(success, message){
+database.addSensorReadings("MAC13", 23, 45, 67, function(success, message){
   console.log("Success: " + success);
   console.log("Message: " + message);
 });
 
 database.validateUser("User", "Password", function(success) {
   console.log("Success: " + success);
-})
+});
 
 database.findUsers(function(docs) {
   for (i = 0; i < docs.length; i++) {
@@ -31,7 +31,7 @@ database.findUserGardens("User", function(docs){
   }
 });
 
-database.findLatestGardenReading("MAC", function(docs) {
+database.findLatestGardenReading("MAC13", function(docs) {
   console.log(docs);
 });
 
@@ -40,3 +40,5 @@ database.findGardenReadings("MAC", function(docs) {
     console.log(docs[i]);
   }
 });
+
+database.purgeCollections();

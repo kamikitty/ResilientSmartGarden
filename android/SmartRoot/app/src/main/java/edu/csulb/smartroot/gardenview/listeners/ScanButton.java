@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -29,6 +31,7 @@ import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -42,6 +45,8 @@ import edu.csulb.smartroot.R;
  * of the garden to the user's account if they want to add it.
  */
 public class ScanButton implements Button.OnClickListener {
+    private String userName;
+
     private Dialog dialog;
     private WifiManager wifiManager;
 
@@ -49,8 +54,9 @@ public class ScanButton implements Button.OnClickListener {
      * Constructor that will pass the reference to the Scan dialog and WiFi manager.
      * @param dialog References the Scan dialog.
      */
-    public ScanButton (Dialog dialog) {
+    public ScanButton (Dialog dialog, String userName) {
         this.dialog = dialog;
+        this.userName = userName;
 
         wifiManager = (WifiManager) dialog.getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
     }
@@ -348,7 +354,269 @@ public class ScanButton implements Button.OnClickListener {
 
             dialog.dismiss();
 
-            // TODO: Send POST request to add garden
+            // Create dialog to add name to garden
+            Dialog dialog = new Dialog(view.getContext());
+            View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_garden_name, null);
+
+            // Set layout
+            dialog.setContentView(dialogView);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+
+            // Setup button listener for add
+            Button button = (Button) dialogView.findViewById(R.id.button_add);
+            button.setOnClickListener(new AddButton(dialog, textView));
+            dialog.show();
+        }
+    }
+
+    /**
+     * A button listener for add button. This will send a POST request to add
+     * a garden to a user's account.
+     */
+    private class AddButton implements Button.OnClickListener {
+        String macAddress;
+
+        Dialog dialog;
+
+        /**
+         * A constructor that gets a reference to the dialog.
+         * @param dialog The referenced dialog.
+         * @param macAddress References the TextView containing the mac address
+         */
+        public AddButton(Dialog dialog, TextView macAddress) {
+            this.dialog = dialog;
+            this.macAddress = macAddress.getText().toString();
+        }
+
+        @Override
+        public void onClick(View view) {
+            Toast toast = Toast.makeText(view.getContext(), "", Toast.LENGTH_SHORT);
+
+            TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
+            textView.setGravity(Gravity.CENTER);
+
+            // Get the reference to EditText from dialog_add.xml layout.
+            EditText eGardenName = (EditText) dialog.findViewById(R.id.garden_name);
+
+            // Validate user input for garden name
+            if (eGardenName.length() <= 0) {
+                toast.setText(R.string.gardenname_empty);
+                toast.show();
+                eGardenName.requestFocus();
+                return;
+            }
+
+            // Disable TextView and Button to prevent further user input
+            dialog.hide();
+
+            // Create task to connect to server
+            AddGarden addGarden = new AddGarden(eGardenName, macAddress, view);
+            addGarden.execute(view.getContext().getString(R.string.add_garden_api));
+        }
+    }
+
+    /**
+     * An inner class that will handle adding the garden to the user's account, in a separate
+     * thread.
+     */
+    private class AddGarden extends AsyncTask<String, Void, JSONObject> {
+        String gardenName;
+        String macAddress;
+
+        Dialog dialogProgress;
+        View view;
+        Resources resources;
+        int responseCode;
+
+        /**
+         * Constructor that references the garden name.
+         * @param eGardenName The EditText of garden name.
+         * @param view References the add button.
+         */
+        public AddGarden(EditText eGardenName, String macAddress, View view) {
+            this.gardenName = eGardenName.getText().toString();
+            this.macAddress = macAddress;
+
+            this.view = view;
+            this.resources = view.getContext().getResources();
+            this.responseCode = 0;
+
+            // Create dialog for server connection
+            dialogProgress = new Dialog(view.getContext());
+
+            // Apply the layout
+            View viewDialog = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_progress, null);
+            TextView textView = (TextView) viewDialog.findViewById(R.id.progress_message);
+            textView.setText(R.string.progress_add_garden);
+
+            // Make it so the dialog cannot be dismissed on click
+            dialogProgress.setCancelable(false);
+            dialogProgress.setCanceledOnTouchOutside(false);
+        }
+
+        /**
+         * An implementation of AsyncTask. This will display the dialog progress on the UI thread,
+         * which is separate from the doInBackground thread.
+         */
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            dialogProgress.show();
+        }
+
+        /**
+         * An implementation of AsyncTask. This will send the garden to add to the server in a
+         * separate thread.
+         *
+         * @param args The API address to send a POST request.
+         * @return A JSONObject containing the server response.
+         */
+        @Override
+        protected JSONObject doInBackground(String...args) {
+            StringBuilder result = new StringBuilder();
+            HttpURLConnection http = null;
+
+            try {
+                URL url = new URL(args[0]);
+
+                // Create JSON object to send to server
+                JSONObject data = new JSONObject();
+
+                data.put("username", userName);
+                data.put("mac", macAddress);
+                data.put("garden", gardenName);
+
+                // Open a connection to send a POST request to the server
+                http = (HttpURLConnection) url.openConnection();
+                http.setDoInput(true);
+                http.setConnectTimeout(resources.getInteger(R.integer.connection_timeout));
+                http.setReadTimeout(resources.getInteger(R.integer.connection_timeout));
+                http.setRequestProperty("Content-Type", "application/json");
+                http.setRequestMethod("POST");
+
+                // Insert data for POST request
+                StringBuilder sb = new StringBuilder();
+
+                sb.append(data.toString());
+
+                Log.d("GARDEN ADD", "Data: " + data.toString());
+
+                OutputStreamWriter out = new OutputStreamWriter(http.getOutputStream());
+                out.write(sb.toString());
+                out.flush();
+
+                // Attempt connection and get server response code
+                responseCode = http.getResponseCode();
+
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    //... begin to read the server response
+                    InputStream in = new BufferedInputStream(http.getInputStream());
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                    String buffer = null;
+                    while ((buffer = reader.readLine()) != null) {
+                        result.append(buffer);
+                    }
+                }
+            } catch (MalformedURLException e) {
+                Log.d("GARDEN ADD", "URL is not in the correct format");
+                return null;
+            } catch (ConnectException e) {
+                responseCode = HttpURLConnection.HTTP_NOT_FOUND;
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                Log.d("GARDEN ADD", "JSON format is incorrect");
+            } finally {
+                // Disconnect from the server
+                if (http != null)
+                    http.disconnect();
+            }
+
+            Log.d("GARDEN ADD", "Results: " + result);
+
+            // Convert the response from teh server into a JSONObject
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(result.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsonObject;
+        }
+
+        /**
+         * An implementation of AsyncTask. This will get the server response.
+         *
+         * @param jsonObject JSON object containing the server response.
+         */
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            dialogProgress.dismiss();
+
+            Toast toast = Toast.makeText(view.getContext(), "", Toast.LENGTH_SHORT);
+
+            TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
+            textView.setGravity(Gravity.CENTER);
+
+            // Process response code and execute appropriate action
+            switch (responseCode) {
+                case HttpURLConnection.HTTP_OK:
+                    // If the server response is valid...
+                    if (jsonObject != null) {
+                        try {
+                            // Get response from JSONObject
+                            boolean response = jsonObject.getBoolean("success");
+
+                            // If adding the garden is valid...
+                            if (response) {
+                                // Create toast to notify user of successful garden add
+                                toast.setText(R.string.garden_add_successful);
+                                toast.show();
+                            } else {
+                                //... otherwise notify user garden was not added
+                                toast.setText(R.string.garden_add_failed);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            // The JSON format is incorrect. Notify user an error has occurred.
+                            toast.setText(R.string.garden_add_invalid);
+                            toast.show();
+
+                            e.printStackTrace();
+                        }
+                    } else {
+                        // The server did not respond with a JSON format. Notify user an error has occurred.
+                        toast.setText(R.string.garden_add_invalid);
+                        toast.show();
+                    }
+
+                    break;
+
+                case HttpURLConnection.HTTP_NOT_FOUND:
+                    // Notify user the server cannot be found
+                    toast.setText(R.string.garden_add_404);
+                    toast.show();
+
+                    break;
+
+                case HttpURLConnection.HTTP_FORBIDDEN:
+                    // Notify user the server is forbidden
+                    toast.setText(R.string.garden_add_403);
+                    toast.show();
+                    break;
+
+                default:
+                    toast.setText(R.string.garden_add_unknown);
+                    toast.show();
+
+                    break;
+            }
+
+            dialog.dismiss();
         }
     }
 

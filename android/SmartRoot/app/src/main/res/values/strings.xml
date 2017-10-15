@@ -87,6 +87,7 @@
 
     <!-- Buttons for dialogs -->
     <string name="button_scan">Scan</string>
+    <string name="button_add">Add</string>
 
     <!-- Toast notifications for retrieving garden -->
     <string name="progress_garden">Retrieving gardens</string>
@@ -95,12 +96,16 @@
     <string name="scan_notice_title">Search for garden?</string>
     <string name="scan_notice_content">SmartRoots will scan the WiFi network for Resilient Smart Gardens.</string>
     <string name="add_notice_title">Add garden</string>
+    <string name="name_notice_title">Name garden</string>
+    <string name="name_input_hint">Name</string>
+    <string name="gardenname_empty">Please enter a name.</string>
 
     <!-- Toast notifications for Add Garden -->
     <string name="scan_wifi_disabled">Please turn on WiFi.</string>
     <string name="scan_wifi_disconnected">Please connect to a WiFi network.</string>
     <string name="scan_no_garden">No Resilient Smart Gardens found.</string>
     <string name="progress_scanning">Scanning</string>
+    <string name="progress_add_garden">Adding garden</string>
 
     <!-- Snackbar notifications for Update -->
     <string name="update_garden_success">%s updated.</string>
@@ -114,6 +119,13 @@
     <string name="garden_404">Cannot retrieve gardens. Server is currently offline.</string>
     <string name="garden_unknown">Cannot retrieve gardens. Unknown error.</string>
     <string name="garden_invalid_data">Cannot retrieve gardens. Server error.</string>
+
+    <string name="garden_add_successful">Garden added!</string>
+    <string name="garden_add_failed">Garden not added. Belongs to another user!</string>
+    <string name="garden_add_invalid">Garden not added. Server error.</string>
+    <string name="garden_add_unknown">Garden not added. Unknown error.</string>
+    <string name="garden_add_403">Garden not added. Server is temporarily offline.</string>
+    <string name="garden_add_404">Garden not added. Server is currently offline.</string>
 
     <!-- ***************** -->
     <!-- * SETUP DIALOGS * -->

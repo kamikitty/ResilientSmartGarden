@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="@dimen/dialog_width">
+
+    <android.support.v7.widget.DialogTitle
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dialog_content_padding"
+        android:paddingTop="@dimen/dialog_content_padding"
+        android:paddingEnd="@dimen/dialog_content_padding"
+        android:paddingBottom="@dimen/dialog_title_padding"
+        android:text="@string/name_notice_title"
+        android:textSize="@dimen/dialog_content_font_size"
+        android:textColor="@android:color/black" />
+
+    <!-- Layout for content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dialog_content_padding"
+        android:paddingBottom="@dimen/dialog_content_padding"
+        android:paddingEnd="@dimen/dialog_content_padding">
+
+        <EditText
+            android:id="@+id/garden_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name_input_hint"/>
+
+    </LinearLayout>
+
+    <!-- Layout for buttons -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="end"
+        android:padding="@dimen/dialog_button_padding">
+
+        <Button
+            android:id="@+id/button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_add"
+            android:textColor="@color/color_text_button"
+            android:minHeight="@dimen/flat_button_height"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+    </LinearLayout>
+
+</LinearLayout>

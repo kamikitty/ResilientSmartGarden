@@ -19,6 +19,7 @@ exports.findLatestGardenReading = findLatestGardenReading;
 exports.findGardenReadings = findGardenReadings;
 
 exports.validateUser = validateUser;
+exports.purgeCollections = purgeCollections;
 
 ////////////////////////
 // DATABASE FUNCTIONS //
@@ -155,18 +156,18 @@ function validateUser(username, password, callback) {
 /////////////////////
 
 /// @function Adds a garden to a user.
-function addGarden(username, mac, result) {
+function addGarden(username, mac, gardenname, result) {
   // Calls checkGarden to check for any duplicate on the database. Callback
   // function to insert a garden is called when no duplicate is found.
-  checkUserGarden(username, mac, checkGarden, result);
+  checkUserGarden(username, mac, gardenname, checkGarden, result);
 }
 
 /// @function Inserts a garden into the gardens collection.
-function insertGarden(username, mac, result) {
+function insertGarden(username, mac, gardenname, result) {
   MongoClient.connect(url, function(err, db) {
     var collection = db.collection(cGardens);
 
-    collection.insertOne({"mac":mac, "username":username}, function(err, results) {
+    collection.insertOne({"mac":mac, "username":username, "gardenname":gardenname}, function(err, results) {
 
       assert.equal(err, null);
       assert.equal(1, results.result.n);
@@ -181,7 +182,7 @@ function insertGarden(username, mac, result) {
 
 /// @function Checks to see if the username exist in the database. Check to see
 /// if there is a duplicate garden after user check.
-function checkUserGarden(username, mac, callback, result) {
+function checkUserGarden(username, mac, gardenname, callback, result) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("Connected to " + url);
@@ -193,7 +194,7 @@ function checkUserGarden(username, mac, callback, result) {
       // If the username exists...
       if (docs.length != 0) {
         //... check to see if there is a duplicate garden
-        callback(username, mac, insertGarden, result);
+        callback(username, mac, gardenname, insertGarden, result);
       } else {
         //... otherwise send message that username does not exist
         db.close();
@@ -207,7 +208,7 @@ function checkUserGarden(username, mac, callback, result) {
 
 /// @function Checks garden to see if there is a duplicate in the database.
 /// Callback function  to insert garden if no duplicate is present.
-function checkGarden(username, mac, callback, result) {
+function checkGarden(username, mac, gardenname, callback, result) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("Connected to " + url);
@@ -219,7 +220,7 @@ function checkGarden(username, mac, callback, result) {
       // If there is not existing garden...
       if (docs.length == 0) {
         //...insert it into the database
-        callback(username, mac, result);
+        callback(username, mac, gardenname, result);
       } else {
         //... otherwise send notification that duplicate was found.
         db.close();

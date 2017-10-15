@@ -2,5 +2,5 @@
 <resources>
     <integer name="connection_timeout">5000</integer>
     <integer name="back_button_timeout">1000</integer>
-    <integer name="ping_timeout">100</integer>
+    <integer name="ping_timeout">50</integer>
 </resources>

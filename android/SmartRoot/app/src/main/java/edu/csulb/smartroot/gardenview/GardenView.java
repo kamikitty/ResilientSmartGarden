@@ -103,7 +103,7 @@ public class GardenView extends AppCompatActivity {
         button.setOnClickListener(new CancelButton(dialog));
 
         button = (Button) dialogView.findViewById(R.id.button_scan);
-        button.setOnClickListener(new ScanButton(dialog));
+        button.setOnClickListener(new ScanButton(dialog, userName));
 
         // Display the dialog
         dialog.show();
