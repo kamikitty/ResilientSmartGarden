@@ -5,7 +5,7 @@ package edu.csulb.smartroot.gardenview;
  */
 public class Garden {
     private String gardenName;
-    private String MacAddress;
+    private String macAddress;
 
     private double temperature;
     private double moisture;
@@ -19,7 +19,7 @@ public class Garden {
      */
     public Garden(int pos) {
         this.gardenName = "Garden " + pos;
-        this.MacAddress = "";
+        this.macAddress = "";
         this.temperature = 0;
         this.moisture = 0;
         this.humidity = 0;
@@ -30,11 +30,11 @@ public class Garden {
      * Constructor that receives the garden name and MAC address. Initializes the sensor readings
      * to default values.
      * @param gardenName The name of the garden.
-     * @param MacAddress The MAC address of the garden.
+     * @param macAddress The MAC address of the garden.
      */
-    public Garden(String gardenName, String MacAddress) {
+    public Garden(String gardenName, String macAddress) {
         this.gardenName = gardenName;
-        this.MacAddress = MacAddress;
+        this.macAddress = macAddress;
 
         this.temperature = 0;
         this.temperature = 0;
@@ -49,6 +49,14 @@ public class Garden {
      */
     public String getGardenName() {
         return gardenName;
+    }
+
+    /**
+     * Gets the mac address of the garden.
+     * @return mac address of the garden.
+     */
+    public String getMacAddress() {
+        return macAddress;
     }
 
     /**

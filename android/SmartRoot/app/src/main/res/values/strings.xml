@@ -102,6 +102,13 @@
     <string name="scan_no_garden">No Resilient Smart Gardens found.</string>
     <string name="progress_scanning">Scanning</string>
 
+    <!-- Snackbar notifications for Update -->
+    <string name="update_garden_success">%s updated.</string>
+    <string name="update_garden_403">%s not updated. Server temporarily offline.</string>
+    <string name="update_garden_404">%s not updated. Server offline.</string>
+    <string name="update_garden_invalid">%s not updated. Server error.</string>
+    <string name="update_garden_unknown">%s not updated. Unknown error.</string>
+
     <!-- Notifications for Garden server response -->
     <string name="garden_403">Cannot retrieve gardens. Server is temporarily offline.</string>
     <string name="garden_404">Cannot retrieve gardens. Server is currently offline.</string>
