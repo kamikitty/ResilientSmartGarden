@@ -1,29 +1,17 @@
-/*
-Updated code implementing login and register 
-currently using levelDB, still needs to 
-implement MongoDB for future use
-*/
-
-
 'use strict';
 
 const express = require('express');
 const bodyparser = require('body-parser');
-//const mongoose = require('mongoose');
 //const scrypt = require('scrypt-for-humans');
-const levelup = require('levelup');
+//const levelup = require('levelup');
 const app = express();
+const db = require('./database');
 
 let port = process.env.PORT || 3001
-
-//mongoose.connect('mongodb://localhost/mongo');
-var db = levelup('./mydb')
-
 
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
 
-//mongoose.model('users',{name:String});
 
 //This is used for testing server connection
 app.get('/', (req,res)=> {
@@ -31,6 +19,7 @@ app.get('/', (req,res)=> {
 });
 
 //HTTP request for registering a new user
+//Still need to add encryption for storing passwords
 app.post('/register', function(req,res) {
 	var uname = req.body.username;
 	var passw = req.body.password;
@@ -38,12 +27,10 @@ app.post('/register', function(req,res) {
 	if(!uname || !passw ) {
 		res.json({success: false, msg: 'Please pass name and password'})
 	} else {
-		
-
-		db.put(uname,passw);
-		res.json({'username': uname, 'password': passw });
-	}
-});
+		db.addUser(uname,passw,function(success,message){
+			res.json({'username': uname, 'password':passw});
+	})
+}});
 
 
 //HTTP request for login 
@@ -56,7 +43,7 @@ app.post('/login', function(req,res) {
 	}
 	else { 
 		
-		db.get(username,function(err,username){
+		db.findUser(username,function(success,message){
 		if(err) {
 			if(err.notFound){
 				res.json({success: false});
@@ -68,106 +55,54 @@ app.post('/login', function(req,res) {
 		}
 	});
 
-//For collection of data over summer
-
-// app.post('/sendData', function(req,res) {
-// 	//JSON DATA COLLECTION
-// 	var jsonData = req.body.data;
-	
-// 	if(!jsonData) {
-// 		res.json({success: false});
-// 	} else {
-// 		console.log("in here I go to die")
-// 		db.put('data',jsonData, function(err) {
-// 			if (err) return console.log('Ooops!',err)
-
-// 		db.get('data',function(err,value){
-// 			if(err)return console.log('Ooops!',err)
-
-// 			console.log('data=' + value)
-// 		})
-// 	})
-// 		res.json({success: true});
-// 		//Insert MongoDB 
-// 	}
-// })
-
-
-
-//--------------Future Work Below-------------------
-
-//Need to add logic for adding new board/garden
-//dont worry about this for now
+//Request to add a garden
 app.post('/addGarden', function(req,res) {
-	const board = req.body.boardID;
-	var username = req.body.username;
-	if(!board || !username) {
+	var uname = req.body.username;
+	var mac = req.body.mac;
+	var gardenName = req.body.gardenName;
+	var result = req.body.result; 
+	if(!uname || !mac) {
 		res.json({success: false, msg: "Invalid input"});
 	} else {
-		res.json({success: true})
+		db.addGarden(uname,mac,gardeName,result, function(success,message) {
+			res.json({success: true});
+		})
 	}
 });
-
-app.post('/test', function(req,res) {
-	
-	
-	const data = req.body.board;
-	if(!board) {
-		res.json({success: false, msg: "Invalid input"});
-	} else {
-		res.json({success: true})
-	}
-});
-
-
-app.post('/addData', function(req,res) {
-		
-	
-	var data = {
-		"temperature" : 0.00,
-		"humidity" : 0.00,
-		"moisture" : 0.00 
-	}
-	if(!data) {
-		res.json({success: false, msg: "no data"});
-	} else {
-		res.send('data sent');
-	}
-});
-
 
 //Need to add logic for removing garden
-app.post('/removeGarden', function(req,res) {
-	var board = req.body.boardID;
-	var username = req.body.username;
-	if(!board || !username) {
-		res.json({success: false, msg: 'Invalid input'});
-	} else {
-		res.json({success:true});
-	}
-});
 
-//need to add logic for adding a new sensor
+//Request to add sensor readings
 app.post('/addSensor',function(req,res) {
-	const sensor = req.body.sensorID;
+	var mac = req.body.mac;
+	var temperature = req.body.temperature;
+	var humidity = req.body.humidity;
+	var moisture = req.body.moisture;
+	
+	if(!mac){
+		res.json({success: false, msg: 'Invalid input'});
+	}
+	else {
+		db.addSensorReadings(mac,temperature,humidity,moisture,function(success,messgae){
+			res.json({success:'true'});
+		})
+	}
 });
 
 //need to add logic for removing a sensor
-app.post('/removeSensor', function(req,res) {
-	const sensor = req.body.sensorID;
-	var username = req.body.username;
-	if(!sensor || !username) {
-		res.json({success: false, msg: 'Invalid input'});
-	} else {
-		res.json({success: true});
+
+
+app.post('/getSensor',function(req,res){
+	var mac = req.body.mac;
+	
+	if(!mac) {
+		res.json({success: 'false', msg: 'Invalid'});
 	}
-});
-
-//hard coded json data for testing purposes
-//used to communicate with android app
-app.get('/data',function(req,res) {
-
-	res.json({"temperature":71.60,"humidity":14.00,"moisture":1.42});
+	else{
+		db.findLatestGardenReading(mac,function(success,message){
+			//need json response here
+		})
+	}
 });
 
 app.listen(port, () => {
