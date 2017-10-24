@@ -1,1 +1,24 @@
-<app-user><app-user> //matches selector in user.component.ts
+<!--<app-user><app-user> //matches selector in user.component.ts-->
+
+	<!-- root component template of the app. contains router-outlet directive for displaying the contents of each view based on the current route, and an alert directive fo displaying alert messages  from anywhere in the system-->
+
+	<!-- main container-->
+	<div class = "jumbotron">
+		<div class = "container">
+			<div class = "col-sm-8 col-sm-offset-2">
+				<alert></alert>
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+	</div>
+
+	<!--credits-->
+	<div class = "text-center">
+		<p>
+			<a href = "http://jasonwatmore.com./post/2017/02/22/mean-with-angular-2-user-registration-and-login-example-tutorial" target="_top"> MEAN Stack with angular 2 - User Registration and Login Example & Tutorial</a>
+		</p>
+
+		<p>
+			<a herf="http://jasonwatmore.com" target="_top">JasonWatmore.com</a>
+		</p>
+	</div>
