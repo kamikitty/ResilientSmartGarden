@@ -9,7 +9,7 @@
 #include "dht.h"
 
 #define DEBUG 0
-#define I2C_CHANNEL 1
+#define I2C_CHANNEL 0
 
 //////////////////
 // DIGITAL PINS //
@@ -140,8 +140,8 @@ void readSensors(double &_temperature, double &_humidity, double &_moisture){
   // Get moisture readings
   Moisture.read();
 
-  _temperature = (tempUnit1 + tempUnit2) / 2.0;
-  _humidity = (humidUnit1 + humidUnit2) / 2.0;
+  _temperature = (tempUnit1 + tempUnit2);
+  _humidity = (humidUnit1 + humidUnit2);
   _moisture = Moisture.getReadings();
 
   #if DEBUG

@@ -19,6 +19,10 @@
 
 #define LOCAL_PORT 3001 // Port for WiFi Scanner
 
+#define FULL_TEST 0
+#define TEMP_HUMID_TEST 0
+#define MOISTURE_TEST 1
+
 // Timers
 long lastPostRequest;
 long lastScanRequest;
@@ -51,6 +55,8 @@ void setup() {
   // Start serial communication for debug messages
   Serial.begin(115200); 
   Serial.println();
+
+  Serial.println("MAC Address: " + WiFi.macAddress());
 
   Serial.print("Initializing WiFi connection");
 
@@ -87,8 +93,8 @@ void loop() {
     digitalWrite(D4, LOW);
     Serial.println("--Planter 1--");
     postReadings(PLANTER1_CHANNEL, String(SERVER_URI_PLANTER1));
-    Serial.println("--Planter 2--");
-    postReadings(PLANTER2_CHANNEL, String(SERVER_URI_PLANTER2));
+//    Serial.println("--Planter 2--");
+//    postReadings(PLANTER2_CHANNEL, String(SERVER_URI_PLANTER2));
     digitalWrite(D4, HIGH);
     lastPostRequest = currentMillis;
   }
@@ -140,20 +146,36 @@ String getReadings(int &channel) {
   Wire.flush();
   Wire.requestFrom(channel, 6);
 
+  #if FULL_TEST
+  float temperature = 82.1;
+  float humidity = 60.7;
+  float moisture = 62.3;
+  #elif TEMP_HUMID_TEST
+  float temperature = i2cRead();
+  float humidity = i2cRead();
+  float moisture = 54.4;
+  #elif MOISTURE_TEST
+  float temperature = 71.8;
+  float humidity = 81.2;
+  i2cRead();
+  i2cRead();
+  float moisture = i2cRead();
+  #else
   // Get sensor readings from Arduino UNO. The sensor readings are sent in this order:
   // temperature, humidity, and moisture.
   float temperature = i2cRead();
   float humidity = i2cRead();
   float moisture = i2cRead();
+  #endif
 
   // Build JSON Object
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
   
   JsonObject& sensorReadings = root.createNestedObject("data");
-
+  
   // Insert sensor readings to JSON object
-  sensorReadings["planter"] = channel + 1;
+  sensorReadings["mac"] = WiFi.macAddress();
   sensorReadings["temperature"] = temperature;
   sensorReadings["humidity"] = humidity;
   sensorReadings["moisture"] = moisture;
@@ -212,26 +234,11 @@ void handleHandShake() {
   // If the handshake matches the key...
   if (jsonRequest["handShake"] == HANDSHAKE) {
     //...get the MAC address and convert it to a string
-    byte mac[6];
-    WiFi.macAddress(mac);
-
-    String macAddress;
-    
-    macAddress.concat(String(mac[0], HEX));
-    macAddress.concat(":");
-    macAddress.concat(String(mac[1], HEX));
-    macAddress.concat(":");
-    macAddress.concat(String(mac[2], HEX));
-    macAddress.concat(":");
-    macAddress.concat(String(mac[3], HEX));
-    macAddress.concat(":");
-    macAddress.concat(String(mac[4], HEX));
-    macAddress.concat(":");
-    macAddress.concat(String(mac[5], HEX));
+    String address = WiFi.macAddress();
 
     // Insert the data into the JSON object
     jsonResponse["valid"] = true;
-    jsonResponse["mac"] = macAddress;
+    jsonResponse["mac"] = address;
 
     // Convert the JSON object to a string
     jsonResponse.printTo(serverResponse);

@@ -64,7 +64,7 @@ app.post('/addGarden', function(req,res) {
 	if(!uname || !mac) {
 		res.json({success: false, msg: "Invalid input"});
 	} else {
-		db.addGarden(uname,mac,gardeName,result, function(success,message) {
+		db.addGarden(uname,mac,gardeName, function(success,message) {
 			res.json({success: true});
 		})
 	}
@@ -83,7 +83,7 @@ app.post('/addSensor',function(req,res) {
 		res.json({success: false, msg: 'Invalid input'});
 	}
 	else {
-		db.addSensorReadings(mac,temperature,humidity,moisture,function(success,messgae){
+		db.addSensorReadings(mac,temperature,humidity,moisture,function(success,message){
 			res.json({success:'true'});
 		})
 	}
