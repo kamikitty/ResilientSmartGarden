@@ -1,15 +1,15 @@
-<!-- USed to login and logout of the application.
+/* USed to login and logout of the application.
 to login posts user's credentials to the api and checks the response for a JWT token. If there is one authentication was successful so the user details including token are added to storage
 
 logged in user details saved in local storage
-this will allow the user to remain logged in if the browser is refreshed and in between browser sessions until they are logged out-->
+this will allow the user to remain logged in if the browser is refreshed and in between browser sessions until they are logged out */
 
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
-@Injectable
+@Injectable()
 export class AuthenticationService{
 	constructor(private http:Http){}
 
@@ -22,10 +22,10 @@ export class AuthenticationService{
 				localStorage.setItem('currentUser', JSON.stringify(user));
 
 			}
-			reutrn user;
+			return user;
 		});
 	}
-	logout{
+	logout(){
 
 		//remove user from local storage to log user out
 		localStorage.removeItem('currentUser');

@@ -5,7 +5,7 @@ top of the file contains the service method definitions so it's easy to see all 
 
 also contains the service method implementations*/
 
-var config = require('config.json');
+var config = require('config.json')('./config.json');
 var _ = require('lodash'); //tbh idk what this does but I'll roll with it
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
@@ -13,6 +13,8 @@ var Q = require('q');
 var mongo = require('mongoskin');
 var db = mongo.db(config.connectionString, { native_parser: true});
 db.bind('users');
+
+console.log(config.connectionString);
 
 var service = {};
 
@@ -166,7 +168,6 @@ function update(_id, userParam){
 		}
 		return deferred.promise;
 	}
-}
 
 
 function _delete(_id){

@@ -1,10 +1,5 @@
-
-/* contains configuration data used by the server application. 
-The 'secret' property is used to sign and verify JWT tokens during authentivcation*/
-
-
 {
 	"connectionString": "mongodb://localhost:27017/mean-angular2-registration-login-example",
 	"apiUrl": "http://localhost:4000",
-	"secret": "BEWARE OF THE WALNUT TREE!!!!!" //The tutorial said to put any string and it's midnight, and i've been staring at brackets all day trying to figure out where the extra bracket is coming from so this is what you get
+	"secret": "BEWARE OF THE WALNUT TREE!!!!!"
 }

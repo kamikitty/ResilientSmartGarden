@@ -1,12 +1,12 @@
-<!--contains a standard set of CRUD methods for managing users 
-via the api -->
+/* contains a standard set of CRUD methods for managing users
+via the api */
 
 import { Injectable } from '@angular/core';
 import {Http, Headers, RequestOptions, Response } from '@angular/http';
 import { User } from '../_models/index';
 
 @Injectable()
-export class UserServices {
+export class UserService {
 	constructor(private http: Http){}
 
 	getAll() {

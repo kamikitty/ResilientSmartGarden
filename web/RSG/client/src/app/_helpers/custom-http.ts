@@ -1,11 +1,11 @@
-<!-- custom http service extends the default http service to add the following features:
+/* custom http service extends the default http service to add the following features:
 1. automatically adds the JWT token (if looged in) to the http authorixzation header of all requests
 2. prepends request urls with the api url from the appConfig file
 3. Intercept 401 unauthorized responses from the api to automatically logout the user
--->
+*/
 
 import { Injectable } from "@angular/core";
-import { ConnectionBackend, XHRBackend, RequestOptions, Request, RequestOptionArgs, Response, Http, Headers } from "@angular/http";
+import { ConnectionBackend, XHRBackend, RequestOptions, Request, RequestOptionsArgs, Response, Http, Headers } from "@angular/http";
 import { appConfig } from '../app.config';
 
 import { Observable } from "rxjs/Observable";
@@ -19,11 +19,11 @@ export class CustomHttp extends Http {
 		super(backend, defaultOptions);
 	}
 
-	get(url:string, options?: RequestOptionArgs): Observable<Response>{
-		return super.get(appConfig.apUrl + url, this.addJwt(options)).catch(this.handleError);
+	get(url:string, options?: RequestOptionsArgs): Observable<Response>{
+		return super.get(appConfig.apiUrl + url, this.addJwt(options)).catch(this.handleError);
 	}
 
-	post(url: string, body: string, options?: RequestOptionArgs): Observable<Response>{
+	post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response>{
 		return super.post(appConfig.apiUrl + url, body, this.addJwt(options)).catch(this.handleError);
 	}
 
@@ -44,7 +44,7 @@ export class CustomHttp extends Http {
 		//add authorization header with jwt token
 		let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 		if(currentUser && currentUser.token){
-			options.header.append('Authorization', 'Bearer', + currentUser.token);
+			options.headers.append('Authorization', 'Bearer' + currentUser.token);
 		}
 		return options;
 	}
@@ -65,6 +65,6 @@ export function customHttpFactory(xhrBackend: XHRBackend, requestOptions: Reques
 
 export let customHttpProvider ={
 	provide: Http,
-	userFactory: customHttpFactory,
+	useFactory: customHttpFactory,
 	deps: [XHRBackend, RequestOptions]
 };

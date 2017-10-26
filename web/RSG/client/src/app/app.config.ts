@@ -3,4 +3,4 @@ used by the Angular 2 User Service and Authentication*/
 
 export const appConfig = {
 	apiUrl: 'http://localhost:4000'
-}
+};

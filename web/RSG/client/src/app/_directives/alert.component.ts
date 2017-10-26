@@ -1,7 +1,7 @@
 
-<!-- passes alert message to the template whenever a message is recieved from alert service-->
-import { Component, OnInit} fron '@angular/core';
-import {AlertService } from './_services/index';
+/* passes alert message to the template whenever a message is recieved from alert service */
+import { Component, OnInit} from '@angular/core';
+import {AlertService } from '../_services/index';
 
 @Component({
 	moduleId: module.id,

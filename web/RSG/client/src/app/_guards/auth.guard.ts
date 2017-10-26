@@ -1,15 +1,15 @@
-<!-- prevents unauthenticated users from accessign restricted routes. 
+/* prevents unauthenticated users from accessign restricted routes.
 usedin app.routing to protect the home page route
--->
+*/
 
 import {Injectable } from '@angular/core';
-import {Router, CanActive, ActivateRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import {Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 @Injectable()
 export class AuthGuard implements CanActivate{
 	constructor(private router:Router){}
 
-	canActivate(route: ActivateRouteSnapshot, state: RouterStateSnapshot){
+	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
 		if(localStorage.getItem('currentUser')){
 			//logged in return true
 			return true;

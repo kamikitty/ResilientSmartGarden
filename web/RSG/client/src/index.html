@@ -1,18 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Client</title>
-  <base href="/">
+  <base href="/" />
+  <title>Angular 2 User Registration and Login Example</title>
+  <meta name="viewport" content="width=device-width, intital-scale=1">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="shortcut icon" href="images\fav_icon.png">
+  <link href="//netdna.boostrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <link href="app.css" rel="stylesheet" />
+
+  <script src="node_modules/zone.js/dist/zone.js"></script>
+  <script scr="node_modules/systemjs/dist/system.src.js"></script>
+
+  <script src="system.js.config.js"></script>
+  <script>
+    System.import('app').catch(function (err) {console.error(err); });
+  </script>
 </head>
+
 <body>
-  <app-root>Loading...</app-root>
+  <app>Loading...</app>
 </body>
 </html>
