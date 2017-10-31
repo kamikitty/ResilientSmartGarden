@@ -4,14 +4,16 @@ home route is secured by passibng the AuthGuard to the canActivate property of t
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/index';
-import { LoginComponent } from './login/index';
-import { RegisterComponent } from './register/index';
+import { LoginComponent } from './rsg_login/index';
+import { RegisterComponent } from './rsg_register/index';
+import { GardenComponent } from './garden/index';
 import {AuthGuard } from './_guards/index';
 
 const appRoutes: Routes = [
 	{path: '', component: HomeComponent, canActivate: [AuthGuard]},
 	{ path: 'login', component: LoginComponent },
 	{ path: 'register', component: RegisterComponent },
+	{ path: 'garden', component: GardenComponent },
 
 	//otherwise redirect to home
 	{path: '**', redirectTo: ''}

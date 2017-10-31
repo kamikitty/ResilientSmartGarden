@@ -12,7 +12,7 @@ export class UserService {
 
   getUsers()
   {
-  	return this.http.get('http://localhost:3000/api/user').map(res => res.json());
+  	return this.http.get('http://localhost:4000/user').map(res => res.json());
   }
 
   //add user

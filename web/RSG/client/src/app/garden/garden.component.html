@@ -1,0 +1,14 @@
+<h2>{{currentUser}}'s Garden</h2>
+
+<ul class="gardens">
+  <li *ngFor="let garden of gardens; let i = index">
+    <div><label> Name: {{garden.name}} </label></div>
+    <div><label> Name: {{garden.mac}} </label></div>
+    <div><label> Temperature: {{garden.temperature}} </label></div>
+    <div><label> Humidity: {{garden.humidity}} </label></div>
+    <div><label> Moisture: {{garden.moisture}} </label></div>
+    <div><button (click)="updateSensors(i)">Update</button></div>
+  </li>
+</ul>
+
+<div><button (click)="updateAllSensors()">Update All</button></div>

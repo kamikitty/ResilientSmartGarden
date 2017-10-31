@@ -2,5 +2,10 @@
 used by the Angular 2 User Service and Authentication*/
 
 export const appConfig = {
-	apiUrl: 'http://localhost:4000'
+	apiUrl: 'API Url',
+	apiLogin: 'Address to Login API',
+	apiRegister: 'Address to Register API',
+	apiGetGardens: 'Address to Garden Update API',
+	apiAddGarden: 'Address to Garden Add API',
+	apiSensors: 'Address to Sensor API'
 };
