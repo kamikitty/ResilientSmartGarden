@@ -6,15 +6,6 @@ import { AlertService, AuthenticationService } from '../_services/index';
 import { appConfig } from '../app.config';
 import { Garden } from '../_models/garden';
 
-// nodejs packages for IP addresses
-import * as isReachable from 'is-reachable';
-import * as address4 from 'ip-address';
-import * as ip from 'address';
-
-// const isReachable = require('is-reachable');
-// const address4 = require('up-address').Address4;
-// const internalIp = require('internal-ip');
-
 @Component({
   moduleId: module.id,
   templateUrl: 'garden.component.html'
@@ -36,15 +27,22 @@ export class GardenComponent implements OnInit {
     }
 
 
+  // Function that executes when the this component is initialized
   ngOnInit() {
+    // Initialized array of gardens
     this.gardens = new Array<Garden>();
+
+    // Attempt HTTP POST request to get user's gardens
     this.http.post(appConfig.apiGetGardens, {username: this.currentUser}).subscribe(
       data => {
+        // Parse through the array of objects that contains the name and MAC address
+        // received from the server
         for (var i = 0; i < data['gardens'].length; i++) {
           this.gardens.push(new Garden());
           this.gardens[i].name = data['gardens'][i]['name'];
           this.gardens[i].mac = data['gardens'][i]['mac'];
 
+          // Update the sensor readings using the MAC address of the garden
           this.updateSensors(i);
         }
       },
@@ -52,10 +50,10 @@ export class GardenComponent implements OnInit {
         console.log(error);
       }
     );
-
-    console.log(ip.ip());
   }
 
+  // Helper function that updates the temperature, humidity, and moisture
+  // sensor readings for the specified garden in the Garden Array.
   private updateSensors(i: number) {
     this.http.post(appConfig.apiSensors, {mac: this.gardens[i].mac}).subscribe(
       data => {
@@ -69,6 +67,8 @@ export class GardenComponent implements OnInit {
     );
   }
 
+  // Updates temperature, humidity, and moisture sensor readings for all
+  // the gardens.
   private updateAllSensors() {
     for (var i = 0; i < this.gardens.length; i++)
       this.updateSensors(i);

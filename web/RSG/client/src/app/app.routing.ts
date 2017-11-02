@@ -6,19 +6,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/index';
 import { LoginComponent } from './rsg_login/index';
 import { RegisterComponent } from './rsg_register/index';
-import { GardenComponent } from './garden/index';
-import {AuthGuard } from './_guards/index';
+import { GardenComponent, AddGardenComponent } from './garden/index';
+import { AuthGuard } from './_guards/index';
 
 const appRoutes: Routes = [
 	{path: '', component: HomeComponent, canActivate: [AuthGuard]},
 	{ path: 'login', component: LoginComponent },
 	{ path: 'register', component: RegisterComponent },
 	{ path: 'garden', component: GardenComponent },
+	{ path: 'addGarden', component: AddGardenComponent },
 
 	//otherwise redirect to home
 	{path: '**', redirectTo: ''}
-
-
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);

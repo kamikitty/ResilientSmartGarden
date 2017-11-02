@@ -39,7 +39,7 @@ import { AlertService, AuthenticationService, UserService } from './_services/in
 import { HomeComponent } from './home/index';
 import { LoginComponent } from './rsg_login/index';
 import { RegisterComponent } from './rsg_register/index';
-import { GardenComponent } from './garden/index';
+import { GardenComponent, AddGardenComponent } from './garden/index';
 
 
 @NgModule({
@@ -57,7 +57,8 @@ import { GardenComponent } from './garden/index';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    GardenComponent
+    GardenComponent,
+    AddGardenComponent
   ],
 
   providers: [
