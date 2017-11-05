@@ -1,11 +1,5 @@
 <div class="col-md-6 col-md-offseto3">
-	<h1> Hi {{currentUser.firstName}}!</h1>
-	<p> You're looged in with MEAN Stack and Angular 2!!</p>
-	<h3> All registered usrs:</h3>
-	<ul>
-		<li *ngFor = "let user of users">
-			{{user.username}} ({{user.firstName}} {{user.lastName}}) - <a (click) = "deleteUser(user._id)">Delete</a>
-		</li>
-	</ul>
-	<p> <a [routerLink]="['/login']">Logout</a></p>
+	<h2>RSG Homepage</h2>
+	<div> <a [routerLink]="['/login']">Login</a> </div>
+	<div> <a [routerLink]="['/register']">Register</a></div>
 </div>

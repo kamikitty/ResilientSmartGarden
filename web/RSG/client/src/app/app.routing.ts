@@ -7,6 +7,7 @@ import { HomeComponent } from './home/index';
 import { LoginComponent } from './rsg_login/index';
 import { RegisterComponent } from './rsg_register/index';
 import { GardenComponent, AddGardenComponent } from './garden/index';
+import { CompanionComponent } from './companion/index';
 import { AuthGuard } from './_guards/index';
 
 const appRoutes: Routes = [
@@ -15,6 +16,7 @@ const appRoutes: Routes = [
 	{ path: 'register', component: RegisterComponent },
 	{ path: 'garden', component: GardenComponent },
 	{ path: 'addGarden', component: AddGardenComponent },
+	{ path: 'companion', component: CompanionComponent},
 
 	//otherwise redirect to home
 	{path: '**', redirectTo: ''}

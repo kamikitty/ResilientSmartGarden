@@ -1,0 +1,9 @@
+<h2>Companion Planting</h2>
+
+<ul class="plants">
+  <li *ngFor="let plant of plants; let i = index">
+    <div><label> <b>Name:</b> {{plant._id}} </label></div>
+    <div><label> <b>Companion:</b> {{plant.companion}} </label></div>
+    <div><label> <b>Enemy:</b> {{plant.enemy}} </label></div>
+  </li>
+</ul>

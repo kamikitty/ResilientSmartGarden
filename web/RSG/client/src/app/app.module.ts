@@ -40,6 +40,7 @@ import { HomeComponent } from './home/index';
 import { LoginComponent } from './rsg_login/index';
 import { RegisterComponent } from './rsg_register/index';
 import { GardenComponent, AddGardenComponent } from './garden/index';
+import { CompanionComponent } from './companion/index';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { GardenComponent, AddGardenComponent } from './garden/index';
     LoginComponent,
     RegisterComponent,
     GardenComponent,
-    AddGardenComponent
+    AddGardenComponent,
+    CompanionComponent
   ],
 
   providers: [
