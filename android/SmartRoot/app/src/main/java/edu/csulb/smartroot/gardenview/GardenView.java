@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import edu.csulb.smartroot.R;
 import edu.csulb.smartroot.gardenview.listeners.ScanButton;
 import edu.csulb.smartroot.welcome.Welcome;
@@ -48,7 +46,7 @@ public class GardenView extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Create adapter and set it to recycler view
-        holder = new GardenHolder(userName, this);
+        holder = new GardenHolder(userName, this, findViewById(R.id.fab_add_garden));
         adapter = holder;
         recyclerView.setAdapter(adapter);
     }

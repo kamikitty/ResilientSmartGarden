@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import edu.csulb.smartroot.R;
 import edu.csulb.smartroot.gardenview.httprequests.GetGardens;
+import edu.csulb.smartroot.gardenview.httprequests.GetSensorReadings;
 import edu.csulb.smartroot.gardenview.listeners.*;
 
 /**
@@ -32,6 +33,7 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
     private ArrayList<Garden> gardens;
     private ViewGroup viewGroup;
     private Context context;
+    private View fabButton;
 
     private String userName;
 
@@ -39,9 +41,10 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
      * Constructor that will send a POST request to the server to get user's garden, store it in
      * an ArrayList of gardens, and create each individual card.
      */
-    public GardenHolder(String userName, Context context) {
+    public GardenHolder(String userName, Context context, View fabButton) {
         gardens = new ArrayList<Garden>();
         this.context = context;
+        this.fabButton = fabButton;
 
         this.userName = userName;
         this.viewGroup = null;
@@ -80,14 +83,10 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(
                 gardens.get(position).getGardenName());
-        holder.temperature.setText(
-                context.getString(R.string.label_temperature, gardens.get(position).getTemperature()));
-        holder.moisture.setText(
-                context.getString(R.string.label_moisture, gardens.get(position).getMoisture()));
-        holder.humidity.setText(
-                context.getString(R.string.label_humidity, gardens.get(position).getHumidity()));
-        holder.lastUpdated.setText(
-                context.getString(R.string.label_updated, gardens.get(position).getLastUpdated()));
+
+        // Update sensor readings
+        GetSensorReadings getSensorReadings = new GetSensorReadings(fabButton, holder, gardens, context);
+        getSensorReadings.execute(context.getResources().getString(R.string.sensor_api));
     }
 
     /**
@@ -299,6 +298,14 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
 
             button = (Button) v.findViewById(R.id.button_setup);
             button.setOnClickListener(new SetupButton());
+
+            // Initialize readings on card
+            temperature.setText(
+                    context.getString(R.string.label_temperature, 0.0));
+            moisture.setText(
+                    context.getString(R.string.label_moisture, 0.0));
+            humidity.setText(
+                    context.getString(R.string.label_humidity, 0.0));
         }
 
         /**
