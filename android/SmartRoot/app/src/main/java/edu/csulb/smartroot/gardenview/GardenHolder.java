@@ -3,6 +3,7 @@ package edu.csulb.smartroot.gardenview;
 import android.app.Dialog;
 import android.content.Context;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
@@ -34,6 +35,7 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
     private ViewGroup viewGroup;
     private Context context;
     private View fabButton;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private String userName;
 
@@ -41,10 +43,11 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
      * Constructor that will send a POST request to the server to get user's garden, store it in
      * an ArrayList of gardens, and create each individual card.
      */
-    public GardenHolder(String userName, Context context, View fabButton) {
+    public GardenHolder(String userName, Context context, View fabButton, SwipeRefreshLayout swipeRefreshLayout) {
         gardens = new ArrayList<Garden>();
         this.context = context;
         this.fabButton = fabButton;
+        this.swipeRefreshLayout = swipeRefreshLayout;
 
         this.userName = userName;
         this.viewGroup = null;

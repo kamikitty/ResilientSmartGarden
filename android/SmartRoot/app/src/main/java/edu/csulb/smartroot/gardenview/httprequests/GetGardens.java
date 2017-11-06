@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
     private ArrayList<Garden> gardens;
     private Dialog dialogProgress;
     private Context context;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private String userName;
 
@@ -51,13 +53,14 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
      *
      * @param holder The referenced GardenHolder.
      * @param userName The username.
-*      @param context Context of activity.
+     *      @param context Context of activity.
      */
     public GetGardens(GardenHolder holder, String userName, Context context) {
         this.holder = holder;
         this.gardens = holder.getGardens();
         this.context = context;
         this.userName = userName;
+        this.swipeRefreshLayout = null;
 
         this.resources = context.getApplicationContext().getResources();
         this.responseCode = 0;
