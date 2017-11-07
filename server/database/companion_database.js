@@ -15,6 +15,7 @@ var cCompanions = 'companion';
 
 // Export functions. This will be the functions to interact with the user database.
 exports.findPlant = findPlant;
+exports.findAllPlants = findAllPlants;
 exports.findCompanion = findCompanion;
 exports.findEnemy = findEnemy;
 
@@ -70,6 +71,26 @@ function findPlant(plant, callback) {
   })
 }
 
+/// @function findAllPlants
+/// Finds all the plants in the database and returns it in an array.
+/// @param {Function} callback The callback function that contains all the plants
+/// in an array
+function findAllPlants(callback) {
+  MongoClient.connect(dbCompanion, function(err, db){
+    assert.equal(null, err);
+    console.log("Connected to " + dbCompanion);
+
+    var collection = db.collection(cCompanions);
+
+    collection.find({}).toArray(function(err, docs) {
+      assert.equal(err,null);
+      callback(docs);
+    });
+
+    db.close();
+  });
+}
+
 /// @function findCompanion
 /// Finds the companion plants of the specified plant.
 /// @param {String} plant The plant to find companions for.
@@ -96,7 +117,7 @@ function findCompanion(plant, callback) {
 /// Finds the enemy plants of the specified plant.
 /// @param {String} plant The plant to find enemies for.
 /// @param {Function} callback The callback function that contains an array
-/// of companions for the specified plant.
+/// of enemies for the specified plant.
 function findEnemy(plant, callback) {
   MongoClient.connect(dbCompanion, function(err, db) {
     assert.equal(null, err);

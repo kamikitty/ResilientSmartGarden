@@ -82,6 +82,11 @@ db.companion.findPlant('Onion', function(docs) {
   console.log(docs);
 });
 
+// Finds all the plants in the database
+db.companion.findAllPlants(function(docs) {
+  console.log(docs);
+});
+
 // Finds a plant's companion plants
 db.companion.findCompanion('Onion', function(docs) {
   console.log(docs);
