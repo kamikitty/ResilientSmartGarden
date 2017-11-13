@@ -11,7 +11,7 @@ import { GettingStartedComponent } from './getting_started/index';
 import { LoginComponent } from './rsg_login/index';
 import { RegisterComponent } from './rsg_register/index';
 import { GardenComponent, AddGardenComponent } from './garden/index';
-import { CompanionComponent } from './companion/index';
+import { CompanionParentComponent } from './companion/index';
 import { AuthGuard } from './_guards/index';
 
 const appRoutes: Routes = [
@@ -24,7 +24,7 @@ const appRoutes: Routes = [
 	{ path: 'register', component: RegisterComponent },
 	{ path: 'garden', component: GardenComponent },
 	{ path: 'addGarden', component: AddGardenComponent },
-	{ path: 'companion', component: CompanionComponent},
+	{ path: 'companion', component: CompanionParentComponent},
 
 	//otherwise redirect to home
 	{path: '**', redirectTo: ''}

@@ -16,6 +16,7 @@ var cCompanions = 'companion';
 // Export functions. This will be the functions to interact with the user database.
 exports.findPlant = findPlant;
 exports.findAllPlants = findAllPlants;
+exports.findAllPlantNames = findAllPlantNames;
 exports.findCompanion = findCompanion;
 exports.findEnemy = findEnemy;
 
@@ -68,7 +69,7 @@ function findPlant(plant, callback) {
     });
 
     db.close();
-  })
+  });
 }
 
 /// @function findAllPlants
@@ -84,6 +85,26 @@ function findAllPlants(callback) {
 
     collection.find({}).toArray(function(err, docs) {
       assert.equal(err,null);
+      callback(docs);
+    });
+
+    db.close();
+  });
+}
+
+/// @function findAllPlantNames
+/// Finds all the names of the plants in the database and return it in an array.
+/// @param {Function} callback The callback function that contains all the names
+/// of plants in an array
+function findAllPlantNames(callback) {
+  MongoClient.connect(dbCompanion, function(err, db) {
+    assert.equal(null, err);
+    console.log("Connected to " + dbCompanion);
+
+    var collection = db.collection(cCompanions);
+
+    collection.find({}, {'_id':1}).toArray(function(err, docs) {
+      assert.equal(err, null);
       callback(docs);
     });
 
@@ -110,7 +131,7 @@ function findCompanion(plant, callback) {
     });
 
     db.close();
-  })
+  });
 }
 
 /// @function findEnemy
@@ -132,5 +153,5 @@ function findEnemy(plant, callback) {
     });
 
     db.close();
-  })
+  });
 }

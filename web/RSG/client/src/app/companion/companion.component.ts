@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -7,34 +7,40 @@ import { appConfig } from '../app.config';
 
 @Component({
   moduleId: module.id,
+  selector: 'companion-plant',
   templateUrl: 'companion.component.html'
 })
 
-export class CompanionComponent implements OnInit {
-  currentUser: string;
-  loading = false;
-  plants: any={};
+// Class that will maintain plant information on the companion planting layout.
+// There is 3 inputs: plantList to get the list of plant names, posRow to get the
+// row location of the plant, and posCol to get the column location of the plant.
+// The list of plants names is retrieved from "companion.parent.component.ts".
+// The row position and column position is retrieved from "companion.parent.component.html".
+// The outout will send the plant name, row position, and column position to
+// "companion.parent.component.ts" when a change is detected.
+export class CompanionComponent {
+  selectedPlant: string = '';
+  @Input() plantList: string[];
+  @Input() posRow: number;
+  @Input() posCol: number;
+  @Output() sendData: EventEmitter <any[]>= new EventEmitter<any[]>();
 
-  constructor(
-  private route: ActivatedRoute,
-  private router: Router,
-  private authenticationService: AuthenticationService,
-  private alertService: AlertService,
-  private http: HttpClient){}
+  // Callback function that will send the plant's position in the garden as row
+  // and column, and the plant name.
+  onChange() {
+    let params = new Array();
 
-  ngOnInit() {
-    this.http.get(appConfig.apiGetPlants).subscribe(
-      data => {
-        this.plants = data['plants'];
+    // Prepare data to send to parent component
+    let plant = this.selectedPlant;
+    let row = this.posRow;
+    let col = this.posCol;
 
-        console.log(this.plants.length);
+    // Store the data into an array to send to parent component
+    params.push(plant);
+    params.push(row);
+    params.push(col);
 
-        for (var i = 0; i < this.plants.length; i++)
-          console.log(this.plants[i]._id);
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    // Send the data to parent component
+    this.sendData.emit(params);
   }
 }

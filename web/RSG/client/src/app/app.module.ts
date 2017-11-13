@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 
 //import { customHttpProvider } from './_helpers/index';
 import { AlertComponent } from './_directives/index';
@@ -21,7 +22,7 @@ import { GettingStartedComponent } from './getting_started/index';
 import { LoginComponent } from './rsg_login/index';
 import { RegisterComponent } from './rsg_register/index';
 import { GardenComponent, AddGardenComponent } from './garden/index';
-import { CompanionComponent } from './companion/index';
+import { CompanionParentComponent, CompanionComponent } from './companion/index';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { CompanionComponent } from './companion/index';
     FormsModule,
     HttpModule,
     HttpClientModule,
-    routing
+    routing,
+    NguiAutoCompleteModule
   ],
 
   declarations: [
@@ -45,6 +47,7 @@ import { CompanionComponent } from './companion/index';
     RegisterComponent,
     GardenComponent,
     AddGardenComponent,
+    CompanionParentComponent,
     CompanionComponent
   ],
 
