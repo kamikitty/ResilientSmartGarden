@@ -43,7 +43,7 @@ public class SetupButton implements Button.OnClickListener {
     /**
      * A button listener for Cancel. This will dismiss the dialog.
      */
-    private class CancelButton implements Button.OnClickListener {
+    public static class CancelButton implements Button.OnClickListener {
         Dialog dialog;
 
         /**
@@ -68,7 +68,7 @@ public class SetupButton implements Button.OnClickListener {
     /**
      * A button listener for Done. This will get the values from the user.
      */
-    private class DoneButton implements Button.OnClickListener {
+    public static class DoneButton implements Button.OnClickListener {
         Dialog dialog;
 
         /**

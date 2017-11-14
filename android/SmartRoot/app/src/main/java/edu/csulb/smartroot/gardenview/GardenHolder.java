@@ -4,9 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,7 +85,7 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
      * @param position The position of the ViewHolder in the adapter.
      */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.name.setText(
                 gardens.get(position).getGardenName());
 
@@ -261,7 +263,8 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
      * An inner class that references the card view. It inherits from ViewHolder and is used with
      * RecyclerView.Adapter.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements Toolbar.OnMenuItemClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements
+            Toolbar.OnMenuItemClickListener {
 
         public TextView name;
         public TextView temperature;
@@ -271,7 +274,7 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
 
         /**
          * Constructor that will initialize the garden card. It will set up all of the TextView,
-         * Buttons, and Overflow Menu.
+         * Buttons, Long Click, and Overflow Menu.
          * @param v The garden card view.
          */
         public ViewHolder(View v){
@@ -289,18 +292,20 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
             humidity = (TextView) v.findViewById(R.id.humidity);
             lastUpdated = (TextView) v.findViewById(R.id.updated);
 
-            // Initialize buttons
-            Button button = (Button) v.findViewById(R.id.button_update);
-            button.setOnClickListener(new UpdateButton(this, gardens, context));
+            // REMOVED TO STREAMLINE UI
 
-            button = (Button) v.findViewById(R.id.button_history);
-            button.setOnClickListener(new HistoryButton());
-
-            button = (Button) v.findViewById(R.id.button_water);
-            button.setOnClickListener(new WaterButton());
-
-            button = (Button) v.findViewById(R.id.button_setup);
-            button.setOnClickListener(new SetupButton());
+//            // Initialize buttons
+//            Button button = (Button) v.findViewById(R.id.button_update);
+//            button.setOnClickListener(new UpdateButton(this, gardens, context));
+//
+//            button = (Button) v.findViewById(R.id.button_history);
+//            button.setOnClickListener(new HistoryButton());
+//
+//            button = (Button) v.findViewById(R.id.button_water);
+//            button.setOnClickListener(new WaterButton());
+//
+//            button = (Button) v.findViewById(R.id.button_setup);
+//            button.setOnClickListener(new SetupButton());
 
             // Initialize readings on card
             temperature.setText(
@@ -319,6 +324,26 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
          */
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
+
+            if (menuItem.getItemId() == R.id.menu_limit) {
+                // Create dialog
+                Dialog dialog = new Dialog(context);
+                View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_setup_water, null);
+
+                // Set layout
+                dialog.setContentView(dialogView);
+                dialog.setCanceledOnTouchOutside(false);
+
+                // Setup button listeners for cancel and done
+                Button button = (Button) dialogView.findViewById(R.id.button_water_cancel);
+                button.setOnClickListener(new SetupButton.CancelButton(dialog));
+
+                button = (Button) dialogView.findViewById(R.id.button_done);
+                button.setOnClickListener(new SetupButton.DoneButton(dialog));
+
+                // display the dialog
+                dialog.show();
+            }
 
             if (menuItem.getItemId() == R.id.menu_push) {
                 // Create dialog
@@ -343,6 +368,8 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
                 // Display dialog
                 dialog.show();
             }
+
+
             if(menuItem.getItemId() == R.id.menu_shutdown) {
                 // TODO: Implement sending shut down message garden.
                 System.out.println("Shut down");

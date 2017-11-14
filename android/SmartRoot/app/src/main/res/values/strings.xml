@@ -72,6 +72,7 @@
     <string name="button_water_setup">SETUP</string>
 
     <!-- Labels for Overflow Menu -->
+    <string name="menu_limit">Set Limits</string>
     <string name="menu_push">Push Notification</string>
     <string name="menu_shutdown">Shut Down</string>
 
