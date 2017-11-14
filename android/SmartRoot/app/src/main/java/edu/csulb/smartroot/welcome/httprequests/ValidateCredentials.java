@@ -1,18 +1,17 @@
-package edu.csulb.smartroot.gardenview.httprequests;
+package edu.csulb.smartroot.welcome.httprequests;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,54 +25,47 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import edu.csulb.smartroot.R;
-import edu.csulb.smartroot.gardenview.Garden;
-import edu.csulb.smartroot.gardenview.GardenHolder;
+import edu.csulb.smartroot.gardenview.GardenView;
 
 /**
- * An AsyncTask that will get the user's garden from the server.
+ * An inner class that will handle validating the user's credentials, in a separate
+ * thread.
  */
-public class GetGardens extends AsyncTask<String, Void, JSONObject> {
-
-    private GardenHolder holder;
-    private ArrayList<Garden> gardens;
-    private Dialog dialogProgress;
-    private Context context;
-    private SwipeRefreshLayout swipeRefreshLayout;
+public class ValidateCredentials extends AsyncTask<String, Void, JSONObject> {
 
     private String userName;
+    private String password;
+
+    private Dialog dialog;
+    private Dialog dialogProgress;
+    private View view;
 
     private Resources resources;
     private int responseCode;
 
     /**
-     * Constructor that references the GardenHolder and ArrayList of gardens
+     * Constructor that references the username and password
      *
-     * @param holder The referenced GardenHolder.
-     * @param userName The username.
-     *      @param context Context of activity.
+     * @param eUserName The EditText of username.
+     * @param ePassword The EditText of password.
+     * @param view References the login button
      */
-    public GetGardens(GardenHolder holder, String userName, Context context) {
-        this.holder = holder;
-        this.gardens = holder.getGardens();
-        this.context = context;
-        this.userName = userName;
-        this.swipeRefreshLayout = null;
+    public ValidateCredentials(EditText eUserName, EditText ePassword, View view, Dialog dialog) {
+        this.userName = eUserName.getText().toString();
+        this.password = ePassword.getText().toString();
 
-        this.resources = context.getApplicationContext().getResources();
+        this.dialog = dialog;
+        this.view = view;
+        this.resources = view.getContext().getResources();
         this.responseCode = 0;
 
         // Create dialog for server connection
-        dialogProgress = new Dialog(context);
+        dialogProgress = new Dialog(view.getContext());
 
         // Apply the layout
-        View viewDialog = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null);
-
-        TextView textView = (TextView) viewDialog.findViewById(R.id.progress_message);
-        textView.setText(R.string.progress_garden);
-
+        View viewDialog = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_progress, null);
         dialogProgress.setContentView(viewDialog);
 
         // Make it so the dialog cannot be dismissed on click
@@ -92,10 +84,10 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
     }
 
     /**
-     * An implementation of AsyncTask. This will get the user's garden from the server in a
+     * An implementation of AsyncTask. This will get the user's credentials from the server in a
      * separate thread.
      * @param args The API address to send a POST request.
-     * @return A JSONObject containing the user's garden.
+     * @return A JSONObject containing username and password.
      */
     @Override
     protected JSONObject doInBackground(String...args) {
@@ -107,7 +99,9 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
 
             // Create JSON object to send to server
             JSONObject data = new JSONObject();
+
             data.put("username", userName);
+            data.put("password", password);
 
             // Open a connection to send a POST request to the server
             http = (HttpURLConnection) url.openConnection();
@@ -122,7 +116,7 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
 
             sb.append(data.toString());
 
-            Log.d("GARDEN RETRIEVE", "Data: " + sb.toString());
+            Log.d("LOGIN", "Data: " + data.toString());
 
             OutputStreamWriter out = new OutputStreamWriter(http.getOutputStream());
             out.write(sb.toString());
@@ -134,7 +128,7 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
             // If the connection to the server is a success...
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 //... begin to read the server response
-                InputStream in = new BufferedInputStream((http.getInputStream()));
+                InputStream in = new BufferedInputStream(http.getInputStream());
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
                 String buffer = null;
@@ -142,28 +136,23 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
                     result.append(buffer);
                 }
             }
-        } catch(MalformedURLException e) {
-            Log.d("GARDEN RETRIEVE", "URL not in correct format");
-            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            Log.d("LOGIN", "URL is not in the correct format");
             return null;
         } catch (ConnectException e) {
             responseCode = HttpURLConnection.HTTP_NOT_FOUND;
             e.printStackTrace();
-        } catch(IOException e) {
-            Log.d("GARDEN RETRIEVE", "IO exception");
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (JSONException e) {
-            Log.d("GARDEN RETRIEVE", "JSON exception");
-            e.printStackTrace();
-        } finally {
+        } catch (JSONException e) {
+            Log.d("LOGIN", "JSON format is incorrect");
+        }  finally {
             // Disconnect from the server
             if (http != null)
                 http.disconnect();
         }
 
-        Log.d("GARDEN RETRIEVE", "Response: " + responseCode);
-        Log.d("GARDEN RETRIEVE", "Results: " + result);
+        Log.d("REGISTER", "Results: " + result);
 
         // Convert the response from the server into a JSONObject
         JSONObject jsonObject = null;
@@ -177,71 +166,96 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
     }
 
     /**
-     * An implementation of AsyncTask. This will retrieve the user's garden and pass it
-     * to the garden ArrayList.
+     * An implementation of AsyncTask. This will verify the user's credentials.
      *
-     * @param jsonObject JSON object containing the user's garden.
+     * @param jsonObject JSON object containing the user's credentials.
      */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         dialogProgress.dismiss();
 
-        Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(view.getContext(), "", Toast.LENGTH_SHORT);
 
         TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
         textView.setGravity(Gravity.CENTER);
 
         // Process response code and execute appropriate action
-        switch(responseCode) {
+        switch (responseCode) {
             case HttpURLConnection.HTTP_OK:
                 // If the server response is valid...
                 if (jsonObject != null) {
                     try {
-                        // Get user's garden from JSONObject
-                        JSONArray jsonGardens = jsonObject.getJSONArray("gardens");
+                        // Get credentials from JSONObject
+                        boolean response = jsonObject.getBoolean("success");
 
-                        gardens.clear();
+                        // If the user credentials are validated...
+                        if (response) {
+                            //... create an intent to go to the GardenView
 
-                        // Separate the JSONObject gardens into arrays
-                        for (int i = 0; i < jsonGardens.length(); i++) {
-                            JSONObject garden = jsonGardens.getJSONObject(i);
-                            gardens.add(new Garden(
-                                    garden.getString("name"),
-                                    garden.getString("mac")));
+                            // Create toast to notify user of successful login
+                            toast.setText(R.string.login_success);
+                            toast.show();
+
+                            // Dismiss the dialog
+                            dialog.dismiss();
+
+                            // Create new intent and store username to display in GardenView
+                            Intent intent = new Intent(view.getContext(), GardenView.class);
+                            intent.putExtra("username", userName);
+
+                            view.getContext().startActivity(intent);
+                        } else {
+                            //... otherwise notify the user the credentials are incorrect
+                            toast.setText(R.string.login_failed);
+                            toast.show();
+
+                            // Show dialog again
+                            dialog.show();
                         }
-
-                        // Update recycler view
-                        holder.notifyDataSetChanged();
-
                     } catch (JSONException e) {
-                        toast.setText(R.string.garden_invalid_data);
+                        // The JSON format is incorrect. Notify user an error has occurred.
+                        toast.setText(R.string.login_invalid_data);
                         toast.show();
 
+                        // Show dialog again
+                        dialog.show();
                         e.printStackTrace();
                     }
-                }
+                } else {
+                    // The server did not respond with a JSON format. Notify user an error has occurred.
+                    toast.setText(R.string.login_invalid_data);
+                    toast.show();
 
+                    // Show dialog again
+                    dialog.show();
+                }
                 break;
 
             case HttpURLConnection.HTTP_NOT_FOUND:
-                // Notify user server cannot be found
-                toast.setText(R.string.garden_404);
+                // Notify user the server cannot be found
+                toast.setText(R.string.login_404);
                 toast.show();
 
+                // Show dialog again
+                dialog.show();
                 break;
 
             case HttpURLConnection.HTTP_FORBIDDEN:
                 // Notify user the server is forbidden
-                toast.setText(R.string.garden_403);
+                toast.setText(R.string.login_403);
                 toast.show();
 
+                // Show dialog again
+                dialog.show();
                 break;
 
             default:
                 // Notify user an unexpected server response was received
-                toast.setText(R.string.garden_unknown);
+                toast.setText(R.string.login_unknown);
                 toast.show();
 
+                // Show dialog again
+                dialog.show();
                 break;
         }
     }

@@ -1,0 +1,63 @@
+<!-- Determines the compatibility of the plants in garden using a companion
+planting database. The plants will be organized in a grid layout, which represents
+ a garden. The user can adjust the size of the garden by selected the amount of
+ rows and columns. The garden will be generated based on the row and column
+ size selected. Each element in the garden will have a companion-plant component
+ that is retrieved from "companion.component.ts". The compatibility of the plants
+ will be determined by the companion and enemy of the plants. The color of the
+ element will change depending on compatibility: red when an enemy is present, yellow
+ when an enemy or companion is not present, and green when a companion is present
+ and no enemy is present. -->
+
+<h2>Companion Planting</h2>
+
+<!----------------->
+<!-- GARDEN SIZE -->
+<!----------------->
+
+<!-- Form where the user will select the size of the garden in terms of rows
+and columns. The default value is a row of 2, and column of 4. -->
+<form name="form" (ngSubmit) = "initializeArray()" #formSize="ngForm">
+  <div class = "form-group">
+    <label for = "row">Row</label>
+    <input type="text" name="row" [(ngModel)]="row" required>
+    <label for = "column">Column</label>
+    <input type="text" name="column" [(ngModel)]="column" required>
+  </div>
+
+  <!-- Button that will generate the new garden. The function "initializeArray()"
+  will be executed when this button is pressed. The function is located in
+  "companion.parent.component.ts". -->
+  <div class = "form-group">
+    <button class="btn btn-primary">Set Garden</button>
+  </div>
+</form>
+
+<!----------------->
+<!-- GARDEN GRID -->
+<!----------------->
+
+<!-- A table that represent that garden and the plants within it. The garden
+is generated based on the row and column size selected. The size of the garden will
+be referenced in the plants 2D array located in "companion.parent.component.ts".
+Each element will contain and instance of the companion-plant component. The list
+of plants, the row and column position, and callback function to send data to
+"companion.parent.component.ts" will be assigned for each companion-plant component.
+Each element will also have an assigned color based on the current status of the plant. -->
+<table>
+  <tr *ngFor = "let plantr of plants; let i = index">
+    <td *ngFor ="let plantc of plantr; let j = index" [ngStyle]="{'background-color':plants[i][j].color}">
+      <div><label> <b>Plant {{j + 1 + (plantr.length * i)}}</b> </label></div>
+      <companion-plant [plantList]='plantList' [posRow]=i [posCol]=j (sendData)="getData($event)"></companion-plant>
+    </td>
+  </tr>
+</table>
+
+<!-- Button that will determine the capatibility of the plants. The function
+"checkCompanion() will be executed when this button is pressed. The function is
+located in "companion.parent.component.ts". -->
+<form name="companion" (ngSubmit) = "checkCompanion()">
+  <div class="form-group">
+    <button class="btn btn-primary">Check Compatibility</button>
+  </div>
+</form>

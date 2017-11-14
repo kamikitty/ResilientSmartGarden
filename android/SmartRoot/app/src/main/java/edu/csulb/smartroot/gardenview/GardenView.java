@@ -1,7 +1,9 @@
 package edu.csulb.smartroot.gardenview;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,9 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import edu.csulb.smartroot.R;
+import edu.csulb.smartroot.gardenview.httprequests.GetGardens;
 import edu.csulb.smartroot.gardenview.listeners.ScanButton;
 import edu.csulb.smartroot.welcome.Welcome;
 
@@ -27,6 +28,7 @@ public class GardenView extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private GardenHolder holder;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private String userName;
 
@@ -48,15 +50,19 @@ public class GardenView extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Create adapter and set it to recycler view
-        holder = new GardenHolder(userName, this);
+        holder = new GardenHolder(userName, this, findViewById(R.id.fab_add_garden), swipeRefreshLayout);
         adapter = holder;
         recyclerView.setAdapter(adapter);
+
+        // Set up refresh
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.garden_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new GardenRefresh(this));
     }
 
     /**
-     * Creates the action bar menu using menu_actionbar.xml layout.
-     * @param menu The menu to create the action bar.
-     * @return True when the action bar menu is created.
+     * An implementation of the action bar menu. This will initialize the menu.
+     * @param menu The menu to initialize.
+     * @return
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -136,6 +142,31 @@ public class GardenView extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             dialog.dismiss();
+        }
+    }
+
+    /**
+     * A SwipeRefreshLayout listener. This will refresh the user's gardens.
+     */
+    private class GardenRefresh implements SwipeRefreshLayout.OnRefreshListener {
+        private Context context;
+
+        /**
+         * Constructor that references the context.
+         * @param context Context to reference.
+         */
+        public GardenRefresh(Context context) {
+            this.context = context;
+        }
+
+        /**
+         * An implementation of SwipeRefreshLayout.OnRefreshListener. This will get the user's
+         * gardens.
+         */
+        @Override
+        public void onRefresh() {
+            new GetGardens(holder, userName, context).execute(getString(R.string.garden_retrieve_api));
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 

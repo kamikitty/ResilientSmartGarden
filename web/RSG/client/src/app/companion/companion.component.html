@@ -1,0 +1,19 @@
+<!-- Contains the auto complete feature to select a plant. The selected planted
+will be stored in "selectedPlant" in "companion.component.ts". The list of plants
+to select is an array of strings that are retrieved from "companion.parent.component.ts",
+as an @Input in "companion.component.ts". Selecting a plant will execute the callback
+function "onChange()" to send the plant data to "companion.parent.component.ts",
+where the companion planting logic will occur -->
+
+<div> <input auto-complete
+  [(ngModel)]="selectedPlant"
+  [source]="plantList"
+  (valueChanged)="onChange()"
+  placeholder="Enter Plant"
+  max-num-list="5"
+  min-chars="2"
+  no-match-found-text="No plants found"
+  accept-user-input="false"
+  auto-select-first-item="true"
+  re-focus-after-select="false"/>
+</div>

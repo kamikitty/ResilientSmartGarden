@@ -10,7 +10,8 @@
     android:layout_marginRight="@dimen/card_margin_horizontal"
     android:layout_marginBottom="@dimen/card_margin_vertical"
     card_view:cardCornerRadius="@dimen/card_corner_radius"
-    card_view:cardElevation="@dimen/card_elevation">
+    card_view:cardElevation="@dimen/card_elevation"
+    android:longClickable="true">
 
     <!-- Toolbar for overflow menu -->
     <android.support.v7.widget.Toolbar
@@ -65,6 +66,8 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/fontsize_readings"/>
 
+        <!-- REMOVED TO STREAMLINE CARD UI -->
+
         <!-- Last Updated -->
         <TextView
             android:id="@+id/updated"
@@ -74,80 +77,80 @@
             android:text="@string/label_updated"
             android:textSize="@dimen/fontsize_updated"/>
 
-        <!-- Buttons for updating garden information and view history -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <!--&lt;!&ndash; Buttons for updating garden information and view history &ndash;&gt;-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
 
-            <!-- Update button -->
-            <Button
-                android:id="@+id/button_update"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="0dp"
-                android:text="@string/button_update"
-                android:textColor="@color/color_text_button"
-                android:minWidth="@dimen/flat_button_dense_min_width"
-                android:height="@dimen/flat_button_dense_height"
-                style="@style/Widget.AppCompat.Button.Borderless"/>
+            <!--&lt;!&ndash; Update button &ndash;&gt;-->
+            <!--<Button-->
+                <!--android:id="@+id/button_update"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingLeft="0dp"-->
+                <!--android:text="@string/button_update"-->
+                <!--android:textColor="@color/color_text_button"-->
+                <!--android:minWidth="@dimen/flat_button_dense_min_width"-->
+                <!--android:height="@dimen/flat_button_dense_height"-->
+                <!--style="@style/Widget.AppCompat.Button.Borderless"/>-->
 
-            <!-- View History button -->
-            <Button
-                android:id="@+id/button_history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/button_history"
-                android:textColor="@color/color_text_button"
-                android:minWidth="@dimen/flat_button_dense_min_width"
-                android:height="@dimen/flat_button_dense_height"
-                style="@style/Widget.AppCompat.Button.Borderless"/>
-        </LinearLayout>
+            <!--&lt;!&ndash; View History button &ndash;&gt;-->
+            <!--<Button-->
+                <!--android:id="@+id/button_history"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/button_history"-->
+                <!--android:textColor="@color/color_text_button"-->
+                <!--android:minWidth="@dimen/flat_button_dense_min_width"-->
+                <!--android:height="@dimen/flat_button_dense_height"-->
+                <!--style="@style/Widget.AppCompat.Button.Borderless"/>-->
+        <!--</LinearLayout>-->
 
-        <!-- Divider separating history and automated watering -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" />
+        <!--&lt;!&ndash; Divider separating history and automated watering &ndash;&gt;-->
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="@android:color/darker_gray" />-->
 
-        <!-- Automatic Watering -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding_label"
-            android:text="@string/label_water"
-            android:textSize="@dimen/fontsize_readings"
-            android:textColor="@android:color/black"/>
+        <!--&lt;!&ndash; Automatic Watering &ndash;&gt;-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingTop="@dimen/padding_label"-->
+            <!--android:text="@string/label_water"-->
+            <!--android:textSize="@dimen/fontsize_readings"-->
+            <!--android:textColor="@android:color/black"/>-->
 
-        <!-- Buttons for watering garden and setting up automation -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <!--&lt;!&ndash; Buttons for watering garden and setting up automation &ndash;&gt;-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
 
-            <!-- Water Now button -->
-            <Button
-                android:id="@+id/button_water"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="0dp"
-                android:text="@string/button_water"
-                android:textColor="@color/color_text_button"
-                android:minWidth="@dimen/flat_button_dense_min_width"
-                android:height="@dimen/flat_button_dense_height"
-                style="@style/Widget.AppCompat.Button.Borderless"/>
+            <!--&lt;!&ndash; Water Now button &ndash;&gt;-->
+            <!--<Button-->
+                <!--android:id="@+id/button_water"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingLeft="0dp"-->
+                <!--android:text="@string/button_water"-->
+                <!--android:textColor="@color/color_text_button"-->
+                <!--android:minWidth="@dimen/flat_button_dense_min_width"-->
+                <!--android:height="@dimen/flat_button_dense_height"-->
+                <!--style="@style/Widget.AppCompat.Button.Borderless"/>-->
 
-            <!-- Setup button -->
-            <Button
-                android:id="@+id/button_setup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/button_water_setup"
-                android:textColor="@color/color_text_button"
-                android:minWidth="@dimen/flat_button_dense_min_width"
-                android:height="@dimen/flat_button_dense_height"
-                style="@style/Widget.AppCompat.Button.Borderless"/>
-        </LinearLayout>
+            <!--&lt;!&ndash; Setup button &ndash;&gt;-->
+            <!--<Button-->
+                <!--android:id="@+id/button_setup"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/button_water_setup"-->
+                <!--android:textColor="@color/color_text_button"-->
+                <!--android:minWidth="@dimen/flat_button_dense_min_width"-->
+                <!--android:height="@dimen/flat_button_dense_height"-->
+                <!--style="@style/Widget.AppCompat.Button.Borderless"/>-->
+        <!--</LinearLayout>-->
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

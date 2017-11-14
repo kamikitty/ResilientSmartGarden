@@ -3,9 +3,12 @@ package edu.csulb.smartroot.gardenview;
 import android.app.Dialog;
 import android.content.Context;
 
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 
 import edu.csulb.smartroot.R;
 import edu.csulb.smartroot.gardenview.httprequests.GetGardens;
+import edu.csulb.smartroot.gardenview.httprequests.GetSensorReadings;
 import edu.csulb.smartroot.gardenview.listeners.*;
 
 /**
@@ -32,6 +36,8 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
     private ArrayList<Garden> gardens;
     private ViewGroup viewGroup;
     private Context context;
+    private View fabButton;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private String userName;
 
@@ -39,9 +45,11 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
      * Constructor that will send a POST request to the server to get user's garden, store it in
      * an ArrayList of gardens, and create each individual card.
      */
-    public GardenHolder(String userName, Context context) {
+    public GardenHolder(String userName, Context context, View fabButton, SwipeRefreshLayout swipeRefreshLayout) {
         gardens = new ArrayList<Garden>();
         this.context = context;
+        this.fabButton = fabButton;
+        this.swipeRefreshLayout = swipeRefreshLayout;
 
         this.userName = userName;
         this.viewGroup = null;
@@ -77,17 +85,13 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
      * @param position The position of the ViewHolder in the adapter.
      */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.name.setText(
                 gardens.get(position).getGardenName());
-        holder.temperature.setText(
-                context.getString(R.string.label_temperature, gardens.get(position).getTemperature()));
-        holder.moisture.setText(
-                context.getString(R.string.label_moisture, gardens.get(position).getMoisture()));
-        holder.humidity.setText(
-                context.getString(R.string.label_humidity, gardens.get(position).getHumidity()));
-        holder.lastUpdated.setText(
-                context.getString(R.string.label_updated, gardens.get(position).getLastUpdated()));
+
+        // Update sensor readings
+        GetSensorReadings getSensorReadings = new GetSensorReadings(fabButton, holder, gardens, context);
+        getSensorReadings.execute(context.getResources().getString(R.string.sensor_api));
     }
 
     /**
@@ -259,7 +263,8 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
      * An inner class that references the card view. It inherits from ViewHolder and is used with
      * RecyclerView.Adapter.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements Toolbar.OnMenuItemClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements
+            Toolbar.OnMenuItemClickListener {
 
         public TextView name;
         public TextView temperature;
@@ -269,7 +274,7 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
 
         /**
          * Constructor that will initialize the garden card. It will set up all of the TextView,
-         * Buttons, and Overflow Menu.
+         * Buttons, Long Click, and Overflow Menu.
          * @param v The garden card view.
          */
         public ViewHolder(View v){
@@ -287,18 +292,28 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
             humidity = (TextView) v.findViewById(R.id.humidity);
             lastUpdated = (TextView) v.findViewById(R.id.updated);
 
-            // Initialize buttons
-            Button button = (Button) v.findViewById(R.id.button_update);
-            button.setOnClickListener(new UpdateButton(this, gardens, context));
+            // REMOVED TO STREAMLINE UI
 
-            button = (Button) v.findViewById(R.id.button_history);
-            button.setOnClickListener(new HistoryButton());
+//            // Initialize buttons
+//            Button button = (Button) v.findViewById(R.id.button_update);
+//            button.setOnClickListener(new UpdateButton(this, gardens, context));
+//
+//            button = (Button) v.findViewById(R.id.button_history);
+//            button.setOnClickListener(new HistoryButton());
+//
+//            button = (Button) v.findViewById(R.id.button_water);
+//            button.setOnClickListener(new WaterButton());
+//
+//            button = (Button) v.findViewById(R.id.button_setup);
+//            button.setOnClickListener(new SetupButton());
 
-            button = (Button) v.findViewById(R.id.button_water);
-            button.setOnClickListener(new WaterButton());
-
-            button = (Button) v.findViewById(R.id.button_setup);
-            button.setOnClickListener(new SetupButton());
+            // Initialize readings on card
+            temperature.setText(
+                    context.getString(R.string.label_temperature, 0.0));
+            moisture.setText(
+                    context.getString(R.string.label_moisture, 0.0));
+            humidity.setText(
+                    context.getString(R.string.label_humidity, 0.0));
         }
 
         /**
@@ -309,6 +324,26 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
          */
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
+
+            if (menuItem.getItemId() == R.id.menu_limit) {
+                // Create dialog
+                Dialog dialog = new Dialog(context);
+                View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_setup_water, null);
+
+                // Set layout
+                dialog.setContentView(dialogView);
+                dialog.setCanceledOnTouchOutside(false);
+
+                // Setup button listeners for cancel and done
+                Button button = (Button) dialogView.findViewById(R.id.button_water_cancel);
+                button.setOnClickListener(new SetupButton.CancelButton(dialog));
+
+                button = (Button) dialogView.findViewById(R.id.button_done);
+                button.setOnClickListener(new SetupButton.DoneButton(dialog));
+
+                // display the dialog
+                dialog.show();
+            }
 
             if (menuItem.getItemId() == R.id.menu_push) {
                 // Create dialog
@@ -333,6 +368,8 @@ public class GardenHolder extends RecyclerView.Adapter<GardenHolder.ViewHolder> 
                 // Display dialog
                 dialog.show();
             }
+
+
             if(menuItem.getItemId() == R.id.menu_shutdown) {
                 // TODO: Implement sending shut down message garden.
                 System.out.println("Shut down");
