@@ -1,6 +1,7 @@
 package edu.csulb.smartroot.welcome;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -16,6 +17,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.csulb.smartroot.R;
+import edu.csulb.smartroot.companion.Companion;
+import edu.csulb.smartroot.welcome.httprequests.GetPlantNames;
 import edu.csulb.smartroot.welcome.listeners.*;
 
 /**
@@ -47,7 +50,8 @@ public class Welcome extends AppCompatActivity {
         // Set animation listener to animate login and register button after logo is done
         logoAnimation.setAnimationListener(new ButtonAnimation(
                 findViewById(R.id.welcome_login_button),
-                findViewById(R.id.welcome_register_button)));
+                findViewById(R.id.welcome_register_button),
+                findViewById(R.id.welcome_companion_button)));
 
 
         // Start the animation
@@ -136,6 +140,11 @@ public class Welcome extends AppCompatActivity {
         dialog.show();
     }
 
+    public void companion(View view) {
+        GetPlantNames getPlantNames = new GetPlantNames(this);
+        getPlantNames.execute(getResources().getString(R.string.get_plants_api));
+    }
+
     ///////////////
     // LISTENERS //
     ///////////////
@@ -171,15 +180,17 @@ public class Welcome extends AppCompatActivity {
     private class ButtonAnimation implements Animation.AnimationListener {
         View login;
         View register;
+        View companion;
 
         /**
          * A constructor that references the login and register button
          * @param login References the login button
          * @param register References the register button
          */
-        public ButtonAnimation (View login, View register) {
+        public ButtonAnimation (View login, View register, View companion) {
             this.login = login;
             this.register = register;
+            this.companion = companion;
         }
 
         /**
@@ -194,10 +205,12 @@ public class Welcome extends AppCompatActivity {
             // Make the login and register button visible
             login.setVisibility(View.VISIBLE);
             register.setVisibility(View.VISIBLE);
+            companion.setVisibility(View.VISIBLE);
 
             // Start the login and register button animation
             login.startAnimation(anim);
             register.startAnimation(anim);
+            companion.startAnimation(anim);
         }
 
         /**

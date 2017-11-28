@@ -14,8 +14,7 @@
 
         <!-- Welcome Activity -->
         <activity
-            android:name=".welcome.Welcome"
-            android:noHistory="true">
+            android:name=".welcome.Welcome">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +27,17 @@
         <activity
             android:name=".gardenview.GardenView"
             android:noHistory="true" >
+        </activity>
+
+        <!-- Companion Planting Activity -->
+        <activity
+            android:name=".companion.Companion"
+            android:label=""
+            android:parentActivityName=".welcome.Welcome">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".welcome.Welcome"/>
         </activity>
 
     </application>

@@ -1,7 +1,8 @@
-package edu.csulb.smartroot.gardenview.httprequests;
+package edu.csulb.smartroot.welcome.httprequests;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -20,7 +21,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -28,36 +28,25 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import edu.csulb.smartroot.R;
-import edu.csulb.smartroot.gardenview.Garden;
-import edu.csulb.smartroot.gardenview.GardenHolder;
+import edu.csulb.smartroot.companion.Companion;
 
 /**
- * An AsyncTask that will get the user's garden from the server.
+ * An AsyncTask that will get a list of all plants in the Companion Planting database
  */
-public class GetGardens extends AsyncTask<String, Void, JSONObject> {
+public class GetPlantNames extends AsyncTask<String, Void, JSONObject> {
 
-    private GardenHolder holder;
-    private ArrayList<Garden> gardens;
     private Dialog dialogProgress;
     private Context context;
-
-    private String userName;
 
     private Resources resources;
     private int responseCode;
 
     /**
-     * Constructor that references the GardenHolder and ArrayList of gardens
-     *
-     * @param holder The referenced GardenHolder.
-     * @param userName The username.
-     * @param context Context of activity.
+     * Constructor that references the context of the calling activity.
+     * @param context Context of the activity.
      */
-    public GetGardens(GardenHolder holder, String userName, Context context) {
-        this.holder = holder;
-        this.gardens = holder.getGardens();
+    public GetPlantNames(Context context) {
         this.context = context;
-        this.userName = userName;
 
         this.resources = context.getApplicationContext().getResources();
         this.responseCode = 0;
@@ -69,7 +58,7 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
         View viewDialog = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null);
 
         TextView textView = (TextView) viewDialog.findViewById(R.id.progress_message);
-        textView.setText(R.string.progress_garden);
+        textView.setText(R.string.progress_plant);
 
         dialogProgress.setContentView(viewDialog);
 
@@ -79,7 +68,7 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
     }
 
     /**
-     * An implementation of AsyncTask. This will display the dialog progress on the UI thread,
+     * An implementation of AsyncTask. This will display the dialog process on the UI thread,
      * which is separate from the doInBackground thread.
      */
     @Override
@@ -89,10 +78,10 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
     }
 
     /**
-     * An implementation of AsyncTask. This will get the user's garden from the server in a
-     * separate thread.
-     * @param args The API address to send a POST request.
-     * @return A JSONObject containing the user's garden.
+     * An implementation of AsyncTask. This will get an array of all the plant names in the
+     * Companion Planting database in a separate thread.
+     * @param args The API address to send a GET request.
+     * @return A JSON object containing an array of all the plant names.
      */
     @Override
     protected JSONObject doInBackground(String...args) {
@@ -102,29 +91,12 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
         try {
             URL url = new URL(args[0]);
 
-            // Create JSON object to send to server
-            JSONObject data = new JSONObject();
-            data.put("username", userName);
-
-            // Open a connection to send a POST request to the server
+            // Open a connection to send a GET request to the server
             http = (HttpURLConnection) url.openConnection();
             http.setDoInput(true);
             http.setConnectTimeout(resources.getInteger(R.integer.connection_timeout));
             http.setReadTimeout(resources.getInteger(R.integer.connection_timeout));
-            http.setRequestProperty("Content-Type", "application/json");
-            http.setRequestProperty("x-api-key", "9e03e3af238e4d59933e61d1fad96857");
-            http.setRequestMethod("POST");
-
-            // Insert data for POST request
-            StringBuilder sb = new StringBuilder();
-
-            sb.append(data.toString());
-
-            Log.d("GARDEN RETRIEVE", "Data: " + sb.toString());
-
-            OutputStreamWriter out = new OutputStreamWriter(http.getOutputStream());
-            out.write(sb.toString());
-            out.flush();
+            http.setRequestMethod("GET");
 
             // Attempt connection and get server response code
             responseCode = http.getResponseCode();
@@ -141,17 +113,14 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
                 }
             }
         } catch(MalformedURLException e) {
-            Log.d("GARDEN RETRIEVE", "URL not in correct format");
+            Log.d("PLANT RETRIEVE", "URL not in correct format");
             e.printStackTrace();
             return null;
-        } catch (ConnectException e) {
+        } catch(ConnectException e) {
             responseCode = HttpURLConnection.HTTP_NOT_FOUND;
             e.printStackTrace();
-        } catch(IOException e) {
-            Log.d("GARDEN RETRIEVE", "IO exception");
-            e.printStackTrace();
-        } catch (JSONException e) {
-            Log.d("GARDEN RETRIEVE", "JSON exception");
+        } catch (IOException e) {
+            Log.d("PLANT RETRIEVE", "IO exception");
             e.printStackTrace();
         } finally {
             // Disconnect from the server
@@ -159,11 +128,12 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
                 http.disconnect();
         }
 
-        Log.d("GARDEN RETRIEVE", "Response: " + responseCode);
-        Log.d("GARDEN RETRIEVE", "Results: " + result);
+        Log.d("PLANT RETRIEVE", "Response: " + responseCode);
+        Log.d("PLANT RETRIEVE", "Results: " + result);
 
-        // Convert the response from the server into a JSONObject
+        // Convert the response from the server int oa JSONObject
         JSONObject jsonObject = null;
+
         try {
             jsonObject = new JSONObject(result.toString());
         } catch (JSONException e) {
@@ -174,10 +144,9 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
     }
 
     /**
-     * An implementation of AsyncTask. This will retrieve the user's garden and pass it
-     * to the garden ArrayList.
-     *
-     * @param jsonObject JSON object containing the user's garden.
+     * An implementation of AsyncTask. This will process the server response code to notify
+     * the user of the server connection attempt.
+     * @param jsonObject JSONObject containing the list of plant names.
      */
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
@@ -191,52 +160,41 @@ public class GetGardens extends AsyncTask<String, Void, JSONObject> {
         // Process response code and execute appropriate action
         switch(responseCode) {
             case HttpURLConnection.HTTP_OK:
-                // If the server response is valid...
                 if (jsonObject != null) {
                     try {
-                        // Get user's garden from JSONObject
-                        JSONArray jsonGardens = jsonObject.getJSONArray("gardens");
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        ArrayList<String> names = new ArrayList<String>();
 
-                        gardens.clear();
+                        for (int i = 0; i < jsonArray.length(); i++)
+                            names.add(jsonArray.getJSONObject(i).getString("_id"));
 
-                        // Separate the JSONObject gardens into arrays
-                        for (int i = 0; i < jsonGardens.length(); i++) {
-                            JSONObject garden = jsonGardens.getJSONObject(i);
-                            gardens.add(new Garden(
-                                    garden.getString("name"),
-                                    garden.getString("mac")));
-                        }
+                        Intent intent = new Intent(context, Companion.class);
+                        intent.putExtra("plants", names);
 
-                        // Update recycler view
-                        holder.notifyDataSetChanged();
-
+                        context.startActivity(intent);
                     } catch (JSONException e) {
-                        toast.setText(R.string.garden_invalid_data);
+                        toast.setText((R.string.plant_invalid_data));
                         toast.show();
 
                         e.printStackTrace();
                     }
                 }
-
                 break;
 
             case HttpURLConnection.HTTP_NOT_FOUND:
-                // Notify user server cannot be found
-                toast.setText(R.string.garden_404);
+                toast.setText(R.string.plant_404);
                 toast.show();
 
                 break;
 
             case HttpURLConnection.HTTP_FORBIDDEN:
-                // Notify user the server is forbidden
-                toast.setText(R.string.garden_403);
+                toast.setText(R.string.plant_403);
                 toast.show();
 
                 break;
 
             default:
-                // Notify user an unexpected server response was received
-                toast.setText(R.string.garden_unknown);
+                toast.setText(R.string.plant_unknown);
                 toast.show();
 
                 break;

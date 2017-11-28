@@ -82,6 +82,7 @@ public class GetSensorReadings extends AsyncTask<String, Void, JSONObject> {
             http.setConnectTimeout(context.getResources().getInteger(R.integer.connection_timeout));
             http.setReadTimeout(context.getResources().getInteger(R.integer.connection_timeout));
             http.setRequestProperty("Content-Type", "application/json");
+            http.setRequestProperty("x-api-key", "9e03e3af238e4d59933e61d1fad96857");
             http.setRequestMethod("POST");
 
             // Insert data for POST request

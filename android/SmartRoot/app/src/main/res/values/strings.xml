@@ -8,6 +8,7 @@
     <string name="activity_label_welcome">Welcome</string>
     <string name="button_login">LOGIN</string>
     <string name="button_register">REGISTER</string>
+    <string name="button_companion">COMPANION PLANTING</string>
 
     <!-- Hints for Login and Register Dialog -->
     <string name="username">Username</string>
@@ -145,5 +146,28 @@
     <string name="label_humidity_warning">Humidity Warning</string>
     <string name="label_minimum">Minimum</string>
     <string name="label_maximum">Maximum</string>
+
+    <!-- ********************** -->
+    <!-- * COMPANION PLANTING * -->
+    <!-- ********************** -->
+
+    <string name="progress_plant">Retrieving plants</string>
+    <string name="progress_companion">Checking compatibility</string>
+
+    <string name="plant_403">Cannot retrieve plants. Server is temporarily offline.</string>
+    <string name="plant_404">Cannot retrieve plants. Server is currently offline.</string>
+    <string name="plant_unknown">Cannot retrieve plants. Unknown error.</string>
+    <string name="plant_invalid_data">Cannot retrieve plants. Server error.</string>
+
+    <string name="title_companion">Companion Planting</string>
+    <string name="label_plant_1">Plant 1</string>
+    <string name="label_plant_2">Plant 2</string>
+
+    <string name="plant_hint">Enter Plant</string>
+    <string name="plant_hint_complete">No Plants Found</string>
+
+    <string name="button_check_compatibility">CHECK COMPATIBILITY</string>
+
+    <string name="plant_error">Plant %d: Please enter a valid plant.</string>
 
 </resources>

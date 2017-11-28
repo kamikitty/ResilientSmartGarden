@@ -50,6 +50,20 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:onClick="register"
             android:visibility="invisible"/>
+
+        <!-- Companion button -->
+        <Button
+            android:id="@+id/welcome_companion_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_companion"
+            android:textColor="@color/color_text_button"
+            android:textSize="@dimen/fontsize_welcome"
+            android:minWidth="@dimen/flat_button_min_width"
+            android:height="@dimen/flat_button_height"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:onClick="companion"
+            android:visibility="invisible"/>
     </LinearLayout>
 
 </LinearLayout>

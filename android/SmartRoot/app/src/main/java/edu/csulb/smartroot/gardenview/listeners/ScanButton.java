@@ -501,6 +501,7 @@ public class ScanButton implements Button.OnClickListener {
                 http.setConnectTimeout(resources.getInteger(R.integer.connection_timeout));
                 http.setReadTimeout(resources.getInteger(R.integer.connection_timeout));
                 http.setRequestProperty("Content-Type", "application/json");
+                http.setRequestProperty("x-api-key", "9e03e3af238e4d59933e61d1fad96857");
                 http.setRequestMethod("POST");
 
                 // Insert data for POST request

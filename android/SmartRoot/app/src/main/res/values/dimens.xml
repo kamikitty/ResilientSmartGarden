@@ -14,6 +14,10 @@
     <dimen name="fontsize_welcome">17sp</dimen>
     <dimen name="padding_welcome">15dp</dimen>
 
+    <dimen name="padding_companion_label">16dp</dimen>
+    <dimen name="padding_companion_button">26dp</dimen>
+    <dimen name="fontsize_companion_title">24sp</dimen>
+
     <!-- ************* -->
     <!-- * CARD VIEW * -->
     <!-- ************* -->
@@ -73,4 +77,8 @@
     <dimen name="dialog_content_font_size">20sp</dimen>
     <dimen name="dialog_title_padding">20dp</dimen>
 
+    <!-- ********************** -->
+    <!-- * COMPANION PLANTING * -->
+    <!-- ********************** -->
+    <dimen name="fontsize_plant">18sp</dimen>
 </resources>

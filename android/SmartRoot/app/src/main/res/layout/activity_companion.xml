@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.csulb.smartroot.companion.Companion"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/title_companion"
+            android:textSize="@dimen/fontsize_companion_title"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginTop="@dimen/padding_companion_label"
+            android:text="@string/label_plant_1"
+            android:textSize="@dimen/fontsize_plant"
+            android:textColor="@android:color/black"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/autoPlantFirst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:ems="10"
+            android:completionThreshold="2"
+            android:hint="@string/plant_hint"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginTop="@dimen/padding_companion_label"
+            android:text="@string/label_plant_2"
+            android:textSize="@dimen/fontsize_plant"
+            android:textColor="@android:color/black"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/autoPlantSecond"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:ems="10"
+            android:completionThreshold="2"
+            android:hint="@string/plant_hint"/>
+
+        <Button
+            android:id="@+id/companion_check_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/padding_companion_button"
+            android:text="@string/button_check_compatibility"
+            android:textColor="@color/color_text_button"
+            android:textSize="@dimen/fontsize_welcome"
+            android:minWidth="@dimen/flat_button_min_width"
+            android:height="@dimen/flat_button_height"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:onClick="checkCompatibility" />
+    </LinearLayout>
+
+</LinearLayout>
