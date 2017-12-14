@@ -19,9 +19,17 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.css"
         "scss/styles.scss"
       ],
+      "stylePreprocessorOptions":{
+        "includePaths":[
+          "my-path"
+
+        ]
+      },
       "scripts": [
+        "../node_modules/bootstrap-sass/"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

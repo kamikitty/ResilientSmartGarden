@@ -1,5 +1,1 @@
-h2 {
-  color: #369;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1000%;
-}
+@import '~sass/variables'
